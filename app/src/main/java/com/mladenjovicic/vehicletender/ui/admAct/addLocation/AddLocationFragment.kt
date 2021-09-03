@@ -33,10 +33,12 @@ class AddLocationFragment : Fragment() {
 
         viewModel = ViewModelProvider(this).get(AddLocationViewModel::class.java)
 
-        println("dev01" + editTextNameNewLocation?.text.toString() +  editTextSaveZipCodeNewLocation?.text.toString())
 
         btnSaveNewLocation?.setOnClickListener {
             viewModel.addNewLocation(requireContext(),editTextNameNewLocation?.text.toString(),editTextSaveZipCodeNewLocation?.text.toString())
+            editTextNameNewLocation?.text?.clear()
+            editTextSaveZipCodeNewLocation?.text?.clear()
+
         }
 
 

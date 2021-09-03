@@ -4,7 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "LocationModel")
+@Entity(tableName = "location")
 data class LocationModelDB(
     @ColumnInfo(name ="city")
     var city:String,
