@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.mladenjovicic.vehicletender.ui.admAct.addUser.AddUserViewModel
 import com.mladenjovicic.vehicletender.ui.login.LoginViewModel
@@ -32,8 +33,20 @@ class LoginActivity : AppCompatActivity() {
                 if(editTextUserPassword.text.isEmpty()){
                     Toast.makeText(this, "User password is empty", Toast.LENGTH_SHORT).show()
                 }else{
-                    val intent = Intent(this, MainActivity::class.java)
-                    startActivity(intent)
+
+                    viewModel.checkUser(this, editTextEmailUser.text.toString(), editTextUserPassword.text.toString())
+                    viewModel.userModelDB?.observe( this, Observer {
+                        if(it!= null){
+
+
+                            val intent = Intent(this, MainActivity::class.java)
+                            startActivity(intent)
+
+                        }else{
+                            Toast.makeText(this, "error", Toast.LENGTH_SHORT).show()
+                        }
+                    })
+
                 }
             }
         }

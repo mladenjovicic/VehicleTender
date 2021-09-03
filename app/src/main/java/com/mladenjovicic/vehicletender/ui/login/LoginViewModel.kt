@@ -7,10 +7,10 @@ import com.mladenjovicic.vehicletender.model.db.UserModelDB
 import com.mladenjovicic.vehicletender.repository.db.dbRepository
 
 class LoginViewModel : ViewModel() {
+        var userModelDB:LiveData<UserModelDB>?=null
+
         fun checkUser(context: Context, email:String, password:String):LiveData<UserModelDB>?{
-
-            return dbRepository.getUserDate(context, email, password)
-
-
+            userModelDB =  dbRepository.getUserDate(context, email, password)
+            return userModelDB
         }
 }
