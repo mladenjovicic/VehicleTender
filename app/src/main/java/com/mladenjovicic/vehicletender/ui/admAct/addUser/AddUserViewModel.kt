@@ -13,8 +13,6 @@ class AddUserViewModel : ViewModel() {
     }
 
     fun getListLocation (context: Context): LiveData<List<LocationModelDB>>? {
-       // listLocation = dbRepository.getListLocation(context)!!
-        //return listLocation
         return dbRepository.getListLocation(context)!!
     }
 }

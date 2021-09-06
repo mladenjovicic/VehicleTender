@@ -1,6 +1,8 @@
 package com.mladenjovicic.vehicletender
 
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
@@ -24,7 +26,13 @@ class LoginActivity : AppCompatActivity() {
         val editTextEmailUser = findViewById<EditText>(R.id.editTextEmailUser)
         val editTextUserPassword = findViewById<EditText>(R.id.editTextUserPassword)
         viewModel = ViewModelProvider(this).get(LoginViewModel::class.java)
-
+        val sharedPreferences:SharedPreferences = this.getSharedPreferences("UserDate", Context.MODE_PRIVATE)
+        viewModel.checkTableUser(this)
+        viewModel.userModelDB?.observe(this, Observer {
+            if (it==null){
+                viewModel.addNewUser(this, "Mladen", "Jovicic", "a@a.com", "1", 2, "1","066497862", "Axelyos")
+            }
+        })
 
         btnLoginUser.setOnClickListener {
             if(editTextEmailUser.text.isEmpty()){
@@ -33,20 +41,34 @@ class LoginActivity : AppCompatActivity() {
                 if(editTextUserPassword.text.isEmpty()){
                     Toast.makeText(this, "User password is empty", Toast.LENGTH_SHORT).show()
                 }else{
-
                     viewModel.checkUser(this, editTextEmailUser.text.toString(), editTextUserPassword.text.toString())
                     viewModel.userModelDB?.observe( this, Observer {
                         if(it!= null){
-
-
+                            val id:Int = Integer.parseInt(it.Id.toString())
+                            val contact_name:String = it.contact_name
+                            val contact_surname:String = it.contact_surname
+                            val email:String = it.email
+                            val status_user:Int = it.status_user
+                            val id_location:String = it.id_location
+                            val phone:String = it.phone
+                            val company_name:String = it.company_name
+                            val editor:SharedPreferences.Editor = sharedPreferences.edit()
+                            editor.putInt("id_user", id)
+                            editor.putString("contact_name_user", contact_name)
+                            editor.putString("contact_surname_user", contact_surname)
+                            editor.putString("email_user",email )
+                            editor.putInt("status_user", status_user)
+                            editor.putString("id_location",id_location)
+                            editor.putString("phone", phone)
+                            editor.putString("company_name",company_name)
+                            editor.apply()
+                            editor.commit()
                             val intent = Intent(this, MainActivity::class.java)
                             startActivity(intent)
-
                         }else{
                             Toast.makeText(this, "error", Toast.LENGTH_SHORT).show()
                         }
                     })
-
                 }
             }
         }

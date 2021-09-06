@@ -20,7 +20,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="end|bottom"
             android:src="@drawable/ic_launcher_foreground"
-            android:layout_margin="16dp" />
+            android:layout_margin="16dp"
+            android:visibility="gone"/>
 
     </FrameLayout>
 

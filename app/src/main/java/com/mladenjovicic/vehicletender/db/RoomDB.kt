@@ -5,14 +5,16 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.mladenjovicic.vehicletender.model.db.LocationModelDB
-import com.mladenjovicic.vehicletender.model.db.TenderModelDB
-import com.mladenjovicic.vehicletender.model.db.UserModelDB
+import com.mladenjovicic.vehicletender.model.db.*
 
-@Database(entities = arrayOf(UserModelDB::class, LocationModelDB::class), version = 4, exportSchema = false)
+@Database(entities = arrayOf(UserModelDB::class, LocationModelDB::class, ManufacturerModelDB::class, CarModelDB::class), version = 5, exportSchema = false)
 abstract class RoomDB:RoomDatabase() {
     abstract fun locationDAO():DAOAcessLocation
     abstract fun userDAO():DAOAcessUser
+    abstract fun manufacturerDAO():DAOAcessManafactura
+    abstract fun carModelDAO():DAOAcessCarModels
+
+
 
     companion object{
         @Volatile

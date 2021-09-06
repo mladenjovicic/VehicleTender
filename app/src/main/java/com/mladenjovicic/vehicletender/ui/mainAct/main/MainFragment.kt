@@ -1,5 +1,7 @@
 package com.mladenjovicic.vehicletender.ui.mainAct.main
 
+import android.content.Context
+import android.content.SharedPreferences
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -25,6 +27,8 @@ class MainFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
         // TODO: Use the ViewModel
+
+
     }
 
 }

@@ -3,6 +3,7 @@
     <item
         android:id="@+id/addLocation"
         android:title="Add location"
+        android:icon="@drawable/location"
         />
     <item
         android:id="@+id/addUser"
@@ -10,7 +11,18 @@
         android:icon="@drawable/home"
         />
     <item
+        android:id="@+id/listUser"
+        android:title="List User"
+        android:icon="@drawable/ic_launcher_background"
+        />
+    <item
+        android:id="@+id/addManafacturaAndCar"
+        android:title="Add car"
+        android:icon="@drawable/ic_launcher_background"
+        />
+    <item
         android:id="@+id/report"
         android:title="Reports"
+        android:icon="@drawable/ic_launcher_background"
         />
 </menu>

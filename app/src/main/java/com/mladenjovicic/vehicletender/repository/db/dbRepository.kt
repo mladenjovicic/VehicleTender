@@ -5,7 +5,9 @@ package com.mladenjovicic.vehicletender.repository.db
 import android.content.Context
 import androidx.lifecycle.LiveData
 import com.mladenjovicic.vehicletender.db.RoomDB
+import com.mladenjovicic.vehicletender.model.db.CarModelDB
 import com.mladenjovicic.vehicletender.model.db.LocationModelDB
+import com.mladenjovicic.vehicletender.model.db.ManufacturerModelDB
 import com.mladenjovicic.vehicletender.model.db.UserModelDB
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.IO
@@ -14,14 +16,14 @@ import kotlinx.coroutines.launch
 class dbRepository {
     companion object{
         var roomDB:RoomDB?= null
-        //var userDB:UserDB?=null
         var locationModelDB:LiveData<List<LocationModelDB>>?= null
         var userModelDB:LiveData<UserModelDB>?=null
+        var manufacturerModelDB:LiveData<List<ManufacturerModelDB>>?=null
+        var listUserModelDB:LiveData<List<UserModelDB>>?=null
 
         fun initializeDB(context: Context):RoomDB{
             return  RoomDB.getDateLocation(context)
         }
-
 
         fun insertDataLocation(context: Context,city:String, zipCode:String ){
             roomDB = initializeDB(context)
@@ -50,6 +52,43 @@ class dbRepository {
             userModelDB = roomDB!!.userDAO().getUser(email,password)
             return userModelDB
         }
+
+        fun getAllUser(context: Context):LiveData<List<UserModelDB>>?{
+            roomDB = initializeDB(context)
+            listUserModelDB = roomDB!!.userDAO().getUsersList()
+            return listUserModelDB
+        }
+
+        fun checkTableUser(context: Context):LiveData<UserModelDB>?{
+            roomDB = initializeDB(context)
+            userModelDB = roomDB!!.userDAO().checkTableUser()
+            return userModelDB
+        }
+
+        fun insertDataManafactura(context: Context, manufacturer_name:String){
+            roomDB = initializeDB(context)
+            CoroutineScope(IO).launch {
+                val ManufacturerInsert = ManufacturerModelDB(manufacturer_name)
+                roomDB!!.manufacturerDAO().InsertManafactura(ManufacturerInsert)
+            }
+        }
+
+        fun getDataManafactura(context: Context):LiveData<List<ManufacturerModelDB>>?{
+            roomDB = initializeDB(context)
+            manufacturerModelDB = roomDB!!.manufacturerDAO().getManufacturer()
+            return manufacturerModelDB
+        }
+
+        fun insertDataCar(context: Context, model_name:String,model_no:String, manufacturer_id:Int){
+            roomDB = initializeDB(context)
+            CoroutineScope(IO).launch {
+                val carInsert = CarModelDB(model_name,model_no, manufacturer_id)
+                roomDB!!.carModelDAO().InsertCarModels(carInsert)
+            }
+
+        }
+
+
     }
 
 

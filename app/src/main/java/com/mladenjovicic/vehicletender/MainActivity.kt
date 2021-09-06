@@ -1,8 +1,12 @@
 package com.mladenjovicic.vehicletender
 
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -38,6 +42,8 @@ class MainActivity : AppCompatActivity() {
             true
         }
         adminPanel()
+        val sharedPreferences: SharedPreferences = this.getSharedPreferences("UserDate", Context.MODE_PRIVATE)
+        Toast.makeText(this,"test" + sharedPreferences.getString("contact_name_user", "test"), Toast.LENGTH_SHORT).show()
 
 
     }
@@ -49,7 +55,13 @@ class MainActivity : AppCompatActivity() {
 
     fun adminPanel(){
         val fabAdmin = findViewById<FloatingActionButton>(R.id.fabAdmin)
+        val sharedPreferences: SharedPreferences = this.getSharedPreferences("UserDate", Context.MODE_PRIVATE)
 
+        if(sharedPreferences.getInt("status_user",5)==2){
+            fabAdmin.visibility = View.VISIBLE
+        }else{
+            fabAdmin.visibility = View.GONE
+        }
         fabAdmin.setOnClickListener {
             val intent = Intent(this, AdminPanelActivity::class.java)
             startActivity(intent)
