@@ -2,10 +2,8 @@ package com.mladenjovicic.vehicletender.db
 
 
 import androidx.lifecycle.LiveData
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
+import androidx.room.OnConflictStrategy.REPLACE
 import com.mladenjovicic.vehicletender.model.db.*
 
 @Dao
@@ -32,6 +30,15 @@ interface  DAOAcessUser{
 
     @Query("select * from user")
     fun getUsersList():LiveData<List<UserModelDB>>
+
+    @Query("select * from user where id =:id")
+    fun getUserDateID(id:Int):LiveData<UserModelDB>
+
+    @Query("update  user set company_name = :company_name where id = :id")
+    fun updateUserID(company_name:String, id:Int )
+
+    @Update(onConflict = OnConflictStrategy.REPLACE)
+    fun updateUser(userModelDB: UserModelDB)
 }
 
 @Dao

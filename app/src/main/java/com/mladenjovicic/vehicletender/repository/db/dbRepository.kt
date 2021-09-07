@@ -5,10 +5,7 @@ package com.mladenjovicic.vehicletender.repository.db
 import android.content.Context
 import androidx.lifecycle.LiveData
 import com.mladenjovicic.vehicletender.db.RoomDB
-import com.mladenjovicic.vehicletender.model.db.CarModelDB
-import com.mladenjovicic.vehicletender.model.db.LocationModelDB
-import com.mladenjovicic.vehicletender.model.db.ManufacturerModelDB
-import com.mladenjovicic.vehicletender.model.db.UserModelDB
+import com.mladenjovicic.vehicletender.model.db.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
@@ -53,6 +50,22 @@ class dbRepository {
             return userModelDB
         }
 
+        fun getUserDateID(context: Context, id:Int):LiveData<UserModelDB>?{
+            roomDB = initializeDB(context)
+            userModelDB = roomDB!!.userDAO().getUserDateID(id)
+            return userModelDB
+        }
+
+        fun updateUser(context: Context, userModelDB: UserModelDB){
+            roomDB = initializeDB(context)
+            CoroutineScope(IO).launch {
+                var update = roomDB!!.userDAO().updateUser( userModelDB)
+
+            }
+
+        }
+
+
         fun getAllUser(context: Context):LiveData<List<UserModelDB>>?{
             roomDB = initializeDB(context)
             listUserModelDB = roomDB!!.userDAO().getUsersList()
@@ -87,8 +100,6 @@ class dbRepository {
             }
 
         }
-
-
     }
 
 
