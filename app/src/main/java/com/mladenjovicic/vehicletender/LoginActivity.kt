@@ -30,7 +30,7 @@ class LoginActivity : AppCompatActivity() {
         viewModel.checkTableUser(this)
         viewModel.userModelDB?.observe(this, Observer {
             if (it==null){
-                viewModel.addNewUser(this, "Mladen", "Jovicic", "a@a.com", "1", 2, "1","066497862", "Axelyos")
+                viewModel.addNewUser(this,"", "Mladen", "Jovicic", "a@a.com", "1", 2, "1","066497862", "Axelyos")
             }
         })
 
@@ -52,8 +52,10 @@ class LoginActivity : AppCompatActivity() {
                             val id_location:String = it.id_location
                             val phone:String = it.phone
                             val company_name:String = it.company_name
+                            val uuid:String = it.uuId
                             val editor:SharedPreferences.Editor = sharedPreferences.edit()
                             editor.putInt("id_user", id)
+                            editor.putString("uuidUser", uuid)
                             editor.putString("contact_name_user", contact_name)
                             editor.putString("contact_surname_user", contact_surname)
                             editor.putString("email_user",email )

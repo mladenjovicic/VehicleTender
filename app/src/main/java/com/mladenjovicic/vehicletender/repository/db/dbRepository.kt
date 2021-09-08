@@ -9,6 +9,9 @@ import com.mladenjovicic.vehicletender.model.db.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
+import java.sql.Date
+import java.util.function.DoubleBinaryOperator
+import javax.xml.transform.dom.DOMLocator
 
 class dbRepository {
     companion object{
@@ -36,10 +39,10 @@ class dbRepository {
             return locationModelDB
         }
 
-        fun insertDataUser(context: Context, contact_name:String, contact_surname:String,email:String,password:String, status_user:Int,id_location:String,phone:String, company_name:String){
+        fun insertDataUser(context: Context, uudi:String,contact_name:String, contact_surname:String,email:String,password:String, status_user:Int,id_location:String,phone:String, company_name:String){
             roomDB = initializeDB(context)
             CoroutineScope(IO).launch {
-                val UserInsert = UserModelDB(contact_name, contact_surname, email,password,status_user,id_location,phone,company_name)
+                val UserInsert = UserModelDB(uudi, contact_name, contact_surname, email,password,status_user,id_location,phone,company_name)
                 roomDB!!.userDAO().InsertUser(UserInsert)
             }
         }
@@ -59,7 +62,7 @@ class dbRepository {
         fun updateUser(context: Context, userModelDB: UserModelDB){
             roomDB = initializeDB(context)
             CoroutineScope(IO).launch {
-                var update = roomDB!!.userDAO().updateUser( userModelDB)
+                var update = roomDB!!.userDAO().updateUser(userModelDB)
 
             }
 
@@ -99,6 +102,54 @@ class dbRepository {
                 roomDB!!.carModelDAO().InsertCarModels(carInsert)
             }
 
+        }
+
+        fun insertDataBid(context: Context, userId: String, stockId:Int,price:Double,isWinningPrice:Boolean){
+            roomDB = initializeDB(context)
+            CoroutineScope(IO).launch {
+                val bidInsert = BidModelDB(userId, stockId,price,isWinningPrice)
+                roomDB!!.bidDAO().InsertBid(bidInsert)
+            }
+        }
+
+        fun insertStatus(context: Context, statusType:String){
+            roomDB = initializeDB(context)
+            CoroutineScope(IO).launch {
+                val statusInsert = StatusModelDB(statusType)
+                roomDB!!.statusDAO().InsertStatus(statusInsert)
+            }
+        }
+
+        fun insertStockInfo(context:Context, year:Int, modelLineId:Int, mileage:Double,price:Double, comments:String, locationId:Int, regNo:String, isSold:Boolean){
+            roomDB = initializeDB(context)
+            CoroutineScope(IO).launch {
+                val stockInfoInsert = StockInfoModelDB(year, modelLineId,mileage,price,comments,locationId,regNo, isSold)
+                roomDB!!.stockInfoDAO().InsertStockInfo(stockInfoInsert)
+            }
+
+        }
+
+        fun insertTender(context: Context, createdDate:String, createdBy:String, tenderNo:String, openDate:String, closeDate:String, statusId:Int){
+            roomDB = initializeDB(context)
+            CoroutineScope(IO).launch {
+                val tenderInsert = TenderModelDB(createdDate,createdBy,tenderNo,openDate,closeDate,statusId)
+                roomDB!!.tenderDAO().InsertTender(tenderInsert)
+            }
+        }
+        fun insertTenderStock(context: Context, stockId:Int,tenderId:Int, saleDate:String){
+            roomDB= initializeDB(context)
+            CoroutineScope(IO).launch {
+                val tenderStockInsert = TenderStockModelDB(stockId, tenderId, saleDate)
+                roomDB!!.tenderStockDAO().InsertTenderStock(tenderStockInsert)
+            }
+        }
+
+        fun insertTenderUser(context: Context,tenderId:Int,userId:String){
+            roomDB = initializeDB(context)
+            CoroutineScope(IO).launch {
+                val tenderUserInsert = TenderUserModelDB(tenderId, userId)
+                roomDB!!.tenderUserDAO().InsertTenderUser(tenderUserInsert)
+            }
         }
     }
 

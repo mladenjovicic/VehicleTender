@@ -4,14 +4,22 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "tenderModel")
+@Entity(tableName = "tender")
 data class TenderModelDB(
-    @ColumnInfo(name = "colona1")
-    var colona1:String,
-    @ColumnInfo(name = "colona2")
-    var colona2:String
+    @ColumnInfo(name = "createdDate")
+    var createdDate:String,
+    @ColumnInfo(name = "createdBy")
+    var createdBy:String,
+    @ColumnInfo(name = "tenderNo")
+    var tenderNo:String,
+    @ColumnInfo(name = "openDate")
+    var openDate:String,
+    @ColumnInfo(name = "closeDate")
+    var closeDate:String,
+    @ColumnInfo(name = "statusId")
+    var statusId:Int
 ){
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
-    var Id:Int?=null
+    var id:Int?=null
 }

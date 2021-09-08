@@ -44,10 +44,13 @@ interface  DAOAcessUser{
 @Dao
 interface DAOAcessTender{
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun InsertTender(tenderModelDB:TenderModelDB)
+    suspend fun InsertTender(tenderModelDB: TenderModelDB)
 
-    @Query (" select * from tenderModel")
-    suspend fun getTender()
+    @Query("select * from tender")
+    fun getTender():LiveData<List<TenderModelDB>>
+
+
+
 }
 
 @Dao
@@ -67,5 +70,49 @@ interface DAOAcessCarModels{
     @Query ("select * from car_models")
     fun getCarModels():LiveData<List<CarModelDB>>
 
+}
 
+@Dao
+interface DAOAcessStockInfo{
+    @Insert (onConflict = OnConflictStrategy.REPLACE)
+    suspend fun InsertStockInfo(stockInfoModelDB: StockInfoModelDB)
+
+    @Query("select * from stockInfo")
+    fun getStockInfo():LiveData<List<StockInfoModelDB>>
+}
+
+@Dao
+interface DAOAcessStatus{
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun InsertStatus(statusModelDB: StatusModelDB)
+
+    @Query("select*from status")
+    fun getStatus():LiveData<List<StatusModelDB>>
+}
+
+@Dao
+interface DAOAcessBid{
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun  InsertBid(bidModelDB: BidModelDB)
+
+    @Query("select * from bid")
+    fun getBid(): LiveData<List<BidModelDB>>
+}
+
+@Dao
+interface  DAOAcessTenderStock{
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun InsertTenderStock(tenderStockModelDB: TenderStockModelDB)
+
+    @Query("select * from tenderStock")
+    fun getTenderStock():LiveData<List<TenderStockModelDB>>
+}
+
+@Dao
+interface DAOAcessTenderUser{
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun InsertTenderUser(tenderUserModelDB: TenderUserModelDB)
+
+    @Query("select* from tenderUser")
+    fun getTenderUser():LiveData<List<TenderUserModelDB>>
 }

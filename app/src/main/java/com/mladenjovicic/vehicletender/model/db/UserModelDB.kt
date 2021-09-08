@@ -2,9 +2,13 @@ package com.mladenjovicic.vehicletender.model.db
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
+import androidx.room.Index
 import androidx.room.PrimaryKey
-@Entity(tableName = "User")
+@Entity(tableName = "User", indices = arrayOf(Index(value = arrayOf("email"), unique = true)))
 data class UserModelDB(
+
+    @ColumnInfo(name = "uuId")
+    var uuId:String,
     @ColumnInfo (name ="contact_name")
     var contact_name:String,
     @ColumnInfo (name ="contact_surname")

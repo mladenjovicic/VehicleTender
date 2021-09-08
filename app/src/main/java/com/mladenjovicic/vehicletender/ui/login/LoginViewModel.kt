@@ -14,8 +14,8 @@ class LoginViewModel : ViewModel() {
             return userModelDB
         }
 
-        fun addNewUser(context: Context, contact_name:String, contact_surname:String,email:String,password:String, status_user:Int,id_location:String,phone:String, company_name:String){
-        dbRepository.insertDataUser(context,contact_name, contact_surname, email, password, status_user, id_location, phone, company_name)
+        fun addNewUser(context: Context,uuid:String, contact_name:String, contact_surname:String,email:String,password:String, status_user:Int,id_location:String,phone:String, company_name:String){
+        dbRepository.insertDataUser(context,uuid, contact_name, contact_surname, email, password, status_user, id_location, phone, company_name)
         }
 
         fun checkTableUser(context: Context):LiveData<UserModelDB>?{

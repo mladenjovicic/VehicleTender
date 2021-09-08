@@ -9,7 +9,6 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.mladenjovicic.vehicletender.model.db.UserModelDB
-import com.mladenjovicic.vehicletender.model.db.userModelDB1
 import com.mladenjovicic.vehicletender.ui.login.LoginViewModel
 import com.mladenjovicic.vehicletender.ui.updateUser.UserUpdateViewModel
 

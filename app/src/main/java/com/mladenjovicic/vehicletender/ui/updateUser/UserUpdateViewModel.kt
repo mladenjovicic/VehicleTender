@@ -5,7 +5,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import com.mladenjovicic.vehicletender.model.db.LocationModelDB
 import com.mladenjovicic.vehicletender.model.db.UserModelDB
-import com.mladenjovicic.vehicletender.model.db.userModelDB1
 import com.mladenjovicic.vehicletender.repository.db.dbRepository
 
 class UserUpdateViewModel : ViewModel() {
@@ -22,7 +21,7 @@ class UserUpdateViewModel : ViewModel() {
 
     fun updateUser(context: Context){
         var userModelDB: UserModelDB?= null
-        userModelDB = UserModelDB("rad","rad","r","2",0,"1","1","1")
+        userModelDB = UserModelDB("","rad","rad","r","2",0,"1","1","1")
         println("test11" + userModelDB)
         dbRepository.updateUser(context, userModelDB )
     }

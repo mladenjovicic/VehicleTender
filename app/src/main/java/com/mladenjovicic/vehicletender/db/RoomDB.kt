@@ -7,12 +7,19 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.mladenjovicic.vehicletender.model.db.*
 
-@Database(entities = arrayOf(UserModelDB::class, LocationModelDB::class, ManufacturerModelDB::class, CarModelDB::class), version = 5, exportSchema = false)
+@Database(entities = arrayOf(UserModelDB::class, LocationModelDB::class, ManufacturerModelDB::class, CarModelDB::class, BidModelDB::class, StatusModelDB::class,
+        StockInfoModelDB::class, TenderModelDB::class, TenderStockModelDB::class, TenderUserModelDB::class), version = 32, exportSchema = false)
 abstract class RoomDB:RoomDatabase() {
     abstract fun locationDAO():DAOAcessLocation
     abstract fun userDAO():DAOAcessUser
     abstract fun manufacturerDAO():DAOAcessManafactura
     abstract fun carModelDAO():DAOAcessCarModels
+    abstract fun bidDAO():DAOAcessBid
+    abstract fun statusDAO():DAOAcessStatus
+    abstract fun stockInfoDAO():DAOAcessStockInfo
+    abstract fun tenderDAO():DAOAcessTender
+    abstract fun tenderStockDAO():DAOAcessTenderStock
+    abstract fun tenderUserDAO():DAOAcessTenderUser
 
 
 
