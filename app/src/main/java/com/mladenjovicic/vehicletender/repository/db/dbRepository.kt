@@ -17,9 +17,11 @@ class dbRepository {
     companion object{
         var roomDB:RoomDB?= null
         var locationModelDB:LiveData<List<LocationModelDB>>?= null
+        var checkLocationModelDB:LiveData<LocationModelDB>?= null
         var userModelDB:LiveData<UserModelDB>?=null
         var manufacturerModelDB:LiveData<List<ManufacturerModelDB>>?=null
         var listUserModelDB:LiveData<List<UserModelDB>>?=null
+        var carModelDB:LiveData<List<CarModelDB>>?= null
 
         fun initializeDB(context: Context):RoomDB{
             return  RoomDB.getDateLocation(context)
@@ -37,6 +39,11 @@ class dbRepository {
             roomDB = initializeDB(context)
             locationModelDB = roomDB!!.locationDAO().getListLocation()
             return locationModelDB
+        }
+        fun checkTableLocation(context: Context):LiveData<LocationModelDB>?{
+            roomDB = initializeDB(context)
+            checkLocationModelDB = roomDB!!.locationDAO().checkTableLocation()
+            return checkLocationModelDB
         }
 
         fun insertDataUser(context: Context, uudi:String,contact_name:String, contact_surname:String,email:String,password:String, status_user:Int,id_location:String,phone:String, company_name:String){
@@ -67,7 +74,6 @@ class dbRepository {
             }
 
         }
-
 
         fun getAllUser(context: Context):LiveData<List<UserModelDB>>?{
             roomDB = initializeDB(context)
@@ -103,6 +109,11 @@ class dbRepository {
             }
 
         }
+        fun getCarModelId(context: Context, manufacturer_id:Int):LiveData<List<CarModelDB>>?{
+            roomDB = initializeDB(context)
+            carModelDB = roomDB!!.carModelDAO().getAllModelCarID(manufacturer_id)
+            return carModelDB
+        }
 
         fun insertDataBid(context: Context, userId: String, stockId:Int,price:Double,isWinningPrice:Boolean){
             roomDB = initializeDB(context)
@@ -136,6 +147,7 @@ class dbRepository {
                 roomDB!!.tenderDAO().InsertTender(tenderInsert)
             }
         }
+
         fun insertTenderStock(context: Context, stockId:Int,tenderId:Int, saleDate:String){
             roomDB= initializeDB(context)
             CoroutineScope(IO).launch {

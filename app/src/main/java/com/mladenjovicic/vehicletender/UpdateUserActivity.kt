@@ -4,13 +4,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.*
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.mladenjovicic.vehicletender.model.db.UserModelDB
-import com.mladenjovicic.vehicletender.ui.login.LoginViewModel
-import com.mladenjovicic.vehicletender.ui.updateUser.UserUpdateViewModel
 
 class UpdateUserActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
     var statusUser = 0

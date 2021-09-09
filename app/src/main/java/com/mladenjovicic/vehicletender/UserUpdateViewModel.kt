@@ -1,4 +1,4 @@
-package com.mladenjovicic.vehicletender.ui.updateUser
+package com.mladenjovicic.vehicletender
 
 import android.content.Context
 import androidx.lifecycle.LiveData

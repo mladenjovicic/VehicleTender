@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.VehicleTender">
         <activity android:name=".UpdateUserActivity"></activity>
-        <activity android:name=".AdminPanelActivity" />
+        <activity android:name=".AdminPanelActivity"></activity>
         <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

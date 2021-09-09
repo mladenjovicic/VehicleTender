@@ -15,7 +15,6 @@ data class BidModelDB(
         @ColumnInfo(name ="isWinningPrice")
         var isWinningPrice:Boolean
 ) {
-
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
     var Id:Int?=null

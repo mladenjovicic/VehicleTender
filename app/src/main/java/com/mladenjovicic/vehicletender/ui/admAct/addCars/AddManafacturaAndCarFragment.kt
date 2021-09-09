@@ -34,22 +34,26 @@ class AddManafacturaAndCarFragment : Fragment(), AdapterView.OnItemSelectedListe
     fun addNewMan(){
         val btnAddNewManufacturer = view?.findViewById<Button>(R.id.btnAddNewManufacturer)
         val editTextAddNewManufacturer = view?.findViewById<EditText>(R.id.editTextAddNewManufacturer)
+        val spinnerAddManufacturer = view?.findViewById<Spinner>(R.id.spinnerAddManufacturer)
         viewModel = ViewModelProvider(this).get(AddManafacturaAndCarViewModel::class.java)
         btnAddNewManufacturer?.setOnClickListener {
             viewModel.addManufacturer(requireContext(), editTextAddNewManufacturer?.text.toString())
             editTextAddNewManufacturer?.text?.clear()
         }
     }
+
     fun addNewCar(){
         viewModel = ViewModelProvider(this).get(AddManafacturaAndCarViewModel::class.java)
         val spinnerAddManufacturer = view?.findViewById<Spinner>(R.id.spinnerAddManufacturer)
         val btnAddCar = view?.findViewById<Button>(R.id.btnAddCar)
         val editTextAddModelName = view?.findViewById<EditText>(R.id.editTextAddModelName)
         val editTextModelNumber = view?.findViewById<EditText>(R.id.editTextAddModelNumber)
+
         val listMan = context?.let {
             ArrayAdapter<Any>(it, R.layout.spinner_item)
         }
-        listMan?.clear()
+
+
         viewModel.getListManafactura(requireContext())?.observe(viewLifecycleOwner,{ location->
             location?.forEach {
                 listMan?.add(it.manufacturer_name)

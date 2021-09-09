@@ -15,6 +15,9 @@ interface DAOAcessLocation {
     @Query("select * from location")
     fun getListLocation():LiveData<List<LocationModelDB>>
 
+    @Query("select * from location ORDER BY id LIMIT 1")
+    fun checkTableLocation():LiveData<LocationModelDB>
+
 }
 
 @Dao
@@ -48,9 +51,6 @@ interface DAOAcessTender{
 
     @Query("select * from tender")
     fun getTender():LiveData<List<TenderModelDB>>
-
-
-
 }
 
 @Dao
@@ -70,6 +70,9 @@ interface DAOAcessCarModels{
     @Query ("select * from car_models")
     fun getCarModels():LiveData<List<CarModelDB>>
 
+    @Query("select * from car_models where manufacturer_id =:manufacturer_id")
+    fun getAllModelCarID(manufacturer_id:Int):LiveData<List<CarModelDB>>
+
 }
 
 @Dao
@@ -79,6 +82,7 @@ interface DAOAcessStockInfo{
 
     @Query("select * from stockInfo")
     fun getStockInfo():LiveData<List<StockInfoModelDB>>
+
 }
 
 @Dao

@@ -8,21 +8,27 @@
     <item
         android:id="@+id/addUser"
         android:title="Add user"
-        android:icon="@drawable/home"
+        android:icon="@drawable/adduser"
         />
     <item
         android:id="@+id/listUser"
         android:title="List User"
-        android:icon="@drawable/ic_launcher_background"
+        android:icon="@drawable/multiuser"
         />
     <item
         android:id="@+id/addManafacturaAndCar"
         android:title="Add car"
-        android:icon="@drawable/ic_launcher_background"
+        android:icon="@drawable/carlogo1"
         />
     <item
-        android:id="@+id/report"
-        android:title="Reports"
+        android:id="@+id/addTender"
+        android:title="Add Tender"
         android:icon="@drawable/ic_launcher_background"
         />
+    <!--<item
+        android:id="@+id/listTender"
+        android:title="List Tender"
+        android:icon="@drawable/ic_launcher_background"
+        />-->
+
 </menu>

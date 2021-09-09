@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:tools="http://schemas.android.com/tools"
+      tools:showIn="navigation_view">
+
+
+    <group android:checkableBehavior="single">
+        <item android:title="Users: ">
+            <menu>
+        <item
+            android:id="@+id/addUser1"
+            android:title="Add user"
+            android:icon="@drawable/adduser"
+            />
+        <item
+            android:id="@+id/listUser1"
+            android:title="List User"
+            android:icon="@drawable/multiuser"
+            />
+            </menu>
+        </item>
+
+        <item android:title="Tender:">
+            <menu>
+                <item
+                    android:id="@+id/addTender1"
+                    android:title="Add Tender"
+                    android:icon="@drawable/ic_launcher_background"
+                    />
+                <item
+                    android:id="@+id/listTender1"
+                    android:title="List Tender"
+                    android:icon="@drawable/ic_launcher_background"
+                    />
+            </menu>
+        </item>
+
+        <item android:title="Location: ">
+            <menu>
+                <item
+                    android:id="@+id/addLocation1"
+                    android:title="Add location"
+                    android:icon="@drawable/location"
+                    />
+
+            </menu>
+        </item>
+
+        <item android:title="Cars: ">
+            <menu>
+                <item
+                    android:id="@+id/addManafacturaAndCar1"
+                    android:title="Add car"
+                    android:icon="@drawable/carlogo1"
+                    />
+                <item
+                    android:id="@+id/addCarStock1"
+                    android:title="Car Stock"
+                    android:icon="@drawable/carlogo1"
+                    />
+            </menu>
+
+        </item>
+
+    </group>
+
+
+</menu>

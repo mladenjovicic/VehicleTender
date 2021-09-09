@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Vehicle Tender</string>
-    <!-- TODO: Remove or change this placeholder text -->
+    <string name = "open">Open</string>
+    <string name="close">Slose</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <string-array name="user_staus">

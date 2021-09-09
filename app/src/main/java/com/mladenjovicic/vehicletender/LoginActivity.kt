@@ -19,7 +19,28 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
+        addDate()
         loginUser()
+    }
+    fun addDate(){
+        val listCity = arrayListOf<String>("Banja Luka", "Beograd", "Zagreb", "Sarajevo")
+        val listZip = arrayListOf<String>("78000", "11000", "10000", "73000")
+        val listCar = arrayListOf<String>("Audi", "VW", "Skoda", "Seat", "Renault", "Peugeot", "BMW", "Opel", "Smart", "Porsche", "FIAT", "Alfa Romeo", "Lancia", "Ferrari", "Ford", "Lamborghini", "Toyota", "Honda", "Suzuki", "Lada", "Zastava" , "Rimac" )
+        viewModel = ViewModelProvider(this).get(LoginViewModel::class.java)
+        viewModel.checkTableUser(this)
+        viewModel.userModelDB?.observe(this, Observer {
+            if (it==null){
+
+                for (i in 0..listCity.size-1){
+                    viewModel.addLocationList(this, listCity[i], listZip[i])
+                }
+                for(i in  0..listCar.size-1){
+                    viewModel.addCarList(this, listCar[i])
+                }
+
+                viewModel.addNewUser(this,"", "Mladen", "Jovicic", "a@a.com", "1", 2, "1","066497862", "Axelyos")
+            }
+        })
     }
     fun loginUser(){
         val btnLoginUser = findViewById<Button>(R.id.btnLoginUser)
@@ -27,12 +48,7 @@ class LoginActivity : AppCompatActivity() {
         val editTextUserPassword = findViewById<EditText>(R.id.editTextUserPassword)
         viewModel = ViewModelProvider(this).get(LoginViewModel::class.java)
         val sharedPreferences:SharedPreferences = this.getSharedPreferences("UserDate", Context.MODE_PRIVATE)
-        viewModel.checkTableUser(this)
-        viewModel.userModelDB?.observe(this, Observer {
-            if (it==null){
-                viewModel.addNewUser(this,"", "Mladen", "Jovicic", "a@a.com", "1", 2, "1","066497862", "Axelyos")
-            }
-        })
+
 
         btnLoginUser.setOnClickListener {
             if(editTextEmailUser.text.isEmpty()){
