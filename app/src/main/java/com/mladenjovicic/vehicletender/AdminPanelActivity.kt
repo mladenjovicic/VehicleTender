@@ -8,6 +8,7 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
+import com.mladenjovicic.vehicletender.ui.admAct.ListCarStock.ListCarStockFragment
 import com.mladenjovicic.vehicletender.ui.admAct.ListUser.ListUserFragment
 import com.mladenjovicic.vehicletender.ui.admAct.addCarStock.AddCarStockFragment
 import com.mladenjovicic.vehicletender.ui.admAct.addCars.AddManafacturaAndCarFragment
@@ -33,6 +34,7 @@ class AdminPanelActivity : AppCompatActivity() {
         val addTender = addTenderFragment()
         val listTender = ListTenderFragment()
         val addCarStock = AddCarStockFragment()
+        val listCarStock = ListCarStockFragment()
 
 
         toggle = ActionBarDrawerToggle(this, drawerLayout,R.string.open, R.string.close)
@@ -56,9 +58,11 @@ class AdminPanelActivity : AppCompatActivity() {
                 R.id.addUser1-> setCurrentFragment(addUser)
                 R.id.addManafacturaAndCar1 ->setCurrentFragment(addManafacturaAndCar)
                 R.id.addCarStock1 ->setCurrentFragment(addCarStock)
+                R.id.listCarStock1 ->setCurrentFragment(listCarStock)
                 R.id.listUser1 ->setCurrentFragment(listUsers)
                 R.id.addTender1 ->setCurrentFragment(addTender)
                 R.id.listTender1 -> setCurrentFragment(listTender)
+
             }
             true
 

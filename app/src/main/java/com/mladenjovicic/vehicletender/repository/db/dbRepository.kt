@@ -10,6 +10,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
 import java.sql.Date
+import java.sql.SQLNonTransientConnectionException
 import java.util.function.DoubleBinaryOperator
 import javax.xml.transform.dom.DOMLocator
 
@@ -22,6 +23,9 @@ class dbRepository {
         var manufacturerModelDB:LiveData<List<ManufacturerModelDB>>?=null
         var listUserModelDB:LiveData<List<UserModelDB>>?=null
         var carModelDB:LiveData<List<CarModelDB>>?= null
+        var ManAndCarModel:LiveData<List<ManAndCarModel>>?=null
+        var StockInfoModelDB:LiveData<List<StockInfoModelDB>>?=null
+        var stockCarList:LiveData<List<stockCarList>>?=null
 
         fun initializeDB(context: Context):RoomDB{
             return  RoomDB.getDateLocation(context)
@@ -109,6 +113,12 @@ class dbRepository {
             }
 
         }
+
+        fun getCarsInfo(context: Context):LiveData<List<ManAndCarModel>>?{
+            roomDB = initializeDB(context)
+            ManAndCarModel = roomDB!!.carModelDAO().getCarsInfo()
+            return  ManAndCarModel
+        }
         fun getCarModelId(context: Context, manufacturer_id:Int):LiveData<List<CarModelDB>>?{
             roomDB = initializeDB(context)
             carModelDB = roomDB!!.carModelDAO().getAllModelCarID(manufacturer_id)
@@ -137,6 +147,19 @@ class dbRepository {
                 val stockInfoInsert = StockInfoModelDB(year, modelLineId,mileage,price,comments,locationId,regNo, isSold)
                 roomDB!!.stockInfoDAO().InsertStockInfo(stockInfoInsert)
             }
+
+        }
+
+        fun getCarStock(context: Context):LiveData<List<StockInfoModelDB>>?{
+            roomDB = initializeDB(context)
+            StockInfoModelDB = roomDB!!.stockInfoDAO().getStockInfo()
+            return StockInfoModelDB
+        }
+
+        fun getCarStockList(context: Context):LiveData<List<stockCarList>>?{
+            roomDB = initializeDB(context)
+            stockCarList = roomDB!!.stockInfoDAO().getStockInfoList()
+            return stockCarList
 
         }
 

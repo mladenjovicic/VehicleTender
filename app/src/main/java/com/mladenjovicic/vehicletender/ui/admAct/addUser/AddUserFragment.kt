@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import com.mladenjovicic.vehicletender.R
+import java.util.*
 
 class AddUserFragment : Fragment(), AdapterView.OnItemSelectedListener  {
     var statusUser = 0
@@ -61,7 +62,7 @@ class AddUserFragment : Fragment(), AdapterView.OnItemSelectedListener  {
 
         btnAddNewUser?.setOnClickListener {
 
-            viewModel.addNewUser(requireContext(),"",editTextUserName?.text.toString(), editTextSurnameUser?.text.toString(),editTextEmailUser?.text.toString(),editTextPassword?.text.toString(),statusUser, locationUser.toString(),editTextPhone?.text.toString(),editTextCompanyUser?.text.toString())
+            viewModel.addNewUser(requireContext(),UUID.randomUUID().toString(),editTextUserName?.text.toString(), editTextSurnameUser?.text.toString(),editTextEmailUser?.text.toString(),editTextPassword?.text.toString(),statusUser, locationUser.toString(),editTextPhone?.text.toString(),editTextCompanyUser?.text.toString())
         }
     }
 

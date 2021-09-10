@@ -15,7 +15,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:visibility="gone">
 
             <TextView
                 android:id="@+id/textViewCarBrand"
@@ -142,8 +143,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:ems="10"
-                android:hint="Enter car registration number"
-                android:inputType="number|textPersonName" />
+                android:hint="Enter car registration number" />
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
@@ -162,8 +162,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:ems="10"
-                android:hint="Enter comment about car: "
-                android:inputType="number|textPersonName" />
+                android:hint="Enter comment about car: " />
         </LinearLayout>
 
         <LinearLayout
@@ -176,7 +175,7 @@
                 android:id="@+id/btnAddStockCar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Button" />
+                android:text="Add" />
         </LinearLayout>
 
 

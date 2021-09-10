@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import com.mladenjovicic.vehicletender.model.db.CarModelDB
 import com.mladenjovicic.vehicletender.model.db.LocationModelDB
+import com.mladenjovicic.vehicletender.model.db.ManAndCarModel
 import com.mladenjovicic.vehicletender.model.db.ManufacturerModelDB
 import com.mladenjovicic.vehicletender.repository.db.dbRepository
 import java.util.*
@@ -23,9 +24,7 @@ class AddCarStockViewModel : ViewModel() {
         return dbRepository.getDataManafactura(context)!!
     }
 
-    fun getCarModelsID(context: Context, manufacturer_id:Int):LiveData<List<CarModelDB>>?{
-        return dbRepository.getCarModelId(context, manufacturer_id)
+    fun getCarModelsID(context: Context):LiveData<List<ManAndCarModel>>?{
+        return dbRepository.getCarsInfo(context)
     }
-
-
 }

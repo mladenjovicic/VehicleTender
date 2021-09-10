@@ -55,9 +55,13 @@
                     />
                 <item
                     android:id="@+id/addCarStock1"
-                    android:title="Car Stock"
+                    android:title="Add car stock"
                     android:icon="@drawable/carlogo1"
                     />
+                <item
+                    android:id="@+id/listCarStock1"
+                    android:title="List car stock"
+                    android:icon="@drawable/carlogo1"/>
             </menu>
 
         </item>

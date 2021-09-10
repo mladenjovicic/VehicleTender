@@ -73,6 +73,8 @@ interface DAOAcessCarModels{
     @Query("select * from car_models where manufacturer_id =:manufacturer_id")
     fun getAllModelCarID(manufacturer_id:Int):LiveData<List<CarModelDB>>
 
+    @Query("select car_models.model_name, car_models.model_no, manufacturer.manufacturer_name from car_models left join manufacturer on car_models.manufacturer_id  = manufacturer.id")
+    fun getCarsInfo():LiveData<List<ManAndCarModel>>
 }
 
 @Dao
@@ -83,6 +85,8 @@ interface DAOAcessStockInfo{
     @Query("select * from stockInfo")
     fun getStockInfo():LiveData<List<StockInfoModelDB>>
 
+    @Query("select stockInfo.id,  stockInfo.year, stockInfo.mileage, stockInfo.price, stockInfo.comments, stockInfo.regNo, stockInfo.isSold, location.city, car_models.model_name, car_models.model_no, manufacturer.manufacturer_name from stockInfo left join location on stockInfo.locationId = location.id left join car_models on stockInfo.modelLineId = car_models.id left join manufacturer on car_models.manufacturer_id  = manufacturer.id order by stockInfo.id desc")
+    fun getStockInfoList():LiveData<List<stockCarList>>
 }
 
 @Dao
@@ -110,6 +114,7 @@ interface  DAOAcessTenderStock{
 
     @Query("select * from tenderStock")
     fun getTenderStock():LiveData<List<TenderStockModelDB>>
+
 }
 
 @Dao

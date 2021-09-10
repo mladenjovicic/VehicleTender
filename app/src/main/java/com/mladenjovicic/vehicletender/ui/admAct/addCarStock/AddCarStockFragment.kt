@@ -13,7 +13,8 @@ import kotlin.properties.Delegates
 
 class AddCarStockFragment : Fragment(), AdapterView.OnItemSelectedListener {
     var carLocation = 0
-    var carBrand:Int?=0
+    var carBrand:Int =0
+
 
 
 
@@ -76,53 +77,33 @@ class AddCarStockFragment : Fragment(), AdapterView.OnItemSelectedListener {
         spinnerCarBrand?.adapter = listManufacturer
         spinnerCarBrand?.onItemSelectedListener = this
 
-        /*spinnerCarBrand?.onItemClickListener = object :AdapterView.OnItemClickListener{
-            override fun onItemClick(
-                parent: AdapterView<*>?,
-                view: View?,
-                position: Int,
-                id: Long
-            ) {
-                val listCarModels = context?.let {
-                    ArrayAdapter<Any>(it, R.layout.spinner_item)
-                }
-
-                viewModel.getCarModelsID(requireContext(), position+1)?.observe(viewLifecycleOwner,{ location->
-                    location?.forEach {
-                        println("dev12" + it.model_name)
-                        listCarModels?.add(it.model_name + " " + it.model_no)
-
-                    }
-                })
-                listCarModels?.setDropDownViewResource(R.layout.spinner_dropdown_item)
-                spinnerCarModel?.adapter = listCarModels
-            }
-
-        }*/
-
-
-       /* var carBrand1:Int? by Delegates.observable(carBrand){property, oldValue, newValue ->
-            //viewModel = ViewModelProvider(this).get(AddCarStockViewModel::class.java)
-            //val spinnerCarModel= view?.findViewById<Spinner>(R.id.spinnerCarModel)
-
-        }*/
-
         val listCarModels = context?.let {
             ArrayAdapter<Any>(it, R.layout.spinner_item)
         }
 
-        viewModel.getCarModelsID(requireContext(), 1)?.observe(viewLifecycleOwner,{ location->
+        viewModel.getCarModelsID(requireContext())?.observe(viewLifecycleOwner,{ location->
             location?.forEach {
                 println("dev12" + it.model_name)
-                listCarModels?.add(it.model_name + " " + it.model_no)
+                listCarModels?.add(it.manufacturer_name+ ", "+it.model_name + " " + it.model_no)
 
             }
         })
         listCarModels?.setDropDownViewResource(R.layout.spinner_dropdown_item)
         spinnerCarModel?.adapter = listCarModels
         spinnerCarModel?.onItemSelectedListener = this
+
         btnAddStockCar?.setOnClickListener {
-           println("dev00 $carBrand")
+            if(editTextCarYear?.text!!.isNotEmpty() && editTextCarMileage?.text!!.isNotEmpty() && editTextCarPrice?.text!!.isNotEmpty()&&editTextCarReg?.text!!.isNotEmpty()&&editTextCarComment?.text!!.isNotEmpty()){
+                viewModel.addCarStock(requireContext(), editTextCarYear?.text.toString().toInt(),carBrand,editTextCarMileage.text.toString().toDouble(),editTextCarPrice.text.toString().toDouble(),editTextCarComment.text.toString(),
+                        carLocation,editTextCarReg.text.toString(),true )
+                editTextCarYear.text.clear()
+                editTextCarMileage.text.clear()
+                editTextCarPrice.text.clear()
+                editTextCarReg.text.clear()
+                editTextCarComment.text.clear()
+            }else{
+                Toast.makeText(requireContext(), "Sva polja moraju biti popunjena", Toast.LENGTH_SHORT).show()
+            }
 
         }
 
@@ -131,11 +112,12 @@ class AddCarStockFragment : Fragment(), AdapterView.OnItemSelectedListener {
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
         when(parent?.id){
             R.id.spinnerCarLocation -> carLocation = position + 1
-            R.id.spinnerCarBrand -> carBrand = position +1
-            R.id.spinnerCarModel -> 0
+            R.id.spinnerCarModel -> carBrand = position +1
         }
     }
 
     override fun onNothingSelected(parent: AdapterView<*>?) {
     }
 }
+
+

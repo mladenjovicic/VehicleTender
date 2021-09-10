@@ -12,6 +12,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.mladenjovicic.vehicletender.ui.admAct.addUser.AddUserViewModel
 import com.mladenjovicic.vehicletender.ui.login.LoginViewModel
+import java.util.*
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var viewModel: LoginViewModel
@@ -38,7 +39,8 @@ class LoginActivity : AppCompatActivity() {
                     viewModel.addCarList(this, listCar[i])
                 }
 
-                viewModel.addNewUser(this,"", "Mladen", "Jovicic", "a@a.com", "1", 2, "1","066497862", "Axelyos")
+                viewModel.addNewUser(this,
+                    UUID.randomUUID().toString(), "Mladen", "Jovicic", "a@a.com", "1", 2, "1","066497862", "Axelyos")
             }
         })
     }
