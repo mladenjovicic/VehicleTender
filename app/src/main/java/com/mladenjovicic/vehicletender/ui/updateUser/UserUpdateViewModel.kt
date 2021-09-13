@@ -1,4 +1,4 @@
-package com.mladenjovicic.vehicletender
+package com.mladenjovicic.vehicletender.ui.updateUser
 
 import android.content.Context
 import androidx.lifecycle.LiveData
@@ -10,8 +10,8 @@ import com.mladenjovicic.vehicletender.repository.db.dbRepository
 class UserUpdateViewModel : ViewModel() {
     var userModelDB:LiveData<UserModelDB>?=null
 
-    fun getUserDateID(context: Context, userId:Int): LiveData<UserModelDB>? {
-        userModelDB =  dbRepository.getUserDateID(context, userId)
+    fun getUserDateID(context: Context, uuid:String): LiveData<UserModelDB>? {
+        userModelDB =  dbRepository.getUserDateID(context, uuid)
         return  userModelDB
     }
 
@@ -19,10 +19,7 @@ class UserUpdateViewModel : ViewModel() {
         return dbRepository.getListLocation(context)!!
     }
 
-    fun updateUser(context: Context){
-        var userModelDB: UserModelDB?= null
-        userModelDB = UserModelDB("","rad","rad","r","2",0,"1","1","1")
-        println("test11" + userModelDB)
-        dbRepository.updateUser(context, userModelDB )
+    fun updateUser(context: Context,uuid:String, contact_name:String, contact_surname:String,email:String,password:String, status_user:Int,id_location:String,phone:String, company_name:String){
+        dbRepository.insertDataUser(context,uuid, contact_name, contact_surname, email, password, status_user, id_location, phone, company_name)
     }
 }

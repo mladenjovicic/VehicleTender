@@ -34,8 +34,8 @@ interface  DAOAcessUser{
     @Query("select * from user")
     fun getUsersList():LiveData<List<UserModelDB>>
 
-    @Query("select * from user where id =:id")
-    fun getUserDateID(id:Int):LiveData<UserModelDB>
+    @Query("select * from user where uuid =:uuid")
+    fun getUserDateID(uuid:String):LiveData<UserModelDB>
 
     @Query("update  user set company_name = :company_name where id = :id")
     fun updateUserID(company_name:String, id:Int )
@@ -51,6 +51,12 @@ interface DAOAcessTender{
 
     @Query("select * from tender")
     fun getTender():LiveData<List<TenderModelDB>>
+
+    @Query("select * from tender where statusId = :statusId")
+    fun getTenderByStatus(statusId:Int):LiveData<List<TenderModelDB>>
+
+    @Query ("select* from tender where tenderNo = :tenderNo" )
+    fun getTenderByNo(tenderNo:String):LiveData<TenderModelDB>
 }
 
 @Dao
@@ -87,6 +93,9 @@ interface DAOAcessStockInfo{
 
     @Query("select stockInfo.id,  stockInfo.year, stockInfo.mileage, stockInfo.price, stockInfo.comments, stockInfo.regNo, stockInfo.isSold, location.city, car_models.model_name, car_models.model_no, manufacturer.manufacturer_name from stockInfo left join location on stockInfo.locationId = location.id left join car_models on stockInfo.modelLineId = car_models.id left join manufacturer on car_models.manufacturer_id  = manufacturer.id order by stockInfo.id desc")
     fun getStockInfoList():LiveData<List<stockCarList>>
+
+    @Query("select stockInfo.id,  stockInfo.year, stockInfo.mileage, stockInfo.price, stockInfo.comments, stockInfo.regNo, stockInfo.isSold, location.city, car_models.model_name, car_models.model_no, manufacturer.manufacturer_name from stockInfo left join location on stockInfo.locationId = location.id left join car_models on stockInfo.modelLineId = car_models.id left join manufacturer on car_models.manufacturer_id  = manufacturer.id where isSold =:isSold order by stockInfo.id desc")
+    fun getStockCarActivesList(isSold:Boolean):LiveData<List<stockCarList>>
 }
 
 @Dao

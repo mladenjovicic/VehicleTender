@@ -34,4 +34,8 @@ class LoginViewModel : ViewModel() {
         fun addCarList(context: Context, car:String){
             dbRepository.insertDataManafactura(context, car)
         }
+
+        fun addTenderStatus(context: Context,statusType:String ){
+            dbRepository.insertStatus(context, statusType)
+        }
 }

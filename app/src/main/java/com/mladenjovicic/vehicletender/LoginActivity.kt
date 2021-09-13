@@ -26,6 +26,7 @@ class LoginActivity : AppCompatActivity() {
     fun addDate(){
         val listCity = arrayListOf<String>("Banja Luka", "Beograd", "Zagreb", "Sarajevo")
         val listZip = arrayListOf<String>("78000", "11000", "10000", "73000")
+        val listStatus = arrayListOf<String>("Open", "Close")
         val listCar = arrayListOf<String>("Audi", "VW", "Skoda", "Seat", "Renault", "Peugeot", "BMW", "Opel", "Smart", "Porsche", "FIAT", "Alfa Romeo", "Lancia", "Ferrari", "Ford", "Lamborghini", "Toyota", "Honda", "Suzuki", "Lada", "Zastava" , "Rimac" )
         viewModel = ViewModelProvider(this).get(LoginViewModel::class.java)
         viewModel.checkTableUser(this)
@@ -37,6 +38,9 @@ class LoginActivity : AppCompatActivity() {
                 }
                 for(i in  0..listCar.size-1){
                     viewModel.addCarList(this, listCar[i])
+                }
+                for (i in 0..listStatus.size-1){
+                    viewModel.addTenderStatus(this, listStatus[i])
                 }
 
                 viewModel.addNewUser(this,

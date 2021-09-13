@@ -27,9 +27,19 @@ class UsersListAdapter(val activity: Fragment):RecyclerView.Adapter<UsersListAda
     override fun onBindViewHolder(holder: UsersListAdapter.MyViewHolder, position: Int) {
         holder.bind(usersList?.get(position)!!, activity)
         holder.itemView.setOnClickListener {
-            val intent = Intent(holder.userRow.context, UpdateUserActivity::class.java)
-            intent.putExtra("userId", usersList!![position].Id)
-            holder.userRow.context.startActivity(intent)
+
+            if(holder.userRow != null){
+                val intent = Intent(holder.userRow.context, UpdateUserActivity::class.java)
+                intent.putExtra("uuid", usersList!![position].uuId)
+                holder.userRow.context.startActivity(intent)
+            }else{
+                val intent = Intent(holder.textViewUserNameSurname?.context, UpdateUserActivity::class.java)
+                intent.putExtra("uuid", usersList!![position].uuId)
+                holder.textViewUserNameSurname?.context!!.startActivity(intent)
+            }
+
+
+
         }
     }
 
@@ -51,6 +61,7 @@ class UsersListAdapter(val activity: Fragment):RecyclerView.Adapter<UsersListAda
 
             textViewUserNameSurname.text = "Name: " + data.contact_name + " " +data.contact_surname
             textViewUserEmailAndPhone.text = "Email: " + data.email + ", Phone:  " + data.phone
+
             when(data.status_user){
                 0->userStatus = "Approved"
                 1->userStatus = "Delisted"

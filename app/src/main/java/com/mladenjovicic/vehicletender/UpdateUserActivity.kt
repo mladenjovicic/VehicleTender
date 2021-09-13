@@ -6,6 +6,7 @@ import android.view.View
 import android.widget.*
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.mladenjovicic.vehicletender.ui.updateUser.UserUpdateViewModel
 
 class UpdateUserActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
     var statusUser = 0
@@ -15,7 +16,7 @@ class UpdateUserActivity : AppCompatActivity(), AdapterView.OnItemSelectedListen
         super.onCreate(savedInstanceState)
         setContentView(R.layout.update_user_activity)
         viewModel = ViewModelProvider(this).get(UserUpdateViewModel::class.java)
-        var userId = 0
+        var userId = ""
         val textViewIDUserUpdate = findViewById<TextView>(R.id.textViewIDUserUpdate)
         val editTextUserNameUpdate = findViewById<EditText>(R.id.editTextUserNameUpdate)
         val editTextSurnameUserUpdate = findViewById<EditText>(R.id.editTextSurnameUserUpdate)
@@ -45,7 +46,8 @@ class UpdateUserActivity : AppCompatActivity(), AdapterView.OnItemSelectedListen
         spinnerUserLocationUpdate?.onItemSelectedListener = this
 
 
-        userId= intent!!.extras?.get("userId") as Int
+        userId= intent!!.extras?.get("uuid") as String
+
         viewModel.getUserDateID(this, userId)
         viewModel.userModelDB?.observe(this, Observer {
             if(it!=null){
@@ -64,7 +66,7 @@ class UpdateUserActivity : AppCompatActivity(), AdapterView.OnItemSelectedListen
 
 
         btnUpdateUser.setOnClickListener {
-            viewModel.updateUser(this)
+            viewModel.updateUser(this,userId, editTextUserNameUpdate.text.toString(),editTextSurnameUserUpdate.text.toString(), editTextEmailUserUpdate.text.toString(),editTextPasswordUpdate.text.toString(),statusUser, userLoc.toString(), editTextPhoneUpdate.text.toString(),editTextCompanyUserUpdate.text.toString()   )
         }
 
     }
@@ -72,7 +74,7 @@ class UpdateUserActivity : AppCompatActivity(), AdapterView.OnItemSelectedListen
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, pos: Int, id: Long) {
         when(parent?.id){
             R.id.spinnerUserStatusUpdate -> statusUser = pos
-            R.id.spinnerUserLocationUpdate-> userLoc = pos
+            R.id.spinnerUserLocationUpdate-> userLoc = pos+1
         }
     }
 

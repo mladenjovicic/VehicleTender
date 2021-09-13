@@ -9,8 +9,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.VehicleTender">
-        <activity android:name=".UpdateUserActivity"></activity>
-        <activity android:name=".AdminPanelActivity"></activity>
+        <activity android:name=".TenderUseActivity2"></activity>
+        <activity android:name=".TenderActivity" />
+        <activity android:name=".ui.TenderActivity" />
+        <activity android:name=".UpdateUserActivity" />
+        <activity android:name=".AdminPanelActivity" />
         <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

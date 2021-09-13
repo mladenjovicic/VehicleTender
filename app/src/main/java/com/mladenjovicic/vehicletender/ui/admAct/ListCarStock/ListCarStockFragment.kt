@@ -27,12 +27,6 @@ class ListCarStockFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProvider(this).get(ListCarStockViewModel::class.java)
-        /*viewModel.getListCarStock(requireContext())
-        initRecyclerViewAllUser()
-        viewModel.listCarStock?.observe(requireActivity()){
-            recyclerViewCatStockList.setCarCtockList(it)
-            recyclerViewCatStockList.notifyDataSetChanged()
-        }*/
 
         viewModel.getStockCarList(requireContext())
         initRecyclerViewAllUser()

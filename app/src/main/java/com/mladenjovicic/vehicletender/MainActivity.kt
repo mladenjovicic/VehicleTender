@@ -27,7 +27,7 @@ class MainActivity : AppCompatActivity() {
 
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
-                    .replace(R.id.container, MainFragment.newInstance())
+                    .replace(R.id.containerTenderss, MainFragment.newInstance())
                     .commitNow()
             bottomNavigationView.setSelectedItemId(R.id.home)
         }
@@ -49,7 +49,7 @@ class MainActivity : AppCompatActivity() {
     }
     private fun setCurrentFragment(fragment: Fragment)=
         supportFragmentManager.beginTransaction().apply {
-            replace(R.id.container,fragment)
+            replace(R.id.containerTenderss,fragment)
             commit()
         }
 

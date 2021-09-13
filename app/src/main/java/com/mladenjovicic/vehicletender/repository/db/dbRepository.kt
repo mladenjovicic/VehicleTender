@@ -6,11 +6,13 @@ import android.content.Context
 import androidx.lifecycle.LiveData
 import com.mladenjovicic.vehicletender.db.RoomDB
 import com.mladenjovicic.vehicletender.model.db.*
+
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
 import java.sql.Date
 import java.sql.SQLNonTransientConnectionException
+import java.util.*
 import java.util.function.DoubleBinaryOperator
 import javax.xml.transform.dom.DOMLocator
 
@@ -26,6 +28,10 @@ class dbRepository {
         var ManAndCarModel:LiveData<List<ManAndCarModel>>?=null
         var StockInfoModelDB:LiveData<List<StockInfoModelDB>>?=null
         var stockCarList:LiveData<List<stockCarList>>?=null
+        var status:LiveData<List<StatusModelDB>>?= null
+        var tenderModelDBList:LiveData<List<TenderModelDB>>?= null
+        var tenderModelDB:LiveData<TenderModelDB>?= null
+
 
         fun initializeDB(context: Context):RoomDB{
             return  RoomDB.getDateLocation(context)
@@ -64,9 +70,9 @@ class dbRepository {
             return userModelDB
         }
 
-        fun getUserDateID(context: Context, id:Int):LiveData<UserModelDB>?{
+        fun getUserDateID(context: Context, uuid: String):LiveData<UserModelDB>?{
             roomDB = initializeDB(context)
-            userModelDB = roomDB!!.userDAO().getUserDateID(id)
+            userModelDB = roomDB!!.userDAO().getUserDateID(uuid)
             return userModelDB
         }
 
@@ -140,6 +146,12 @@ class dbRepository {
                 roomDB!!.statusDAO().InsertStatus(statusInsert)
             }
         }
+        fun getStatus(context: Context):LiveData<List<StatusModelDB>>?{
+            roomDB = initializeDB(context)
+            status = roomDB!!.statusDAO().getStatus()
+            return status
+
+        }
 
         fun insertStockInfo(context:Context, year:Int, modelLineId:Int, mileage:Double,price:Double, comments:String, locationId:Int, regNo:String, isSold:Boolean){
             roomDB = initializeDB(context)
@@ -160,15 +172,32 @@ class dbRepository {
             roomDB = initializeDB(context)
             stockCarList = roomDB!!.stockInfoDAO().getStockInfoList()
             return stockCarList
-
+        }
+        fun getCarStockListActive(context: Context, isSold: Boolean):LiveData<List<stockCarList>>?{
+            roomDB = initializeDB(context)
+            stockCarList = roomDB!!.stockInfoDAO().getStockCarActivesList(isSold)
+            return stockCarList
         }
 
-        fun insertTender(context: Context, createdDate:String, createdBy:String, tenderNo:String, openDate:String, closeDate:String, statusId:Int){
+        fun insertDataTender(context: Context, createdDate:String, createdBy:String, tenderNo:String, openDate:String, closeDate:String, statusId:Int){
             roomDB = initializeDB(context)
             CoroutineScope(IO).launch {
                 val tenderInsert = TenderModelDB(createdDate,createdBy,tenderNo,openDate,closeDate,statusId)
                 roomDB!!.tenderDAO().InsertTender(tenderInsert)
             }
+        }
+
+        fun getTenderList(context: Context, statusId:Int):LiveData<List<TenderModelDB>>?{
+            roomDB = initializeDB(context)
+            tenderModelDBList = roomDB!!.tenderDAO().getTenderByStatus(statusId)
+            return tenderModelDBList
+        }
+
+        fun getTenderNo(context: Context, tenderNo: String):LiveData<TenderModelDB>?{
+            roomDB = initializeDB(context)
+            tenderModelDB= roomDB!!.tenderDAO().getTenderByNo(tenderNo)
+            return tenderModelDB
+
         }
 
         fun insertTenderStock(context: Context, stockId:Int,tenderId:Int, saleDate:String){

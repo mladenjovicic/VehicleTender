@@ -37,6 +37,9 @@ class ListUserFragment : Fragment() {
             recyclerViewUsersList.setUsersList(it)
             recyclerViewUsersList.notifyDataSetChanged()
         }
+
+
+
     }
     private fun initRecyclerViewAllUser(){
         val recyclerViewListUsers = view?.findViewById<RecyclerView>(R.id.recyclerViewListUsers)
