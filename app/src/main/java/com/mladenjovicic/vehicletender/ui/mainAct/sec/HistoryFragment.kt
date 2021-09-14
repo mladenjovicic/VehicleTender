@@ -8,10 +8,10 @@ import android.view.View
 import android.view.ViewGroup
 import com.mladenjovicic.vehicletender.R
 
-class SecFragment : Fragment() {
+class HistoryFragment : Fragment() {
 
     companion object {
-        fun newInstance() = SecFragment()
+        fun newInstance() = HistoryFragment()
     }
 
     private lateinit var viewModel: SecViewModel

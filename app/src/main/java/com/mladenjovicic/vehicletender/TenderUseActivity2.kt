@@ -22,9 +22,9 @@ class TenderUseActivity2 : AppCompatActivity() {
         setContentView(R.layout.activity_tender_use2)
         viewModel = ViewModelProvider(this).get(TenderUseViewModel::class.java)
         val textViewTest123 = findViewById<TextView>(R.id.textViewTest123)
-        val btnSaveCarsInTender = findViewById<Button>(R.id.btnSaveCarsInTender)
         var tenderNo = ""
         var statusId = -1
+        var saleDate = ""
 
         tenderNo= intent!!.extras?.get("tenderNo") as String
         statusId = intent!!.extras?.get("statusId") as Int
@@ -36,29 +36,22 @@ class TenderUseActivity2 : AppCompatActivity() {
 
         viewModel.tenderModelDB?.observe(this,{
             if(it!=null){
-                textViewTest123.text = "No: " + it.tenderNo + " start: " + it.openDate + " close: " + it.closeDate
+                textViewTest123.text = " Tender number: " + it.tenderNo + "\n Tender start: " + it.openDate + "\n Tender close: " + it.closeDate
+                saleDate = it.closeDate
 
             }else{
                 Toast.makeText(this,"error", Toast.LENGTH_SHORT).show()
                 val intent = Intent(this, AdminPanelActivity::class.java)
                 startActivity(intent)
             }
-
         })
+
         viewModel.stockCarList?.observe(this, Observer {
             recyclerViewCarsForSelling.setCarForSellingList(it)
+            recyclerViewCarsForSelling.saleDate= saleDate
+            recyclerViewCarsForSelling.tenderId = tenderNo
             recyclerViewCarsForSelling.notifyDataSetChanged()
         })
-
-        btnSaveCarsInTender.setOnClickListener {
-
-        }
-
-
-
-
-
-
     }
 
     private fun initRecyclerViewCarsForSelling(){
@@ -67,8 +60,4 @@ class TenderUseActivity2 : AppCompatActivity() {
         recyclerViewRecyclerViewCarsForSelling?.adapter = recyclerViewCarsForSelling
     }
 
-    fun hideRecycleView(){
-
-
-    }
 }

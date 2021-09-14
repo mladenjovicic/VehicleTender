@@ -10,7 +10,7 @@ data class TenderStockModelDB(
         @ColumnInfo(name ="stockId")
         var stockId:Int,
         @ColumnInfo(name ="tenderId")
-        var tenderId:Int,
+        var tenderId:String,
         @ColumnInfo(name ="saleDate")
         var saleDate:String
 ) {

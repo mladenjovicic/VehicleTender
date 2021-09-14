@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.room.*
 import androidx.room.OnConflictStrategy.REPLACE
 import com.mladenjovicic.vehicletender.model.db.*
+import java.util.*
 
 @Dao
 interface DAOAcessLocation {
@@ -124,6 +125,11 @@ interface  DAOAcessTenderStock{
     @Query("select * from tenderStock")
     fun getTenderStock():LiveData<List<TenderStockModelDB>>
 
+    @Query("select * from tenderStock where stockId =:stockId and tenderId = :tenderId")
+    fun getTenderStockId(stockId:Int, tenderId:String):LiveData<TenderStockModelDB>
+
+    @Query("delete from tenderStock where stockId =:stockId and tenderId = :tenderId")
+    fun deleteTenderStock(stockId:Int, tenderId:String)
 }
 
 @Dao

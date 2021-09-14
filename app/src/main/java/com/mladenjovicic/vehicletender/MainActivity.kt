@@ -12,7 +12,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.mladenjovicic.vehicletender.ui.mainAct.main.MainFragment
 import com.mladenjovicic.vehicletender.ui.mainAct.reports.ReportsFragment
-import com.mladenjovicic.vehicletender.ui.mainAct.sec.SecFragment
+import com.mladenjovicic.vehicletender.ui.mainAct.sec.HistoryFragment
 
 class MainActivity : AppCompatActivity() {
 
@@ -23,7 +23,7 @@ class MainActivity : AppCompatActivity() {
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
         val mainFragment = MainFragment()
         val reportsFragment = ReportsFragment()
-        val secFragment= SecFragment()
+        val historyFragment= HistoryFragment()
 
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
@@ -37,13 +37,12 @@ class MainActivity : AppCompatActivity() {
             when(it.itemId){
                 R.id.home -> setCurrentFragment(mainFragment)
                 R.id.report -> setCurrentFragment(reportsFragment)
-                R.id.act1 -> setCurrentFragment(secFragment)
+                R.id.history -> setCurrentFragment(historyFragment)
             }
             true
         }
         adminPanel()
         val sharedPreferences: SharedPreferences = this.getSharedPreferences("UserDate", Context.MODE_PRIVATE)
-        Toast.makeText(this,"test" + sharedPreferences.getString("contact_name_user", "test"), Toast.LENGTH_SHORT).show()
 
 
     }

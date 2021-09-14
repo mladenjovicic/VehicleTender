@@ -32,16 +32,24 @@ class LoginActivity : AppCompatActivity() {
         viewModel.checkTableUser(this)
         viewModel.userModelDB?.observe(this, Observer {
             if (it==null){
-
+                println("deb90" + listCity +" " + listZip)
                 for (i in 0..listCity.size-1){
+                    println("deb91" + listCity[i] +" " + listZip[i])
                     viewModel.addLocationList(this, listCity[i], listZip[i])
                 }
+                println("deb92" + listCar )
                 for(i in  0..listCar.size-1){
+                    println("deb93" + listCar[i])
                     viewModel.addCarList(this, listCar[i])
                 }
-                for (i in 0..listStatus.size-1){
+                viewModel.addTenderStatus(this , "Close")
+                viewModel.addTenderStatus(this, "Open")
+
+                println("deb94" + listStatus)
+                /*for (i in 0..listStatus.size-1){
+                    println("deb95" + listStatus[i])
                     viewModel.addTenderStatus(this, listStatus[i])
-                }
+                }*/
 
                 viewModel.addNewUser(this,
                     UUID.randomUUID().toString(), "Mladen", "Jovicic", "a@a.com", "1", 2, "1","066497862", "Axelyos")

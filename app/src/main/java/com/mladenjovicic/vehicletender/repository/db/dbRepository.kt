@@ -200,7 +200,7 @@ class dbRepository {
 
         }
 
-        fun insertTenderStock(context: Context, stockId:Int,tenderId:Int, saleDate:String){
+        fun insertTenderStock(context: Context, stockId:Int,tenderId:String, saleDate:String){
             roomDB= initializeDB(context)
             CoroutineScope(IO).launch {
                 val tenderStockInsert = TenderStockModelDB(stockId, tenderId, saleDate)
