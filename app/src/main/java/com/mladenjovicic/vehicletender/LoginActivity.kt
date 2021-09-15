@@ -29,25 +29,7 @@ class LoginActivity : AppCompatActivity() {
         addDate()
         loginUser()
     }
-    /*fun parsetJSONLocation(){
-        val service = VTApiInstance.getVTAPIInstance().create(VTAPIServiceInterface::class.java)
-        CoroutineScope(Dispatchers.IO).launch {
-            val call = service.getLocationList()
-            withContext(Dispatchers.Main){
-                if(call.isSuccessful){
-                    val location = call.body()
-                    if(location!= null){
-                        for (i in 0 until  location.count()){
-                            //println("test 12 " + location[i].city)
-                        }
 
-                    }
-                }else{
-                    println("greska" + call.code().toString())
-                }
-            }
-        }
-    }*/
     fun addDate(){
         val listCity = arrayListOf<String>("Banja Luka", "Beograd", "Zagreb", "Sarajevo")
         val listZip = arrayListOf<String>("78000", "11000", "10000", "73000")
@@ -55,17 +37,7 @@ class LoginActivity : AppCompatActivity() {
         val listCar = arrayListOf<String>("Audi", "VW", "Skoda", "Seat", "Renault", "Peugeot", "BMW", "Opel", "Smart", "Porsche", "FIAT", "Alfa Romeo", "Lancia", "Ferrari", "Ford", "Lamborghini", "Toyota", "Honda", "Suzuki", "Lada", "Zastava" , "Rimac" )
         viewModel = ViewModelProvider(this).get(LoginViewModel::class.java)
 
-        //viewModel.parsetJSONLocation()
-
-       /* viewModel.getLiveDataObserver().observe(this,{
-            if(it!=null){
-                println("testici" + it.toString()+ "\n" )
-            }else{
-                Toast.makeText(this, "Error in getting location", Toast.LENGTH_SHORT).show()
-            }
-        })*/
-
-
+        viewModel.parsetJSONLocation()
 
         viewModel.checkTableUser(this)
         viewModel.userModelDB?.observe(this, Observer {

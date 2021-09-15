@@ -54,16 +54,10 @@ class LoginViewModel : ViewModel() {
             dbRepository.insertStatus(context, statusType)
         }
 
-        init {
-        liveDataList = MutableLiveData()
-         }
-        fun getLiveDataObserver(): MutableLiveData<List<LocationModelAPI>> {
-            return liveDataList
-        }
-
 
 
         fun parsetJSONLocation(){
+
             val service = VTApiInstance.getVTAPIInstance().create(VTAPIServiceInterface::class.java)
 
             CoroutineScope(Dispatchers.IO).launch {
@@ -83,33 +77,11 @@ class LoginViewModel : ViewModel() {
                         }
 
                     }
-
                     override fun onFailure(call: Call<List<LocationModelAPI>>, t: Throwable) {
-                        TODO("Not yet implemented")
+                        println("test123"+t.localizedMessage)
                     }
-
-
                 })
-
             }
-
-
-            /*CoroutineScope(IO).launch {
-                val call = service.getLocationList()
-                withContext(Dispatchers.Main){
-                    if(call.isSuccessful){
-                        val location = call.body()
-                        if(location!= null){
-                            for (i in 0 until  location.count()){
-                                println("test 12 " + location[i].city)
-                            }
-
-                        }
-                    }else{
-                        println("greska" + call.code().toString())
-                    }
-                }
-            }*/
         }
 
 }

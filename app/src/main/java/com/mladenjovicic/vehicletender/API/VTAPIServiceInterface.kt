@@ -6,10 +6,17 @@ import retrofit2.http.GET
 import retrofit2.http.Path
 import com.mladenjovicic.vehicletender.model.api.LocationModelAPI
 import com.mladenjovicic.vehicletender.model.api.LocationModelTest
+import com.mladenjovicic.vehicletender.model.api.StatusModelAPI
 import retrofit2.Response
 
 interface VTAPIServiceInterface {
 
-    @GET("location1.json")
-    suspend fun getLocationList():Call<List<LocationModelAPI>>
+    @GET("Location")
+    fun getLocationList():Call<List<LocationModelAPI>>
+
+    @GET("Status")
+    fun getStatusList():Call<List<StatusModelAPI>>
+
+    @GET("ManufacturerContoroller")
+    fun getManufacturerList()
 }

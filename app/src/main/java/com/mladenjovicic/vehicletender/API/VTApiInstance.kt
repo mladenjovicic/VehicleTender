@@ -5,8 +5,8 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class VTApiInstance {
     companion object{
-        //val BASE_URL = "https://192.168.0.38:45456/api/"
-        val  BASE_URL = "https://raw.githubusercontent.com/mladenjovicic/arraRep/main/location/"
+        val BASE_URL = "http://192.168.1.5:45458/api/"
+        //val  BASE_URL = "https://raw.githubusercontent.com/mladenjovicic/arraRep/main/location/"
         fun getVTAPIInstance(): Retrofit {
             return  Retrofit.Builder().baseUrl(BASE_URL).addConverterFactory(GsonConverterFactory.create()).build()
         }
