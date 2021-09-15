@@ -10,8 +10,14 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.mladenjovicic.vehicletender.API.VTAPIServiceInterface
+import com.mladenjovicic.vehicletender.API.VTApiInstance
 import com.mladenjovicic.vehicletender.ui.admAct.addUser.AddUserViewModel
 import com.mladenjovicic.vehicletender.ui.login.LoginViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.util.*
 
 class LoginActivity : AppCompatActivity() {
@@ -23,12 +29,44 @@ class LoginActivity : AppCompatActivity() {
         addDate()
         loginUser()
     }
+    /*fun parsetJSONLocation(){
+        val service = VTApiInstance.getVTAPIInstance().create(VTAPIServiceInterface::class.java)
+        CoroutineScope(Dispatchers.IO).launch {
+            val call = service.getLocationList()
+            withContext(Dispatchers.Main){
+                if(call.isSuccessful){
+                    val location = call.body()
+                    if(location!= null){
+                        for (i in 0 until  location.count()){
+                            //println("test 12 " + location[i].city)
+                        }
+
+                    }
+                }else{
+                    println("greska" + call.code().toString())
+                }
+            }
+        }
+    }*/
     fun addDate(){
         val listCity = arrayListOf<String>("Banja Luka", "Beograd", "Zagreb", "Sarajevo")
         val listZip = arrayListOf<String>("78000", "11000", "10000", "73000")
         val listStatus = arrayListOf<String>("Open", "Close")
         val listCar = arrayListOf<String>("Audi", "VW", "Skoda", "Seat", "Renault", "Peugeot", "BMW", "Opel", "Smart", "Porsche", "FIAT", "Alfa Romeo", "Lancia", "Ferrari", "Ford", "Lamborghini", "Toyota", "Honda", "Suzuki", "Lada", "Zastava" , "Rimac" )
         viewModel = ViewModelProvider(this).get(LoginViewModel::class.java)
+
+        //viewModel.parsetJSONLocation()
+
+       /* viewModel.getLiveDataObserver().observe(this,{
+            if(it!=null){
+                println("testici" + it.toString()+ "\n" )
+            }else{
+                Toast.makeText(this, "Error in getting location", Toast.LENGTH_SHORT).show()
+            }
+        })*/
+
+
+
         viewModel.checkTableUser(this)
         viewModel.userModelDB?.observe(this, Observer {
             if (it==null){
