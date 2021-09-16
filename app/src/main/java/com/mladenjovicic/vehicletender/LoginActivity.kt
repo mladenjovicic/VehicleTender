@@ -10,14 +10,7 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.mladenjovicic.vehicletender.API.VTAPIServiceInterface
-import com.mladenjovicic.vehicletender.API.VTApiInstance
-import com.mladenjovicic.vehicletender.ui.admAct.addUser.AddUserViewModel
 import com.mladenjovicic.vehicletender.ui.login.LoginViewModel
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.util.*
 
 class LoginActivity : AppCompatActivity() {
@@ -37,7 +30,7 @@ class LoginActivity : AppCompatActivity() {
         val listCar = arrayListOf<String>("Audi", "VW", "Skoda", "Seat", "Renault", "Peugeot", "BMW", "Opel", "Smart", "Porsche", "FIAT", "Alfa Romeo", "Lancia", "Ferrari", "Ford", "Lamborghini", "Toyota", "Honda", "Suzuki", "Lada", "Zastava" , "Rimac" )
         viewModel = ViewModelProvider(this).get(LoginViewModel::class.java)
 
-        viewModel.parsetJSONLocation()
+        viewModel.parsetJSONLocation(this)
 
         viewModel.checkTableUser(this)
         viewModel.userModelDB?.observe(this, Observer {

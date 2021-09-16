@@ -1,4 +1,4 @@
-package com.mladenjovicic.vehicletender.model.db
+package com.mladenjovicic.vehicletender.data.model.db
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

@@ -1,11 +1,9 @@
-package com.mladenjovicic.vehicletender.db
+package com.mladenjovicic.vehicletender.data.db
 
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
-import androidx.room.OnConflictStrategy.REPLACE
-import com.mladenjovicic.vehicletender.model.db.*
-import java.util.*
+import com.mladenjovicic.vehicletender.data.model.db.*
 
 @Dao
 interface DAOAcessLocation {

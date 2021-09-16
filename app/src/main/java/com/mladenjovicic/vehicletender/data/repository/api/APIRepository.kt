@@ -1,16 +1,7 @@
-package com.mladenjovicic.vehicletender.repository.api
+package com.mladenjovicic.vehicletender.data.repository.api
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.mladenjovicic.vehicletender.API.VTAPIServiceInterface
-import com.mladenjovicic.vehicletender.API.VTApiInstance
-import com.mladenjovicic.vehicletender.model.api.LocationModelAPI
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import com.mladenjovicic.vehicletender.data.model.api.LocationModelAPI
 
 class APIRepository {
     var listLocation: MutableLiveData<List<LocationModelAPI>>?=null

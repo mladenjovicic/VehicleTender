@@ -3,8 +3,8 @@ package com.mladenjovicic.vehicletender.ui.admAct.addUser
 import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import com.mladenjovicic.vehicletender.model.db.LocationModelDB
-import com.mladenjovicic.vehicletender.repository.db.dbRepository
+import com.mladenjovicic.vehicletender.data.model.db.LocationModelDB
+import com.mladenjovicic.vehicletender.data.repository.db.dbRepository
 
 class AddUserViewModel : ViewModel() {
     var listLocation :LiveData<List<LocationModelDB>>?= null

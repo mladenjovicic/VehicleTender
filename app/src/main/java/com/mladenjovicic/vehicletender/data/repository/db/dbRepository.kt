@@ -1,20 +1,15 @@
-package com.mladenjovicic.vehicletender.repository.db
+package com.mladenjovicic.vehicletender.data.repository.db
 
 
 
 import android.content.Context
 import androidx.lifecycle.LiveData
-import com.mladenjovicic.vehicletender.db.RoomDB
-import com.mladenjovicic.vehicletender.model.db.*
+import com.mladenjovicic.vehicletender.data.db.RoomDB
+import com.mladenjovicic.vehicletender.data.model.db.*
 
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
-import java.sql.Date
-import java.sql.SQLNonTransientConnectionException
-import java.util.*
-import java.util.function.DoubleBinaryOperator
-import javax.xml.transform.dom.DOMLocator
 
 class dbRepository {
     companion object{

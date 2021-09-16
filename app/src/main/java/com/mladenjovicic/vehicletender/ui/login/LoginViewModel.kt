@@ -4,22 +4,19 @@ import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.mladenjovicic.vehicletender.API.VTAPIServiceInterface
-import com.mladenjovicic.vehicletender.API.VTApiInstance
-import com.mladenjovicic.vehicletender.model.api.LocationModelAPI
-import com.mladenjovicic.vehicletender.model.api.LocationModelTest
-import com.mladenjovicic.vehicletender.model.db.LocationModelDB
-import com.mladenjovicic.vehicletender.model.db.UserModelDB
-import com.mladenjovicic.vehicletender.repository.db.dbRepository
+import com.mladenjovicic.vehicletender.data.API.RetrofitInterface
+import com.mladenjovicic.vehicletender.data.API.RetrofitInstance
+import com.mladenjovicic.vehicletender.data.model.api.LocationModelAPI
+import com.mladenjovicic.vehicletender.data.model.api.StatusModelAPI
+import com.mladenjovicic.vehicletender.data.model.db.LocationModelDB
+import com.mladenjovicic.vehicletender.data.model.db.UserModelDB
+import com.mladenjovicic.vehicletender.data.repository.db.dbRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import retrofit2.create
 
 class LoginViewModel : ViewModel() {
         var userModelDB:LiveData<UserModelDB>?=null
@@ -39,10 +36,12 @@ class LoginViewModel : ViewModel() {
             userModelDB = dbRepository.checkTableUser(context)
             return userModelDB
         }
+
         fun checkTableLocation(context: Context):LiveData<LocationModelDB>?{
             locationModelDB =dbRepository.checkTableLocation(context)
             return locationModelDB
         }
+
         fun addLocationList(context: Context, city:String, zip:String){
             dbRepository.insertDataLocation(context, city, zip)
         }
@@ -56,9 +55,9 @@ class LoginViewModel : ViewModel() {
 
 
 
-        fun parsetJSONLocation(){
+        fun parsetJSONLocation(context: Context){
 
-            val service = VTApiInstance.getVTAPIInstance().create(VTAPIServiceInterface::class.java)
+            val service = RetrofitInstance.getRetrofit().create(RetrofitInterface::class.java)
 
             CoroutineScope(Dispatchers.IO).launch {
                 val call = service.getLocationList()
@@ -72,16 +71,38 @@ class LoginViewModel : ViewModel() {
                             for (i in 0 until  body.count()){
                                 println("test 12 " + body[i].city)
                             }
-                        }else{
-                            //println("greska" + call.c.toString())
                         }
 
                     }
                     override fun onFailure(call: Call<List<LocationModelAPI>>, t: Throwable) {
-                        println("test123"+t.localizedMessage)
+                        println(t.localizedMessage)
                     }
                 })
             }
+        }
+
+        fun parsetJSONStatus(context: Context){
+            val service = RetrofitInstance.getRetrofit().create(RetrofitInterface::class.java)
+            CoroutineScope(Dispatchers.IO).launch {
+                val call = service.getStatusList()
+                    call?.enqueue(object : Callback<List<StatusModelAPI>>{
+                        override fun onResponse(call: Call<List<StatusModelAPI>>, response: Response<List<StatusModelAPI>>) {
+                            val body = response.body()
+                            if(body!= null){
+                                for (i in 0 until  body.count()){
+                                    println("test 12 " + body[i].city)
+                                }
+                            }
+                        }
+
+                        override fun onFailure(call: Call<List<StatusModelAPI>>, t: Throwable) {
+                            println(t.localizedMessage)
+                        }
+                    })
+
+            }
+
+
         }
 
 }

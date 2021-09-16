@@ -1,9 +1,8 @@
-package com.mladenjovicic.vehicletender.model.db
+package com.mladenjovicic.vehicletender.data.model.db
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import java.sql.Date
 
 @Entity(tableName = "tender")
 data class TenderModelDB(

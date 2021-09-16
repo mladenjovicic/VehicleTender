@@ -10,7 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.mladenjovicic.vehicletender.R
 import com.mladenjovicic.vehicletender.TenderUseActivity2
-import com.mladenjovicic.vehicletender.model.db.TenderModelDB
+import com.mladenjovicic.vehicletender.data.model.db.TenderModelDB
 
 class TenderActivAdapter(val activity: Fragment): RecyclerView.Adapter<TenderActivAdapter.MyViewHolder>()  {
 

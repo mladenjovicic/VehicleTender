@@ -9,7 +9,7 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.mladenjovicic.vehicletender.R
-import com.mladenjovicic.vehicletender.model.db.stockCarList
+import com.mladenjovicic.vehicletender.data.model.db.stockCarList
 
 class CarsStockAdapter(val activity: Fragment): RecyclerView.Adapter<CarsStockAdapter.MyViewHolder>() {
 

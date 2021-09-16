@@ -1,11 +1,11 @@
 
-package com.mladenjovicic.vehicletender.db
+package com.mladenjovicic.vehicletender.data.db
 
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.mladenjovicic.vehicletender.model.db.*
+import com.mladenjovicic.vehicletender.data.model.db.*
 
 @Database(entities = arrayOf(UserModelDB::class, LocationModelDB::class, ManufacturerModelDB::class, CarModelDB::class, BidModelDB::class, StatusModelDB::class,
         StockInfoModelDB::class, TenderModelDB::class, TenderStockModelDB::class, TenderUserModelDB::class), version = 36, exportSchema = false)

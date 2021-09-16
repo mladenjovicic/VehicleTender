@@ -10,7 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.mladenjovicic.vehicletender.R
 import com.mladenjovicic.vehicletender.UpdateUserActivity
-import com.mladenjovicic.vehicletender.model.db.UserModelDB
+import com.mladenjovicic.vehicletender.data.model.db.UserModelDB
 
 class UsersListAdapter(val activity: Fragment):RecyclerView.Adapter<UsersListAdapter.MyViewHolder>() {
 

@@ -1,4 +1,4 @@
-package com.mladenjovicic.vehicletender.model.api
+package com.mladenjovicic.vehicletender.data.model.api
 
 import com.google.gson.annotations.SerializedName
 
