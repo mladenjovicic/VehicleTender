@@ -10,7 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.mladenjovicic.vehicletender.R
 import com.mladenjovicic.vehicletender.UpdateUserActivity
-import com.mladenjovicic.vehicletender.model.db.UserModelDB
+import com.mladenjovicic.vehicletender.data.model.db.UserModelDB
 
 class UsersListAdapter(val activity: Fragment):RecyclerView.Adapter<UsersListAdapter.MyViewHolder>() {
 
@@ -54,7 +54,7 @@ class UsersListAdapter(val activity: Fragment):RecyclerView.Adapter<UsersListAda
         val textViewUserNameSurname = itemView.findViewById<TextView>(R.id.textViewUserNameSurname)
         val textViewUserEmailAndPhone =itemView.findViewById<TextView>(R.id.textViewUserEmailAndPhone)
         val textViewUserStatus = itemView.findViewById<TextView>(R.id.textViewUserStatus)
-        fun bind(data:UserModelDB, activity: Fragment){
+        fun bind(data: UserModelDB, activity: Fragment){
             var userStatus= ""
 
             println("test22" + data.email)

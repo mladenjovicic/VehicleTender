@@ -4,29 +4,25 @@ import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.mladenjovicic.vehicletender.API.VTAPIServiceInterface
-import com.mladenjovicic.vehicletender.API.VTApiInstance
-import com.mladenjovicic.vehicletender.model.api.LocationModelAPI
-import com.mladenjovicic.vehicletender.model.api.LocationModelTest
-import com.mladenjovicic.vehicletender.model.db.LocationModelDB
-import com.mladenjovicic.vehicletender.model.db.UserModelDB
-import com.mladenjovicic.vehicletender.repository.db.dbRepository
+import com.mladenjovicic.vehicletender.data.api.RetrofitInterface
+import com.mladenjovicic.vehicletender.data.api.RetrofitInstance
+import com.mladenjovicic.vehicletender.data.model.api.LocationModelAPI
+import com.mladenjovicic.vehicletender.data.model.db.LocationModelDB
+import com.mladenjovicic.vehicletender.data.model.db.UserModelDB
+import com.mladenjovicic.vehicletender.data.repository.db.dbRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import retrofit2.create
 
 class LoginViewModel : ViewModel() {
         var userModelDB:LiveData<UserModelDB>?=null
         var locationModelDB:LiveData<LocationModelDB>?= null
         lateinit var liveDataList: MutableLiveData<List<LocationModelAPI>>
 
-        fun checkUser(context: Context, email:String, password:String):LiveData<UserModelDB>?{
+        /*fun checkUser(context: Context, email:String, password:String):LiveData<UserModelDB>?{
             userModelDB =  dbRepository.getUserDate(context, email, password)
             return userModelDB
         }
@@ -40,7 +36,7 @@ class LoginViewModel : ViewModel() {
             return userModelDB
         }
         fun checkTableLocation(context: Context):LiveData<LocationModelDB>?{
-            locationModelDB =dbRepository.checkTableLocation(context)
+            locationModelDB = dbRepository.checkTableLocation(context)
             return locationModelDB
         }
         fun addLocationList(context: Context, city:String, zip:String){
@@ -52,20 +48,28 @@ class LoginViewModel : ViewModel() {
 
         fun addTenderStatus(context: Context,statusType:String ){
             dbRepository.insertStatus(context, statusType)
-        }
+        }*/
+
+    init {
+        liveDataList = MutableLiveData()
+    }
+    fun getLiveDataObserver():MutableLiveData<List<LocationModelAPI>>{
+
+        return liveDataList
+    }
 
 
 
-        fun parsetJSONLocation(){
+        /*fun parsetJSONLocation(){
 
-            val service = VTApiInstance.getVTAPIInstance().create(VTAPIServiceInterface::class.java)
+            val service = RetrofitInstance.get().create(RetrofitInterface::class.java)
 
             CoroutineScope(Dispatchers.IO).launch {
                 val call = service.getLocationList()
                 call?.enqueue(object : Callback<List<LocationModelAPI>>{
                     override fun onResponse(
-                        call: Call<List<LocationModelAPI>>,
-                        response: Response<List<LocationModelAPI>>
+                            call: Call<List<LocationModelAPI>>,
+                            response: Response<List<LocationModelAPI>>
                     ) {
                         val body = response.body()
                         if(body!= null){
@@ -82,6 +86,6 @@ class LoginViewModel : ViewModel() {
                     }
                 })
             }
-        }
+        }*/
 
 }

@@ -3,8 +3,8 @@ package com.mladenjovicic.vehicletender.ui.admAct.ListUser
 import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import com.mladenjovicic.vehicletender.model.db.UserModelDB
-import com.mladenjovicic.vehicletender.repository.db.dbRepository
+import com.mladenjovicic.vehicletender.data.model.db.UserModelDB
+import com.mladenjovicic.vehicletender.data.repository.db.dbRepository
 
 
 class ListUserViewModel : ViewModel() {

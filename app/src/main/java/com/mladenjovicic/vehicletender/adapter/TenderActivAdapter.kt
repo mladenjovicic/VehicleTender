@@ -10,7 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.mladenjovicic.vehicletender.R
 import com.mladenjovicic.vehicletender.TenderUseActivity2
-import com.mladenjovicic.vehicletender.model.db.TenderModelDB
+import com.mladenjovicic.vehicletender.data.model.db.TenderModelDB
 
 class TenderActivAdapter(val activity: Fragment): RecyclerView.Adapter<TenderActivAdapter.MyViewHolder>()  {
 
@@ -54,7 +54,7 @@ class TenderActivAdapter(val activity: Fragment): RecyclerView.Adapter<TenderAct
         val textViewCloseDate = itemView.findViewById<TextView>(R.id.textViewCloseDate)
         val rowTenders = itemView.findViewById<LinearLayout>(R.id.rowTenders)
 
-        fun bind(date:TenderModelDB, activity: Fragment){
+        fun bind(date: TenderModelDB, activity: Fragment){
             textViewTenderId.text = "Tender number: " + date.tenderNo
             textViewOpenDate.text = "Open date tender: " + date.openDate
             textViewCloseDate.text ="Close date tender: " + date.closeDate

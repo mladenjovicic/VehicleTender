@@ -17,7 +17,7 @@
         <activity android:name=".ui.TenderActivity" />
         <activity android:name=".UpdateUserActivity" />
         <activity android:name=".AdminPanelActivity" />
-        <activity android:name=".LoginActivity">
+        <activity android:name=".LoginActivityTemp">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

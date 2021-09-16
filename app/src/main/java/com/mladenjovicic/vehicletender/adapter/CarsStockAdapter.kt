@@ -9,7 +9,7 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.mladenjovicic.vehicletender.R
-import com.mladenjovicic.vehicletender.model.db.stockCarList
+import com.mladenjovicic.vehicletender.data.model.db.stockCarList
 
 class CarsStockAdapter(val activity: Fragment): RecyclerView.Adapter<CarsStockAdapter.MyViewHolder>() {
 
@@ -53,7 +53,7 @@ class CarsStockAdapter(val activity: Fragment): RecyclerView.Adapter<CarsStockAd
 
 
 
-        fun bind(date:stockCarList, activity: Fragment){
+        fun bind(date: stockCarList, activity: Fragment){
             textViewManufacturerName.text ="Manufacturer: \n" +  date.manufacturer_name.toString()
             textViewModelName.text = "Model name: \n" + date.model_name
             textViewModelNo.text = "Model number: \n" + date.model_no

@@ -4,8 +4,8 @@ import android.content.Context
 import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import com.mladenjovicic.vehicletender.model.db.ManufacturerModelDB
-import com.mladenjovicic.vehicletender.repository.db.dbRepository
+import com.mladenjovicic.vehicletender.data.model.db.ManufacturerModelDB
+import com.mladenjovicic.vehicletender.data.repository.db.dbRepository
 
 class AddManafacturaAndCarViewModel : ViewModel() {
     fun addManufacturer(context: Context, manufacturer_name:String ){

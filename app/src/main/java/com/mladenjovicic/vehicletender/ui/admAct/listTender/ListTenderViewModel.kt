@@ -3,9 +3,8 @@ package com.mladenjovicic.vehicletender.ui.admAct.listTender
 import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import com.mladenjovicic.vehicletender.model.db.TenderModelDB
-import com.mladenjovicic.vehicletender.model.db.stockCarList
-import com.mladenjovicic.vehicletender.repository.db.dbRepository
+import com.mladenjovicic.vehicletender.data.model.db.TenderModelDB
+import com.mladenjovicic.vehicletender.data.repository.db.dbRepository
 
 
 

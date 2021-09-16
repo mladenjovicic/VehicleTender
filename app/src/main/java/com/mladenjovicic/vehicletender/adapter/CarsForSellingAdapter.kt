@@ -1,19 +1,15 @@
 package com.mladenjovicic.vehicletender.adapter
 
 import android.app.Activity
-import android.content.Context
-import android.media.Image
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.LiveData
 import androidx.recyclerview.widget.RecyclerView
 import com.mladenjovicic.vehicletender.R
-import com.mladenjovicic.vehicletender.model.db.TenderStockModelDB
-import com.mladenjovicic.vehicletender.model.db.stockCarList
-import com.mladenjovicic.vehicletender.repository.db.dbRepository
+import com.mladenjovicic.vehicletender.data.model.db.TenderStockModelDB
+import com.mladenjovicic.vehicletender.data.model.db.stockCarList
+import com.mladenjovicic.vehicletender.data.repository.db.dbRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -39,7 +35,7 @@ class CarsForSellingAdapter(val activity: Activity): RecyclerView.Adapter<CarsFo
         var click = 1
         holder.imageButtonAdd.setOnClickListener {
 
-            var tenderStock:TenderStockModelDB?=null
+            var tenderStock: TenderStockModelDB?=null
 
 
             tenderStock = TenderStockModelDB(carForSellingList!![position].Id!!, tenderId, saleDate)
@@ -85,7 +81,7 @@ class CarsForSellingAdapter(val activity: Activity): RecyclerView.Adapter<CarsFo
         //val imageButtonRemove = itemView.findViewById<ImageView>(R.id.imageButtonRemove)
 
 
-        fun bind(date:stockCarList, activity: Activity){
+        fun bind(date: stockCarList, activity: Activity){
             imageButtonAdd.visibility = View.VISIBLE
             textViewManufacturerName.text ="Manufacturer: \n" +  date.manufacturer_name.toString()
             textViewModelName.text = "Model name: \n" + date.model_name

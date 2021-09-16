@@ -3,12 +3,10 @@ package com.mladenjovicic.vehicletender.ui.admAct.addCarStock
 import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import com.mladenjovicic.vehicletender.model.db.CarModelDB
-import com.mladenjovicic.vehicletender.model.db.LocationModelDB
-import com.mladenjovicic.vehicletender.model.db.ManAndCarModel
-import com.mladenjovicic.vehicletender.model.db.ManufacturerModelDB
-import com.mladenjovicic.vehicletender.repository.db.dbRepository
-import java.util.*
+import com.mladenjovicic.vehicletender.data.model.db.LocationModelDB
+import com.mladenjovicic.vehicletender.data.model.db.ManAndCarModel
+import com.mladenjovicic.vehicletender.data.model.db.ManufacturerModelDB
+import com.mladenjovicic.vehicletender.data.repository.db.dbRepository
 
 class AddCarStockViewModel : ViewModel() {
 
