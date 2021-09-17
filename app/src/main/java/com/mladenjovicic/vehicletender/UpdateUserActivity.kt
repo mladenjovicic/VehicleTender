@@ -33,15 +33,15 @@ class UpdateUserActivity : AppCompatActivity(), AdapterView.OnItemSelectedListen
         spinnerUserStatusUpdate?.adapter = adapterUserStatus
         spinnerUserStatusUpdate?.onItemSelectedListener = this
 
-        val listLocation = this?.let {
+        val listLocation = this.let {
             ArrayAdapter<Any>(it, R.layout.spinner_item)
         }
         viewModel.getListLocation(this)?.observe(this, Observer { location->
             location.forEach {
-                listLocation?.add(it.city + " " + it.zipCode)  }
+                listLocation.add(it.city + " " + it.zipCode)  }
         })
 
-        listLocation?.setDropDownViewResource(R.layout.spinner_dropdown_item)
+        listLocation.setDropDownViewResource(R.layout.spinner_dropdown_item)
         spinnerUserLocationUpdate?.adapter = listLocation
         spinnerUserLocationUpdate?.onItemSelectedListener = this
 

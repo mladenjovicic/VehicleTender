@@ -6,12 +6,14 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.mladenjovicic.vehicletender.data.API.RetrofitInterface
 import com.mladenjovicic.vehicletender.data.API.RetrofitInstance
+import com.mladenjovicic.vehicletender.data.model.RequestState
 import com.mladenjovicic.vehicletender.data.model.api.CarModelApi
 import com.mladenjovicic.vehicletender.data.model.api.LocationModelAPI
 import com.mladenjovicic.vehicletender.data.model.api.ManufacturerModelAPI
 import com.mladenjovicic.vehicletender.data.model.api.StatusModelAPI
 import com.mladenjovicic.vehicletender.data.model.db.LocationModelDB
 import com.mladenjovicic.vehicletender.data.model.db.UserModelDB
+import com.mladenjovicic.vehicletender.data.repository.LoginRepository
 import com.mladenjovicic.vehicletender.data.repository.db.dbRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -21,149 +23,88 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class LoginViewModel : ViewModel() {
+class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel() {
         var userModelDB:LiveData<UserModelDB>?=null
         var locationModelDB:LiveData<LocationModelDB>?= null
-        lateinit var liveDataList: MutableLiveData<List<LocationModelAPI>>
 
-        fun checkUser(context: Context, email:String, password:String):LiveData<UserModelDB>?{
-            userModelDB =  dbRepository.getUserDate(context, email, password)
-            return userModelDB
+        val locationsLiveData = MutableLiveData<List<LocationModelAPI>>()
+        val statusLiveData = MutableLiveData<List<StatusModelAPI>>()
+        val manufacturerLiveData = MutableLiveData<List<ManufacturerModelAPI>>()
+        val carModelLiveData= MutableLiveData<List<CarModelApi>>()
+        val requestState = MutableLiveData<RequestState>()
+        init {
+            getLocations()
+            getStatus()
+            getCarModels()
+            getManufacturer()
         }
 
-        fun addNewUser(context: Context,uuid:String, contact_name:String, contact_surname:String,email:String,password:String, status_user:Int,id_location:String,phone:String, company_name:String){
-        dbRepository.insertDataUser(context,uuid, contact_name, contact_surname, email, password, status_user, id_location, phone, company_name)
+        private fun getLocations() {
+        loginRepository.getLocations(locationsLiveData, requestState)
         }
 
-        fun checkTableUser(context: Context):LiveData<UserModelDB>?{
-            userModelDB = dbRepository.checkTableUser(context)
-            return userModelDB
+        private fun getStatus(){
+            loginRepository.getStatus(statusLiveData, requestState)
         }
 
-        fun checkTableLocation(context: Context):LiveData<LocationModelDB>?{
-            locationModelDB =dbRepository.checkTableLocation(context)
-            return locationModelDB
+        private fun getCarModels(){
+            loginRepository.getCarsModel(carModelLiveData, requestState)
         }
-
-        fun addLocationList(context: Context, id:Int, city:String, zip:String){
-            dbRepository.insertDataLocation(context, id, city, zip)
+        private fun getManufacturer(){
+            loginRepository.getManufacturer(manufacturerLiveData, requestState)
         }
-        fun addCarList(context: Context,id:Int, car:String){
-            dbRepository.insertDataManafactura(context,id, car)
-        }
-
-        fun addTenderStatus(context: Context,id:Int, statusType:String ){
-            dbRepository.insertStatus(context, id, statusType)
-        }
-
-        fun addCarModel(context: Context, id:Int, modelName:String, modelNo:String, manufcaterId:Int){
-            dbRepository.insertDataCar(context,id, modelName,modelNo,manufcaterId  )
-        }
-
-
-
-        fun parsetJSONLocation(context: Context, sizeLocation:Int){
-            val service = RetrofitInstance.getRetrofit().create(RetrofitInterface::class.java)
-            CoroutineScope(Dispatchers.IO).launch {
-                val call = service.getLocationList()
-                call?.enqueue(object : Callback<List<LocationModelAPI>>{
-                    override fun onResponse(
-                        call: Call<List<LocationModelAPI>>,
-                        response: Response<List<LocationModelAPI>>
-                    ) {
-                        val body = response.body()
-                        if(body!= null){
-                            if(body.count()>sizeLocation){
-                            for (i in 0 until  body.count()){
-                                addLocationList(context,body[i].id!!, body[i].city!!, body[i].zipCOde!!)
-                            }
-                        }}
-                    }
-                    override fun onFailure(call: Call<List<LocationModelAPI>>, t: Throwable) {
-                        println(t.localizedMessage)
-                    }
-                })
-            }
-        }
-
-        fun parsetJSONManufacturer(context: Context, sizeManufacturer:Int){
-              val service = RetrofitInstance.getRetrofit().create(RetrofitInterface::class.java)
-           CoroutineScope(Dispatchers.IO).launch {
-              val call = service.getManufacturerList()
-              call?.enqueue(object : Callback<List<ManufacturerModelAPI>>{
-                  override fun onResponse(
-                      call: Call<List<ManufacturerModelAPI>>,
-                      response: Response<List<ManufacturerModelAPI>>
-                  ) {
-                      val body = response.body()
-                      if(body!= null){
-                          if(body.count()>sizeManufacturer){
-                          for (i in 0 until  body.count()){
-
-                              addCarList(context, body[i].ID!!, body[i].ManufacturerName!!)
-                          }
-                          }
-                      }
-
-                  }
-                  override fun onFailure(call: Call<List<ManufacturerModelAPI>>, t: Throwable) {
-                      println(t.localizedMessage)
-                  }
-              })
-        }
+    fun addNewUser(
+        uuid: String,
+        contact_name: String,
+        contact_surname: String,
+        email: String,
+        password: String,
+        status_user: Int,
+        id_location: String,
+        phone: String,
+        company_name: String
+    ) {
+        loginRepository.addNewUser(
+            uuid,
+            contact_name,
+            contact_surname,
+            email,
+            password,
+            status_user,
+            id_location,
+            phone,
+            company_name
+        )
     }
 
-        fun parsetJSONStatus(context: Context, sizeStatus : Int){
-            val service = RetrofitInstance.getRetrofit().create(RetrofitInterface::class.java)
-            CoroutineScope(Dispatchers.IO).launch {
-                val call = service.getStatusList()
-                    call?.enqueue(object : Callback<List<StatusModelAPI>>{
-                        override fun onResponse(call: Call<List<StatusModelAPI>>, response: Response<List<StatusModelAPI>>) {
-                            val body = response.body()
-                            if(body!= null){
-                                if(body.count()>sizeStatus){
-                                for (i in 0 until  body.count()){
-                                    println("status"+body[i].type)
-                                    addTenderStatus(context, body[i].id!!,body[i].type!!)
-                                }
-                            }
-                            }
-                        }
-
-                        override fun onFailure(call: Call<List<StatusModelAPI>>, t: Throwable) {
-                            println(t.localizedMessage)
-                        }
-                    })
-
-            }
-
-
+        fun checkTableUser(): LiveData<UserModelDB>? {
+        userModelDB = loginRepository.checkTableUser()
+        return userModelDB
         }
 
-        fun parsetJSONCarModel(context: Context, sizeCarModel:Int){
-            val service = RetrofitInstance.getRetrofit().create(RetrofitInterface::class.java)
-            CoroutineScope(Dispatchers.IO).launch {
-                val call = service.getCarModelList()
-                call?.enqueue(object : Callback<List<CarModelApi>>{
-                    override fun onResponse(call: Call<List<CarModelApi>>, response: Response<List<CarModelApi>>) {
-                        val body = response.body()
-                        if(body!= null){
-                            if(body.count()>sizeCarModel){
-                                for (i in 0 until  body.count()){
-                                    println("carModel"+body[i].ModelName)
-                                    addCarModel(context,body[i].ID!!,body[i].ModelName!!, body[i].ModelNO!!, body[i].ManufacturerId!!)
-                                }
-                            }
-                        }
-                    }
+        fun checkTableLocation(): LiveData<LocationModelDB>? {
+        locationModelDB = loginRepository.checkTableLocation()
+        return locationModelDB
+        }
 
-                    override fun onFailure(call: Call<List<CarModelApi>>, t: Throwable) {
-                        println(t.localizedMessage)
-                    }
-                })
+        fun addLocationList(id:Int, city: String, zip: String) {
+        loginRepository.addLocationList(id, city, zip)
+        }
 
-            }
+        fun addCarModelList(id:Int, modelName:String, modelNo:String,manufacturerId:Int ){
+        loginRepository.addCarModelList(id, modelName, modelNo, manufacturerId)
+        }
 
+        fun addCarList(id:Int, car: String) {
+        loginRepository.addCarList(id, car)
+        }
+
+        fun addTenderStatus(id: Int, statusType: String) {
+        loginRepository.addTenderStatus(id, statusType)
+        }
+
+         fun checkUser(email: String, password: String): LiveData<UserModelDB>? {
+        return loginRepository.checkUser(email, password)
         }
 
 }
