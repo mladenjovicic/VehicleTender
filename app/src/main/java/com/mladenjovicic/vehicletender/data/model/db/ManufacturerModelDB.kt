@@ -6,6 +6,8 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "manufacturer")
 data class ManufacturerModelDB(
+        @ColumnInfo(name = "IdServer")
+        var IdServer:Int?=null,
         @ColumnInfo(name ="manufacturer_name")
         var manufacturer_name:String
 ) {

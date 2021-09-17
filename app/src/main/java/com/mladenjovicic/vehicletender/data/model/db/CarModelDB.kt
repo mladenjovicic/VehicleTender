@@ -6,6 +6,8 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "car_models")
 data class CarModelDB(
+        @ColumnInfo(name = "IdServer")
+        var IdServer:Int?=null,
         @ColumnInfo(name ="model_name")
         var model_name:String,
         @ColumnInfo(name ="model_no")

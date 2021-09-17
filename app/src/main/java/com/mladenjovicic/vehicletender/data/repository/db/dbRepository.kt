@@ -32,10 +32,10 @@ class dbRepository {
             return  RoomDB.getDateLocation(context)
         }
 
-        fun insertDataLocation(context: Context,city:String, zipCode:String ){
+        fun insertDataLocation(context: Context,id:Int,city:String, zipCode:String ){
             roomDB = initializeDB(context)
             CoroutineScope(IO).launch {
-                val LocationInsert = LocationModelDB(city,zipCode)
+                val LocationInsert = LocationModelDB(id, city,zipCode)
                 roomDB!!.locationDAO().insertLocation(LocationInsert)
             }
         }
@@ -92,10 +92,10 @@ class dbRepository {
             return userModelDB
         }
 
-        fun insertDataManafactura(context: Context, manufacturer_name:String){
+        fun insertDataManafactura(context: Context,id:Int, manufacturer_name:String){
             roomDB = initializeDB(context)
             CoroutineScope(IO).launch {
-                val ManufacturerInsert = ManufacturerModelDB(manufacturer_name)
+                val ManufacturerInsert = ManufacturerModelDB(id, manufacturer_name)
                 roomDB!!.manufacturerDAO().InsertManafactura(ManufacturerInsert)
             }
         }
@@ -106,10 +106,10 @@ class dbRepository {
             return manufacturerModelDB
         }
 
-        fun insertDataCar(context: Context, model_name:String,model_no:String, manufacturer_id:Int){
+        fun insertDataCar(context: Context, id:Int, model_name:String,model_no:String, manufacturer_id:Int){
             roomDB = initializeDB(context)
             CoroutineScope(IO).launch {
-                val carInsert = CarModelDB(model_name,model_no, manufacturer_id)
+                val carInsert = CarModelDB(id, model_name,model_no, manufacturer_id)
                 roomDB!!.carModelDAO().InsertCarModels(carInsert)
             }
 
@@ -134,10 +134,10 @@ class dbRepository {
             }
         }
 
-        fun insertStatus(context: Context, statusType:String){
+        fun insertStatus(context: Context, id:Int, statusType:String){
             roomDB = initializeDB(context)
             CoroutineScope(IO).launch {
-                val statusInsert = StatusModelDB(statusType)
+                val statusInsert = StatusModelDB(id, statusType)
                 roomDB!!.statusDAO().InsertStatus(statusInsert)
             }
         }

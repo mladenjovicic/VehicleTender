@@ -70,7 +70,7 @@ class AddUserFragment : Fragment(), AdapterView.OnItemSelectedListener  {
     override fun onItemSelected(parent: AdapterView<*>, view: View?, pos: Int, id: Long) {
         when(parent.id){
             R.id.spinnerUserStatus ->  statusUser = pos
-            R.id.spinnerUserLocation -> locationUser = (pos+1).toString()
+            R.id.spinnerUserLocation -> locationUser = (pos).toString()
         }
 
     }

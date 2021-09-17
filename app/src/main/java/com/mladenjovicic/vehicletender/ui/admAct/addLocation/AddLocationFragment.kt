@@ -32,10 +32,11 @@ class AddLocationFragment : Fragment() {
         val btnSaveNewLocation = view?.findViewById<Button>(R.id.btnSaveNewLocation)
 
         viewModel = ViewModelProvider(this).get(AddLocationViewModel::class.java)
-        viewModel.addLocationJSON()
+
 
 
         btnSaveNewLocation?.setOnClickListener {
+            viewModel.addLocationJSON(5,editTextNameNewLocation?.text.toString(),editTextSaveZipCodeNewLocation?.text.toString())
             viewModel.addNewLocation(requireContext(),editTextNameNewLocation?.text.toString(),editTextSaveZipCodeNewLocation?.text.toString())
             editTextNameNewLocation?.text?.clear()
             editTextSaveZipCodeNewLocation?.text?.clear()

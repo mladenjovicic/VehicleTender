@@ -6,6 +6,8 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "status")
 data class StatusModelDB(
+    @ColumnInfo(name = "idServer")
+        var idServer:Int?=null,
         @ColumnInfo(name ="statusType")
         var statusType:String
         ) {

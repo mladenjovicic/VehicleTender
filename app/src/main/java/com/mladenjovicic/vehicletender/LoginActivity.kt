@@ -26,35 +26,19 @@ class LoginActivity : AppCompatActivity() {
     fun addDate(){
         val listCity = arrayListOf<String>("Banja Luka", "Beograd", "Zagreb", "Sarajevo")
         val listZip = arrayListOf<String>("78000", "11000", "10000", "73000")
-        val listStatus = arrayListOf<String>("Open", "Close")
-        val listCar = arrayListOf<String>("Audi", "VW", "Skoda", "Seat", "Renault", "Peugeot", "BMW", "Opel", "Smart", "Porsche", "FIAT", "Alfa Romeo", "Lancia", "Ferrari", "Ford", "Lamborghini", "Toyota", "Honda", "Suzuki", "Lada", "Zastava" , "Rimac" )
         viewModel = ViewModelProvider(this).get(LoginViewModel::class.java)
 
-        viewModel.parsetJSONLocation(this)
+
 
         viewModel.checkTableUser(this)
         viewModel.userModelDB?.observe(this, Observer {
             if (it==null){
-                println("deb90" + listCity +" " + listZip)
-                for (i in 0..listCity.size-1){
-                    println("deb91" + listCity[i] +" " + listZip[i])
-                    viewModel.addLocationList(this, listCity[i], listZip[i])
-                }
-                println("deb92" + listCar )
-                for(i in  0..listCar.size-1){
-                    println("deb93" + listCar[i])
-                    viewModel.addCarList(this, listCar[i])
-                }
-                viewModel.addTenderStatus(this , "Close")
-                viewModel.addTenderStatus(this, "Open")
 
-                println("deb94" + listStatus)
-                /*for (i in 0..listStatus.size-1){
-                    println("deb95" + listStatus[i])
-                    viewModel.addTenderStatus(this, listStatus[i])
-                }*/
-
-                viewModel.addNewUser(this,
+                viewModel.parsetJSONLocation(this,0)
+                viewModel.parsetJSONStatus(this, 0)
+                viewModel.parsetJSONCarModel(this, 0)
+                viewModel.parsetJSONManufacturer(this, 0)
+                 viewModel.addNewUser(this,
                     UUID.randomUUID().toString(), "Mladen", "Jovicic", "a@a.com", "1", 2, "1","066497862", "Axelyos")
             }
         })

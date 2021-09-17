@@ -87,7 +87,7 @@ class addTenderFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
         when(parent?.id){
-            R.id.spinnerTenderStatus ->  tenderStatus = position+1
+            R.id.spinnerTenderStatus ->  tenderStatus = position
 
         }
     }

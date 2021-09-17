@@ -6,6 +6,8 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "location")
 data class LocationModelDB(
+    @ColumnInfo(name = "idServer")
+    var idServer:Int?=null,
     @ColumnInfo(name ="city")
     var city:String,
     @ColumnInfo(name = "zipCode")

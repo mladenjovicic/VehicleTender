@@ -11,7 +11,7 @@ interface DAOAcessLocation {
    @Insert(onConflict = OnConflictStrategy.REPLACE)
    suspend fun insertLocation(locationModelDB: LocationModelDB)
 
-    @Query("select * from location")
+    @Query("select * from location order by idServer asc")
     fun getListLocation():LiveData<List<LocationModelDB>>
 
     @Query("select * from location ORDER BY id LIMIT 1")

@@ -63,7 +63,7 @@ class AddManafacturaAndCarFragment : Fragment(), AdapterView.OnItemSelectedListe
         spinnerAddManufacturer?.adapter = listMan
         spinnerAddManufacturer?.onItemSelectedListener = this
         btnAddCar?.setOnClickListener {
-            viewModel.addCar(requireContext(),editTextAddModelName?.text.toString(),editTextModelNumber?.text.toString(), idMan )
+            viewModel.addCar(requireContext(),5,editTextAddModelName?.text.toString(),editTextModelNumber?.text.toString(), idMan )
             editTextAddModelName?.text?.clear()
             editTextModelNumber?.text?.clear()
         }

@@ -59,7 +59,7 @@ class UpdateUserActivity : AppCompatActivity(), AdapterView.OnItemSelectedListen
                 editTextPhoneUpdate.setText(it.phone)
                 editTextCompanyUserUpdate.setText(it.company_name)
                 spinnerUserStatusUpdate.setSelection(it.status_user)
-                spinnerUserLocationUpdate.setSelection((it.id_location.toInt())-1)
+                spinnerUserLocationUpdate.setSelection((it.id_location.toInt()))
 
             }
         })
@@ -74,7 +74,7 @@ class UpdateUserActivity : AppCompatActivity(), AdapterView.OnItemSelectedListen
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, pos: Int, id: Long) {
         when(parent?.id){
             R.id.spinnerUserStatusUpdate -> statusUser = pos
-            R.id.spinnerUserLocationUpdate-> userLoc = pos+1
+            R.id.spinnerUserLocationUpdate-> userLoc = pos
         }
     }
 
