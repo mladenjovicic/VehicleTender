@@ -3,7 +3,11 @@ package com.mladenjovicic.vehicletender.data.repository
 import android.content.Context
 import android.widget.Toast
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.mladenjovicic.vehicletender.data.API.RetrofitService
+import com.mladenjovicic.vehicletender.data.model.RequestState
+import com.mladenjovicic.vehicletender.data.model.api.ManufacturerModelAPI
+import com.mladenjovicic.vehicletender.data.model.api.StatusModelAPI
 import com.mladenjovicic.vehicletender.data.model.db.*
 import com.mladenjovicic.vehicletender.data.repository.db.LocalRepository
 import com.mladenjovicic.vehicletender.data.repository.db.dbRepository
@@ -71,6 +75,12 @@ class AdminRepository(private val retrofitService: RetrofitService,
     fun addCarModel(IdServer:Int,model_name:String, model_no:String,manufacturer_id:Int  ){
        localRepository.insertDataCar(IdServer, model_name, model_no, manufacturer_id)
     }
+    fun getManufacturerJSON(
+        manufacturerModelAPI: ManufacturerModelAPI,
+        livedata: MutableLiveData<ManufacturerModelAPI>,
+        requestState: MutableLiveData<RequestState>
+    ) = retrofitService.addManufacturerJSON(manufacturerModelAPI,livedata, requestState)
+
     }
 
 

@@ -29,7 +29,7 @@ class MainFragment : Fragment() {
         //viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
         viewModel = ViewModelsProviderUtils.mainUser(this)
 
-        // TODO: Use the ViewModel
+
 
 
     }

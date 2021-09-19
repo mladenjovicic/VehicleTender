@@ -4,10 +4,12 @@ import android.content.Context
 import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.mladenjovicic.vehicletender.data.API.RetrofitInstance
 import com.mladenjovicic.vehicletender.data.API.RetrofitInterface
 import com.mladenjovicic.vehicletender.data.API.RetrofitService
+import com.mladenjovicic.vehicletender.data.model.RequestState
 import com.mladenjovicic.vehicletender.data.model.api.CarModelApi
 import com.mladenjovicic.vehicletender.data.model.api.LocationModelAPI
 import com.mladenjovicic.vehicletender.data.model.api.ManufacturerModelAPI
@@ -17,13 +19,28 @@ import com.mladenjovicic.vehicletender.data.repository.db.dbRepository
 import retrofit2.Response
 
 class AddManafacturaAndCarViewModel(private val addManafacturaAndCarRepository: AdminRepository) : ViewModel() {
+    val requestState = MutableLiveData<RequestState>()
+    val manufacturerLiveData = MutableLiveData<ManufacturerModelAPI>()
+    var manufacturerModelAPI: ManufacturerModelAPI?= null
+
+    /*init {
+        getManufacturerJSON(manufacturerModelAPI!!)
+    }*/
     fun addManufacturer(manufacturer_name:String ){
+
+
+
         if(manufacturer_name.isEmpty()){
 
         }else{
             addManafacturaAndCarRepository.addManufacturer(999,manufacturer_name)
         }
 
+    }
+
+
+    fun getManufacturerJSON(manufacturerModelAPI: ManufacturerModelAPI){
+        addManafacturaAndCarRepository.getManufacturerJSON(manufacturerModelAPI, manufacturerLiveData, requestState)
     }
 
     fun getListManafactura():LiveData<List<ManufacturerModelDB>>{

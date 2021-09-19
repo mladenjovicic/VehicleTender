@@ -14,48 +14,48 @@ interface RetrofitInterfaceN {
 
     @Headers("Content-Type: application/json")
     @POST("locations")
-    fun createLocation(@Body newLocation: LocationModelAPI):Call<LocationModelAPI>
+    fun createLocation(@Body newLocation: LocationModelAPI): Call<LocationModelAPI>
 
 
     @GET("Status")
-    fun getStatusList():Call<List<StatusModelAPI>>
+    fun getStatusList(): Call<List<StatusModelAPI>>
 
     @Headers("Content-Type: application/json")
     @POST("Status")
-    fun CreateLocation(@Body newStatus: StatusModelAPI):Call<StatusModelAPI>
+    fun CreateLocation(@Body newStatus: StatusModelAPI): Call<StatusModelAPI>
 
     @GET("Manufacturer")
-    fun getManufacturerList():Call<List<ManufacturerModelAPI>>
+    fun getManufacturerList(): Call<List<ManufacturerModelAPI>>
 
     @Headers("Content-Type: application/json")
     @POST("Manufacturer")
-    fun CreateManufacturer(@Body newStatus: ManufacturerModelAPI):Call<ManufacturerModelAPI>
+    fun CreateManufacturer(@Body newStatus: ManufacturerModelAPI): Call<ManufacturerModelAPI>
 
     @GET("bid")
-    fun getBidList():Call<List<BidModelAPI>>
+    fun getBidList(): Call<List<BidModelAPI>>
 
     @Headers("Content-Type: application/json")
     @POST("bid")
-    fun CreateBid(@Body newBid: BidModelAPI):Call<BidModelAPI>
+    fun CreateBid(@Body newBid: BidModelAPI): Call<BidModelAPI>
 
     @GET("CarModel")
-    fun getCarModelList():Call<List<CarModelApi>>
+    fun getCarModelList(): Call<List<CarModelApi>>
 
     @Headers("Content-Type: application/json")
     @POST("CarModel")
-    fun CreateCarModel(@Body newCarModel: CarModelApi):Call<CarModelApi>
+    fun CreateCarModel(@Body newCarModel: CarModelApi): Call<CarModelApi>
 
     @GET("tender")
-    fun getTenderList():Call<List<TenderModelAPI>>
+    fun getTenderList(): Call<List<TenderModelAPI>>
 
     @Headers("Content-Type: application/json")
     @POST("tender")
-    fun CreateTender(@Body newTenderModelAPI: TenderModelAPI):Call<TenderModelAPI>
+    fun CreateTender(@Body newTenderModelAPI: TenderModelAPI): Call<TenderModelAPI>
 
     @GET("carStock")
-    fun getCarStockList():Call<StockInfoModelAPI>
+    fun getCarStockList(): Call<StockInfoModelAPI>
 
     @Headers("Content-Type: application/json")
     @POST("carStock")
-    fun CreateCarStock(@Body newStockInfoModelAPI: StockInfoModelAPI):Call<StockInfoModelAPI>
+    fun CreateCarStock(@Body newStockInfoModelAPI: StockInfoModelAPI): Call<StockInfoModelAPI>
 }

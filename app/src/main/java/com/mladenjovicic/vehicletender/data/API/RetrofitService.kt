@@ -39,20 +39,33 @@ class RetrofitService(private val retrofitInstance: RetrofitInstanceN) {
     }
 
 
-    fun addManufacturerJSON(id:Int?, ManufacturerName:String){
-        val service = RetrofitInstance.getRetrofit().create(RetrofitInterface::class.java)
-        service.CreateManufacturer(ManufacturerModelAPI(id,ManufacturerName)).enqueue(object : retrofit2.Callback<ManufacturerModelAPI> {
-            override fun onResponse(call: retrofit2.Call<ManufacturerModelAPI>, response: Response<ManufacturerModelAPI>) {
-                var newlyCreatedDestination = response.body()
-                if(response.code() == 201){
-                    println("Successfully Added"+newlyCreatedDestination.toString())
-                }else{
-                    Log.d("error post json",  "error create locatio ${response.code()}")
-                }
+    fun addManufacturerJSON(manufacturerModelAPI: ManufacturerModelAPI,
+                            liveData: MutableLiveData<ManufacturerModelAPI>,
+                            requestState: MutableLiveData<RequestState>){
 
+        requestState.postValue(RequestState.pending)
+        val call = retrofitInterface.CreateManufacturer(manufacturerModelAPI)
+        call.enqueue(object :Callback<ManufacturerModelAPI>{
+            override fun onResponse(
+                call: Call<ManufacturerModelAPI>,
+                response: Response<ManufacturerModelAPI>
+            ) {
+                var body = response.body()
+                if (body != null) {
+                    liveData.postValue(body)
+                    requestState.postValue(RequestState.success)
+                } else
+                    requestState.postValue(RequestState.failed)
             }
-            override fun onFailure(call: retrofit2.Call<ManufacturerModelAPI>, t: Throwable) {
-                Log.d("error post json", "error post json ${t.localizedMessage}")
+
+            override fun onFailure(call: Call<ManufacturerModelAPI>, t: Throwable) {
+                requestState.postValue(
+                    RequestState(
+                        pending = false,
+                        successful = false,
+                        errorMessage = t.message.toString()
+                    )
+                )
             }
         })
     }

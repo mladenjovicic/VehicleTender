@@ -2,13 +2,16 @@ package com.mladenjovicic.vehicletender.ui.admAct.addCars
 
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.lifecycle.Observer
 import com.mladenjovicic.vehicletender.R
 import com.mladenjovicic.vehicletender.ViewModelsProviderUtils
+import com.mladenjovicic.vehicletender.data.model.api.ManufacturerModelAPI
 
 class AddManafacturaAndCarFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
@@ -40,6 +43,19 @@ class AddManafacturaAndCarFragment : Fragment(), AdapterView.OnItemSelectedListe
         //viewModel = ViewModelProvider(this).get(AddManafacturaAndCarViewModel::class.java)
         btnAddNewManufacturer?.setOnClickListener {
             viewModel.addManufacturer(editTextAddNewManufacturer?.text.toString())
+            viewModel.getManufacturerJSON(ManufacturerModelAPI(30, "test"))
+            viewModel.manufacturerLiveData.observe(requireActivity()){
+                if(it!=null){
+                    Log.e("Retrofit fetched list", "update adapter! ${it.toString()}")
+                }else
+                    Log.e("List is empty or null", "update view")
+            }
+            viewModel.requestState.observe(requireActivity()) {
+                if(it.pending)
+                    Log.e("Loading", "retrofit request is in progress, show loading spinner")
+                if(it.successful)
+                    Log.e("Success", "retrofit request is successful")
+            }
             editTextAddNewManufacturer?.text?.clear()
         }
     }
