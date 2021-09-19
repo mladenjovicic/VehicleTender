@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import com.mladenjovicic.vehicletender.R
+import com.mladenjovicic.vehicletender.ViewModelsProviderUtils
 
 class AddManafacturaAndCarFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
@@ -26,7 +27,8 @@ class AddManafacturaAndCarFragment : Fragment(), AdapterView.OnItemSelectedListe
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(AddManafacturaAndCarViewModel::class.java)
+        //viewModel = ViewModelProvider(this).get(AddManafacturaAndCarViewModel::class.java)
+        viewModel = ViewModelsProviderUtils.AddManafacturaAndCar(this)
 
         addNewMan()
         addNewCar()
@@ -35,15 +37,15 @@ class AddManafacturaAndCarFragment : Fragment(), AdapterView.OnItemSelectedListe
         val btnAddNewManufacturer = view?.findViewById<Button>(R.id.btnAddNewManufacturer)
         val editTextAddNewManufacturer = view?.findViewById<EditText>(R.id.editTextAddNewManufacturer)
         val spinnerAddManufacturer = view?.findViewById<Spinner>(R.id.spinnerAddManufacturer)
-        viewModel = ViewModelProvider(this).get(AddManafacturaAndCarViewModel::class.java)
+        //viewModel = ViewModelProvider(this).get(AddManafacturaAndCarViewModel::class.java)
         btnAddNewManufacturer?.setOnClickListener {
-            viewModel.addManufacturer(requireContext(), editTextAddNewManufacturer?.text.toString())
+            viewModel.addManufacturer(editTextAddNewManufacturer?.text.toString())
             editTextAddNewManufacturer?.text?.clear()
         }
     }
 
     fun addNewCar(){
-        viewModel = ViewModelProvider(this).get(AddManafacturaAndCarViewModel::class.java)
+        //viewModel = ViewModelProvider(this).get(AddManafacturaAndCarViewModel::class.java)
         val spinnerAddManufacturer = view?.findViewById<Spinner>(R.id.spinnerAddManufacturer)
         val btnAddCar = view?.findViewById<Button>(R.id.btnAddCar)
         val editTextAddModelName = view?.findViewById<EditText>(R.id.editTextAddModelName)
@@ -54,7 +56,7 @@ class AddManafacturaAndCarFragment : Fragment(), AdapterView.OnItemSelectedListe
         }
 
 
-        viewModel.getListManafactura(requireContext())?.observe(viewLifecycleOwner,{ location->
+        viewModel.getListManafactura()?.observe(viewLifecycleOwner,{ location->
             location?.forEach {
                 listMan?.add(it.manufacturer_name)
             }
@@ -63,7 +65,7 @@ class AddManafacturaAndCarFragment : Fragment(), AdapterView.OnItemSelectedListe
         spinnerAddManufacturer?.adapter = listMan
         spinnerAddManufacturer?.onItemSelectedListener = this
         btnAddCar?.setOnClickListener {
-            viewModel.addCar(requireContext(),5,editTextAddModelName?.text.toString(),editTextModelNumber?.text.toString(), idMan )
+            viewModel.addCar(5,editTextAddModelName?.text.toString(),editTextModelNumber?.text.toString(), idMan )
             editTextAddModelName?.text?.clear()
             editTextModelNumber?.text?.clear()
         }

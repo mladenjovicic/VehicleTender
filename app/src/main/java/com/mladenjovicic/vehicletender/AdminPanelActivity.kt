@@ -44,7 +44,7 @@ class AdminPanelActivity : AppCompatActivity() {
 
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
-                .replace(R.id.containerAdminPanel, AdminPanelActivityFragment.newInstance())
+                .replace(R.id.containerAdminPanel, ListTenderFragment.newInstance())
                 .commitNow()
             setCurrentFragment(listTender)
         }

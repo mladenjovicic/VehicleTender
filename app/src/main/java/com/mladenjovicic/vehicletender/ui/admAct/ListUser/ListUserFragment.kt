@@ -1,6 +1,5 @@
 package com.mladenjovicic.vehicletender.ui.admAct.ListUser
 
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -8,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.mladenjovicic.vehicletender.R
+import com.mladenjovicic.vehicletender.ViewModelsProviderUtils
 import com.mladenjovicic.vehicletender.adapter.UsersListAdapter
 
 class ListUserFragment : Fragment() {
@@ -29,7 +29,9 @@ class ListUserFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(ListUserViewModel::class.java)
+        //viewModel = ViewModelsProviderUtils.get(this)
+      //  viewModel = ViewModelProvider(this).get(ListUserViewModel::class.java)
+        viewModel = ViewModelsProviderUtils.getListUserViewModel(this)
         viewModel.getUsersList(requireContext())
         initRecyclerViewAllUser()
         viewModel.listAllUser?.observe(requireActivity()){

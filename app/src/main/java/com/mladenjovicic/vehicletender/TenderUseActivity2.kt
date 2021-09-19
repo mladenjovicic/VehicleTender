@@ -20,7 +20,8 @@ class TenderUseActivity2 : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_tender_use2)
-        viewModel = ViewModelProvider(this).get(TenderUseViewModel::class.java)
+        //viewModel = ViewModelProvider(this).get(TenderUseViewModel::class.java)
+        viewModel = ViewModelsProviderUtils.getTenderViewModel(this)
         val textViewTest123 = findViewById<TextView>(R.id.textViewTest123)
         var tenderNo = ""
         var statusId = -1
@@ -29,8 +30,8 @@ class TenderUseActivity2 : AppCompatActivity() {
         tenderNo= intent!!.extras?.get("tenderNo") as String
         statusId = intent!!.extras?.get("statusId") as Int
 
-        viewModel.getTenderBYTenderNo(this, tenderNo)
-        viewModel.getStockCarList(this, false)
+        viewModel.getTenderBYTenderNo( tenderNo)
+        viewModel.getStockCarList( false)
 
         initRecyclerViewCarsForSelling()
 

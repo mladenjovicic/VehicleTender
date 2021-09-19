@@ -13,6 +13,7 @@ import com.mladenjovicic.vehicletender.data.API.RetrofitService
 import com.mladenjovicic.vehicletender.data.model.api.DefaultResponse
 import com.mladenjovicic.vehicletender.data.model.api.LocationModelAPI
 import com.mladenjovicic.vehicletender.data.model.db.LocationModelDB
+import com.mladenjovicic.vehicletender.data.repository.AdminRepository
 import com.mladenjovicic.vehicletender.data.repository.db.dbRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -28,18 +29,18 @@ import java.util.*
 import retrofit2.*
 
 
-class AddLocationViewModel : ViewModel() {
+class AddLocationViewModel(private val AddLocationRepository: AdminRepository) : ViewModel() {
 
-    fun addNewLocation(context: Context, newLocation:String, zipCode:String){
-        if(newLocation.isEmpty()){+3
-            Toast.makeText(context, "", Toast.LENGTH_SHORT).show()
-        }else{
-            dbRepository.insertDataLocation(context,999,newLocation,zipCode)
+        fun addNewLocation( newLocation:String, zipCode:String){
+            if(newLocation.isEmpty()){
+
+            }else{
+                AddLocationRepository.addNewLocation(999,newLocation,zipCode)
+            }
         }
-    }
-    fun getListLocation (context: Context):LiveData<List<LocationModelDB>>{
-        return dbRepository.getListLocation(context)!!
-    }
+        fun getListLocation ():LiveData<List<LocationModelDB>>{
+            return AddLocationRepository.getListLocation()!!
+        }
 
      fun addLocationJSON(id:Int?, city:String, zipCode: String){
         val service = RetrofitInstance.getRetrofit().create(RetrofitInterface::class.java)

@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import com.mladenjovicic.vehicletender.R
+import com.mladenjovicic.vehicletender.ViewModelsProviderUtils
 import java.beans.PropertyChangeSupport
 import kotlin.properties.Delegates
 
@@ -41,7 +42,9 @@ class AddCarStockFragment : Fragment(), AdapterView.OnItemSelectedListener {
         super.onActivityCreated(savedInstanceState)
 
 
-        viewModel = ViewModelProvider(this).get(AddCarStockViewModel::class.java)
+       // viewModel = ViewModelProvider(this).get(AddCarStockViewModel::class.java)
+
+        viewModel = ViewModelsProviderUtils.addCarStock(this)
         val spinnerCarBrand = view?.findViewById<Spinner>(R.id.spinnerCarBrand)
         val spinnerCarModel= view?.findViewById<Spinner>(R.id.spinnerCarModel)
         val spinnerCarLocation = view?.findViewById<Spinner>(R.id.spinnerCarLocation)
@@ -55,9 +58,9 @@ class AddCarStockFragment : Fragment(), AdapterView.OnItemSelectedListener {
         val listLocation = context?.let {
             ArrayAdapter<Any>(it, R.layout.spinner_item)
         }
-        viewModel.getListLocation(requireContext())?.observe(viewLifecycleOwner,{ location->
+        viewModel.getListLocation()?.observe(viewLifecycleOwner,{ location->
             location?.forEach {
-                listLocation?.add(it.city+ ", " + it.zipCode)
+                listLocation?.add(it.city+ ", " + it.zipCOde)
             }
         })
         listLocation?.setDropDownViewResource(R.layout.spinner_dropdown_item)
@@ -67,7 +70,7 @@ class AddCarStockFragment : Fragment(), AdapterView.OnItemSelectedListener {
         val listManufacturer = context?.let {
             ArrayAdapter<Any>(it, R.layout.spinner_item)
         }
-        viewModel.getListManufacturer(requireContext())?.observe(viewLifecycleOwner,
+        viewModel.getListManufacturer()?.observe(viewLifecycleOwner,
             { Manufacturer ->
                 Manufacturer?.forEach {
                     listManufacturer?.add(it.manufacturer_name)
@@ -81,7 +84,7 @@ class AddCarStockFragment : Fragment(), AdapterView.OnItemSelectedListener {
             ArrayAdapter<Any>(it, R.layout.spinner_item)
         }
 
-        viewModel.getCarModelsID(requireContext())?.observe(viewLifecycleOwner,{ location->
+        viewModel.getCarModelsID()?.observe(viewLifecycleOwner,{ location->
             location?.forEach {
                 println("dev12" + it.model_name)
                 listCarModels?.add(it.manufacturer_name+ ", "+it.model_name + " " + it.model_no)
@@ -94,8 +97,8 @@ class AddCarStockFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
         btnAddStockCar?.setOnClickListener {
             if(editTextCarYear?.text!!.isNotEmpty() && editTextCarMileage?.text!!.isNotEmpty() && editTextCarPrice?.text!!.isNotEmpty()&&editTextCarReg?.text!!.isNotEmpty()&&editTextCarComment?.text!!.isNotEmpty()){
-                viewModel.addCarStock(requireContext(), editTextCarYear?.text.toString().toInt(),carBrand,editTextCarMileage.text.toString().toDouble(),editTextCarPrice.text.toString().toDouble(),editTextCarComment.text.toString(),
-                        carLocation,editTextCarReg.text.toString(),true )
+                viewModel.addCarStock(editTextCarYear?.text.toString().toInt(),carBrand,editTextCarMileage.text.toString().toDouble(),editTextCarPrice.text.toString().toDouble(),editTextCarComment.text.toString(),
+                        carLocation,editTextCarReg.text.toString(),false )
                 editTextCarYear.text.clear()
                 editTextCarMileage.text.clear()
                 editTextCarPrice.text.clear()

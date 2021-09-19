@@ -104,7 +104,8 @@ class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel()
         }
 
          fun checkUser(email: String, password: String): LiveData<UserModelDB>? {
-        return loginRepository.checkUser(email, password)
+             userModelDB = loginRepository.checkUser(email, password)
+             return userModelDB
         }
 
 }

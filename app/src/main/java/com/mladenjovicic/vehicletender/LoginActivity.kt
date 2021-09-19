@@ -152,6 +152,7 @@ class LoginActivity : AppCompatActivity() {
                     )
                     viewModel.userModelDB?.observe(this, Observer {
                         if (it != null) {
+                            println("dev54" + it.toString())
                             val id: Int = Integer.parseInt(it.Id.toString())
                             val contact_name: String = it.contact_name
                             val contact_surname: String = it.contact_surname

@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.mladenjovicic.vehicletender.R
+import com.mladenjovicic.vehicletender.ViewModelsProviderUtils
 
 class MainFragment : Fragment() {
 
@@ -25,7 +26,9 @@ class MainFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
+        //viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
+        viewModel = ViewModelsProviderUtils.mainUser(this)
+
         // TODO: Use the ViewModel
 
 

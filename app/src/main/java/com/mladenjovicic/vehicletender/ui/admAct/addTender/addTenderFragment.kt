@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import com.mladenjovicic.vehicletender.R
+import com.mladenjovicic.vehicletender.ViewModelsProviderUtils
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -29,7 +30,8 @@ class addTenderFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(AddTenderViewModel::class.java)
+        //viewModel = ViewModelProvider(this).get(AddTenderViewModel::class.java)
+        viewModel = ViewModelsProviderUtils.addTender(this)
         val editTextDateOpenDate = view?.findViewById<EditText>(R.id.editTextDateOpenDate)
         val editTextDateCloseDate = view?.findViewById<EditText>(R.id.editTextDateCloseDate)
         val spinnerTenderStatus = view?.findViewById<Spinner>(R.id.spinnerTenderStatus)
@@ -63,7 +65,7 @@ class addTenderFragment : Fragment(), AdapterView.OnItemSelectedListener {
             ArrayAdapter<Any>(it, R.layout.spinner_item)
         }
 
-        viewModel.getListStatus(requireContext())?.observe(viewLifecycleOwner,{ status->
+        viewModel.getListStatus()?.observe(viewLifecycleOwner,{ status->
             status?.forEach {
                 listStatus?.add(it.statusType)
             }
@@ -73,7 +75,7 @@ class addTenderFragment : Fragment(), AdapterView.OnItemSelectedListener {
         spinnerTenderStatus?.onItemSelectedListener = this
         btnAddNewTender?.setOnClickListener {
             if (editTextDateOpenDate?.text!!.isNotEmpty()&&editTextDateCloseDate?.text!!.isNotEmpty()){
-                viewModel.addTender(requireContext(), System.currentTimeMillis().toString(),sharedPreferences.getString("uuidUser", "test").toString(),UUID.randomUUID().toString(), editTextDateOpenDate.text.toString(), editTextDateCloseDate.text.toString(), tenderStatus)
+                viewModel.addTender(System.currentTimeMillis().toString(),sharedPreferences.getString("uuidUser", "test").toString(),UUID.randomUUID().toString(), editTextDateOpenDate.text.toString(), editTextDateCloseDate.text.toString(), tenderStatus)
             }else{
                 Toast.makeText(requireContext(), "Sva polja moja biti popunjena", Toast.LENGTH_SHORT).show()
             }

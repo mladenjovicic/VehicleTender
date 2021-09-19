@@ -1,4 +1,4 @@
-package com.mladenjovicic.vehicletender.ui.mainAct.sec
+package com.mladenjovicic.vehicletender.ui.mainAct.history
 
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.mladenjovicic.vehicletender.R
+import com.mladenjovicic.vehicletender.ViewModelsProviderUtils
 
 class HistoryFragment : Fragment() {
 
@@ -25,7 +26,9 @@ class HistoryFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(SecViewModel::class.java)
+        //viewModel = ViewModelProvider(this).get(SecViewModel::class.java)
+        viewModel = ViewModelsProviderUtils.historyUser(this)
+
         // TODO: Use the ViewModel
     }
 

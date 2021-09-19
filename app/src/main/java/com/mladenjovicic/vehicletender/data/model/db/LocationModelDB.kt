@@ -10,8 +10,8 @@ data class LocationModelDB(
     var idServer:Int?=null,
     @ColumnInfo(name ="city")
     var city:String,
-    @ColumnInfo(name = "zipCode")
-    var zipCode:String
+    @ColumnInfo(name = "zipCOde")
+    var zipCOde:String
 ) {
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")

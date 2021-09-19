@@ -6,23 +6,24 @@ import androidx.lifecycle.ViewModel
 import com.mladenjovicic.vehicletender.data.model.db.LocationModelDB
 import com.mladenjovicic.vehicletender.data.model.db.ManAndCarModel
 import com.mladenjovicic.vehicletender.data.model.db.ManufacturerModelDB
+import com.mladenjovicic.vehicletender.data.repository.AdminRepository
 import com.mladenjovicic.vehicletender.data.repository.db.dbRepository
 
-class AddCarStockViewModel : ViewModel() {
+class AddCarStockViewModel(private val AddCarStockRepositror: AdminRepository) : ViewModel() {
 
-    fun addCarStock(context: Context,year:Int,modedLineId:Int,mileage:Double, price:Double,comments:String,locationId:Int,regNo:String,isSold:Boolean  ){
-        dbRepository.insertStockInfo(context, year,modedLineId,mileage,price,comments, locationId, regNo, isSold )
+    fun addCarStock(year:Int,modedLineId:Int,mileage:Double, price:Double,comments:String,locationId:Int,regNo:String,isSold:Boolean  ){
+        AddCarStockRepositror.addCarStock(year,modedLineId,mileage,price,comments, locationId, regNo, isSold )
     }
 
-    fun getListLocation (context: Context): LiveData<List<LocationModelDB>>? {
-        return dbRepository.getListLocation(context)!!
+    fun getListLocation (): LiveData<List<LocationModelDB>>? {
+        return AddCarStockRepositror.getListLocation()!!
     }
 
-    fun getListManufacturer(context: Context):LiveData<List<ManufacturerModelDB>>?{
-        return dbRepository.getDataManafactura(context)!!
+    fun getListManufacturer():LiveData<List<ManufacturerModelDB>>?{
+        return AddCarStockRepositror.getListManufacturer()!!
     }
 
-    fun getCarModelsID(context: Context):LiveData<List<ManAndCarModel>>?{
-        return dbRepository.getCarsInfo(context)
+    fun getCarModelsID():LiveData<List<ManAndCarModel>>?{
+        return AddCarStockRepositror.getCarModelsID()
     }
 }

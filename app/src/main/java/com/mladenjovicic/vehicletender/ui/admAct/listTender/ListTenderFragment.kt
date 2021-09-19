@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import androidx.recyclerview.widget.RecyclerView
 import com.mladenjovicic.vehicletender.R
+import com.mladenjovicic.vehicletender.ViewModelsProviderUtils
 import com.mladenjovicic.vehicletender.adapter.CarsStockAdapter
 import com.mladenjovicic.vehicletender.adapter.TenderActivAdapter
 
@@ -31,7 +32,8 @@ class ListTenderFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(ListTenderViewModel::class.java)
+        //viewModel = ViewModelProvider(this).get(ListTenderViewModel::class.java)
+        viewModel = ViewModelsProviderUtils.getListTender(this)
         val recyclerViewListActivesTender= view?.findViewById<RecyclerView>(R.id.recyclerViewListActivesTender)
         val recyclerViewListCloseTender= view?.findViewById<RecyclerView>(R.id.recyclerViewListCloseTender)
         val buttonShowActivTender = view?.findViewById<Button>(R.id.buttonShowActivTender)
@@ -39,7 +41,7 @@ class ListTenderFragment : Fragment() {
 
         recyclerViewListActivesTender?.visibility = View.VISIBLE
         recyclerViewListCloseTender?.visibility = View.GONE
-        viewModel.getActivesTenderList(requireContext(), 0)
+        viewModel.getActivesTenderList( 0)
         initRecyclerVTenderActivList()
 
         viewModel.tenderModel?.observe(requireActivity()){
@@ -55,7 +57,7 @@ class ListTenderFragment : Fragment() {
         buttonShowActivTender?.setOnClickListener {
             recyclerViewListActivesTender?.visibility = View.VISIBLE
             recyclerViewListCloseTender?.visibility = View.GONE
-            viewModel.getActivesTenderList(requireContext(), 0)
+            viewModel.getActivesTenderList( 0)
             initRecyclerVTenderActivList()
 
             viewModel.tenderModel?.observe(requireActivity()){
@@ -71,7 +73,7 @@ class ListTenderFragment : Fragment() {
             recyclerViewListActivesTender?.visibility = View.GONE
             recyclerViewListCloseTender?.visibility = View.VISIBLE
 
-            viewModel.getActivesTenderList(requireContext(), 1)
+            viewModel.getActivesTenderList(1)
             initRecyclerVTenderCloseList()
             viewModel.tenderModel?.observe(requireActivity()){
                 if (it==null){

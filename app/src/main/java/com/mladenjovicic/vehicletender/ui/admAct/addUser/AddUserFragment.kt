@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import com.mladenjovicic.vehicletender.R
+import com.mladenjovicic.vehicletender.ViewModelsProviderUtils
 import java.util.*
 
 class AddUserFragment : Fragment(), AdapterView.OnItemSelectedListener  {
@@ -45,15 +46,16 @@ class AddUserFragment : Fragment(), AdapterView.OnItemSelectedListener  {
         spinnerUserStatus?.onItemSelectedListener = this
 
 
-        viewModel = ViewModelProvider(this).get(AddUserViewModel::class.java)
+        //viewModel = ViewModelProvider(this).get(AddUserViewModel::class.java)
+        viewModel = ViewModelsProviderUtils.AddNewUser(this)
 
             val listLocation = context?.let {
                 ArrayAdapter<Any>(it, R.layout.spinner_item)
             }
 
-            viewModel.getListLocation(requireContext())?.observe(viewLifecycleOwner,{ location->
+            viewModel.getListLocation()?.observe(viewLifecycleOwner,{ location->
                 location?.forEach {
-                    listLocation?.add(it.city+ ", " + it.zipCode)
+                    listLocation?.add(it.city+ ", " + it.zipCOde)
                 }
             })
         listLocation?.setDropDownViewResource(R.layout.spinner_dropdown_item)
@@ -62,7 +64,7 @@ class AddUserFragment : Fragment(), AdapterView.OnItemSelectedListener  {
 
         btnAddNewUser?.setOnClickListener {
 
-            viewModel.addNewUser(requireContext(),UUID.randomUUID().toString(),editTextUserName?.text.toString(), editTextSurnameUser?.text.toString(),editTextEmailUser?.text.toString(),editTextPassword?.text.toString(),statusUser, locationUser.toString(),editTextPhone?.text.toString(),editTextCompanyUser?.text.toString())
+            viewModel.addNewUser(UUID.randomUUID().toString(),editTextUserName?.text.toString(), editTextSurnameUser?.text.toString(),editTextEmailUser?.text.toString(),editTextPassword?.text.toString(),statusUser, locationUser.toString(),editTextPhone?.text.toString(),editTextCompanyUser?.text.toString())
         }
     }
 

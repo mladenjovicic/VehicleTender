@@ -4,6 +4,6 @@ import com.google.gson.annotations.SerializedName
 
 data class LocationModelAPI(
         @SerializedName("id") var id : Int?,
-        @SerializedName("City") var city:String?,
-        @SerializedName("ZipCode") var zipCOde:String?
+        @SerializedName("city") var city:String?,
+        @SerializedName("zipCOde") var zipCOde:String?
 )

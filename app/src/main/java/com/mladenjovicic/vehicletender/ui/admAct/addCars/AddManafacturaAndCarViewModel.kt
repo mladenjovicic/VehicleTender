@@ -12,28 +12,29 @@ import com.mladenjovicic.vehicletender.data.model.api.CarModelApi
 import com.mladenjovicic.vehicletender.data.model.api.LocationModelAPI
 import com.mladenjovicic.vehicletender.data.model.api.ManufacturerModelAPI
 import com.mladenjovicic.vehicletender.data.model.db.ManufacturerModelDB
+import com.mladenjovicic.vehicletender.data.repository.AdminRepository
 import com.mladenjovicic.vehicletender.data.repository.db.dbRepository
 import retrofit2.Response
 
-class AddManafacturaAndCarViewModel : ViewModel() {
-    fun addManufacturer(context: Context, manufacturer_name:String ){
+class AddManafacturaAndCarViewModel(private val addManafacturaAndCarRepository: AdminRepository) : ViewModel() {
+    fun addManufacturer(manufacturer_name:String ){
         if(manufacturer_name.isEmpty()){
-            Toast.makeText(context, "", Toast.LENGTH_SHORT)
+
         }else{
-            dbRepository.insertDataManafactura(context,999,manufacturer_name)
+            addManafacturaAndCarRepository.addManufacturer(999,manufacturer_name)
         }
 
     }
 
-    fun getListManafactura(context: Context):LiveData<List<ManufacturerModelDB>>{
-        return dbRepository.getDataManafactura(context)!!
+    fun getListManafactura():LiveData<List<ManufacturerModelDB>>{
+        return addManafacturaAndCarRepository.getListManufacturer()!!
     }
 
-    fun addCar(context: Context, id:Int?, model_name:String,model_no:String, manufacturer_id:Int ){
+    fun addCar( id:Int?, model_name:String,model_no:String, manufacturer_id:Int ){
             if(model_name.isNotEmpty() && model_no.isNotEmpty() && manufacturer_id > 0){
-                dbRepository.insertDataCar(context, 999,model_name, model_no, manufacturer_id)
+                addManafacturaAndCarRepository.addCarModel( 999,model_name, model_no, manufacturer_id)
             }else {
-                Toast.makeText(context, "Sva polja moraju biti popunjena ", Toast.LENGTH_SHORT).show()
+
             }
 
     }

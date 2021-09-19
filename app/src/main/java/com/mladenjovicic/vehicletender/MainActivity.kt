@@ -6,13 +6,12 @@ import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.mladenjovicic.vehicletender.ui.mainAct.main.MainFragment
 import com.mladenjovicic.vehicletender.ui.mainAct.reports.ReportsFragment
-import com.mladenjovicic.vehicletender.ui.mainAct.sec.HistoryFragment
+import com.mladenjovicic.vehicletender.ui.mainAct.history.HistoryFragment
 
 class MainActivity : AppCompatActivity() {
 

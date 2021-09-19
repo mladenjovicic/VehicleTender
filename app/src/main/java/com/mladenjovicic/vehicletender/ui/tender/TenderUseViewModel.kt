@@ -13,14 +13,14 @@ class TenderUseViewModel(private val tenderUseRepositroy: TenderUseRepositroy):V
     var tenderModelDB:LiveData<TenderModelDB>?=null
     var stockCarList:LiveData<List<stockCarList>>?=null
 
-    fun getTenderBYTenderNo(context: Context, tenderNo:String):LiveData<TenderModelDB>?{
-        tenderModelDB = dbRepository.getTenderNo(context, tenderNo)
+    fun getTenderBYTenderNo(tenderNo:String):LiveData<TenderModelDB>?{
+        tenderModelDB = tenderUseRepositroy.getTenderNo(tenderNo)
         return tenderModelDB
 
     }
 
-    fun getStockCarList(context: Context, isSold:Boolean):LiveData<List<stockCarList>>?{
-        stockCarList = dbRepository.getCarStockListActive(context, isSold)
+    fun getStockCarList(isSold:Boolean):LiveData<List<stockCarList>>?{
+        stockCarList = tenderUseRepositroy.getCarStockListActive(isSold)
         return stockCarList
     }
 }

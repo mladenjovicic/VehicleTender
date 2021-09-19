@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.mladenjovicic.vehicletender.R
+import com.mladenjovicic.vehicletender.ViewModelsProviderUtils
 import com.mladenjovicic.vehicletender.adapter.CarsStockAdapter
 import com.mladenjovicic.vehicletender.adapter.UsersListAdapter
 
@@ -26,9 +27,9 @@ class ListCarStockFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(ListCarStockViewModel::class.java)
+        viewModel = ViewModelsProviderUtils.getListCarStock(this)
 
-        viewModel.getStockCarList(requireContext())
+        viewModel.getStockCarList()
         initRecyclerViewAllUser()
         viewModel.stockCarList?.observe(requireActivity()){
             recyclerViewCatStockList.setCarCtockList(it)

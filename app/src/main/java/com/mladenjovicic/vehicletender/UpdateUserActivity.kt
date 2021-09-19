@@ -15,7 +15,8 @@ class UpdateUserActivity : AppCompatActivity(), AdapterView.OnItemSelectedListen
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.update_user_activity)
-        viewModel = ViewModelProvider(this).get(UserUpdateViewModel::class.java)
+        //viewModel = ViewModelProvider(this).get(UserUpdateViewModel::class.java)
+        viewModel = ViewModelsProviderUtils.getUpdteUserViewMode(this)
         var userId = ""
         val textViewIDUserUpdate = findViewById<TextView>(R.id.textViewIDUserUpdate)
         val editTextUserNameUpdate = findViewById<EditText>(R.id.editTextUserNameUpdate)
@@ -36,9 +37,9 @@ class UpdateUserActivity : AppCompatActivity(), AdapterView.OnItemSelectedListen
         val listLocation = this.let {
             ArrayAdapter<Any>(it, R.layout.spinner_item)
         }
-        viewModel.getListLocation(this)?.observe(this, Observer { location->
+        viewModel.getListLocation()?.observe(this, Observer { location->
             location.forEach {
-                listLocation.add(it.city + " " + it.zipCode)  }
+                listLocation.add(it.city + " " + it.zipCOde)  }
         })
 
         listLocation.setDropDownViewResource(R.layout.spinner_dropdown_item)
@@ -48,7 +49,7 @@ class UpdateUserActivity : AppCompatActivity(), AdapterView.OnItemSelectedListen
 
         userId= intent!!.extras?.get("uuid") as String
 
-        viewModel.getUserDateID(this, userId)
+        viewModel.getUserDateID(userId)
         viewModel.userModelDB?.observe(this, Observer {
             if(it!=null){
                 textViewIDUserUpdate.text = "User id: "+ userId
@@ -66,7 +67,7 @@ class UpdateUserActivity : AppCompatActivity(), AdapterView.OnItemSelectedListen
 
 
         btnUpdateUser.setOnClickListener {
-            viewModel.updateUser(this,userId, editTextUserNameUpdate.text.toString(),editTextSurnameUserUpdate.text.toString(), editTextEmailUserUpdate.text.toString(),editTextPasswordUpdate.text.toString(),statusUser, userLoc.toString(), editTextPhoneUpdate.text.toString(),editTextCompanyUserUpdate.text.toString()   )
+            viewModel.updateUser(userId, editTextUserNameUpdate.text.toString(),editTextSurnameUserUpdate.text.toString(), editTextEmailUserUpdate.text.toString(),editTextPasswordUpdate.text.toString(),statusUser, userLoc.toString(), editTextPhoneUpdate.text.toString(),editTextCompanyUserUpdate.text.toString()   )
         }
 
     }

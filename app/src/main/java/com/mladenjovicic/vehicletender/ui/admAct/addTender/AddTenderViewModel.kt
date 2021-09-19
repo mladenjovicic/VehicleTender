@@ -9,17 +9,20 @@ import com.mladenjovicic.vehicletender.data.API.RetrofitInterface
 import com.mladenjovicic.vehicletender.data.model.api.LocationModelAPI
 import com.mladenjovicic.vehicletender.data.model.api.TenderModelAPI
 import com.mladenjovicic.vehicletender.data.model.db.StatusModelDB
+import com.mladenjovicic.vehicletender.data.repository.AdminRepository
 import com.mladenjovicic.vehicletender.data.repository.db.dbRepository
 import retrofit2.Response
 
-class AddTenderViewModel : ViewModel() {
-    fun addTender(context: Context, createdDate:String,createdBy:String,tenderNo:String,openDate:String,closeDate:String,statusId:Int){
-        dbRepository.insertDataTender(context, createdDate, createdBy, tenderNo, openDate, closeDate, statusId)
-        addTenderJSON(context, createdDate, createdBy, tenderNo, openDate, closeDate, statusId)
+class AddTenderViewModel(private val addTenderRepository: AdminRepository) : ViewModel() {
+
+
+    fun addTender(createdDate:String,createdBy:String,tenderNo:String,openDate:String,closeDate:String,statusId:Int){
+        addTenderRepository.addTender( createdDate, createdBy, tenderNo, openDate, closeDate, statusId)
+
     }
 
-    fun getListStatus (context: Context): LiveData<List<StatusModelDB>>? {
-        return dbRepository.getStatus(context)
+    fun getListStatus (): LiveData<List<StatusModelDB>>? {
+        return addTenderRepository.getListStatus()
     }
 
     fun addTenderJSON(context: Context, createdDate:String,createdBy:String,tenderNo:String,openDate:String,closeDate:String,statusId:Int){
