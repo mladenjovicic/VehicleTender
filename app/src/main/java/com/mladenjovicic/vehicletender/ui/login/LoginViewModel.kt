@@ -1,11 +1,8 @@
 package com.mladenjovicic.vehicletender.ui.login
 
-import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.mladenjovicic.vehicletender.data.API.RetrofitInterface
-import com.mladenjovicic.vehicletender.data.API.RetrofitInstance
 import com.mladenjovicic.vehicletender.data.model.RequestState
 import com.mladenjovicic.vehicletender.data.model.api.CarModelApi
 import com.mladenjovicic.vehicletender.data.model.api.LocationModelAPI
@@ -14,14 +11,6 @@ import com.mladenjovicic.vehicletender.data.model.api.StatusModelAPI
 import com.mladenjovicic.vehicletender.data.model.db.LocationModelDB
 import com.mladenjovicic.vehicletender.data.model.db.UserModelDB
 import com.mladenjovicic.vehicletender.data.repository.LoginRepository
-import com.mladenjovicic.vehicletender.data.repository.db.dbRepository
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Dispatchers.IO
-import kotlinx.coroutines.launch
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel() {
         var userModelDB:LiveData<UserModelDB>?=null

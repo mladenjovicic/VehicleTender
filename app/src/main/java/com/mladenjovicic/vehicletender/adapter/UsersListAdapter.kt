@@ -20,7 +20,7 @@ class UsersListAdapter(val activity: Fragment):RecyclerView.Adapter<UsersListAda
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UsersListAdapter.MyViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.users_list_row, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.row_users_list, parent, false)
         return MyViewHolder(view)
     }
 

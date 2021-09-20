@@ -2,15 +2,17 @@ package com.mladenjovicic.vehicletender.ui.admAct.addTender
 
 import android.app.DatePickerDialog
 import android.content.Context
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.lifecycle.Observer
 import com.mladenjovicic.vehicletender.R
 import com.mladenjovicic.vehicletender.ViewModelsProviderUtils
+import com.mladenjovicic.vehicletender.data.model.api.TenderModelAPI
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -25,26 +27,33 @@ class addTenderFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.add_tender_fragment, container, false)
+        return inflater.inflate(R.layout.fragment_add_tender, container, false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        //viewModel = ViewModelProvider(this).get(AddTenderViewModel::class.java)
+
         viewModel = ViewModelsProviderUtils.addTender(this)
+        addNewTender()
+
+
+
+    }
+
+    fun addNewTender(){
         val editTextDateOpenDate = view?.findViewById<EditText>(R.id.editTextDateOpenDate)
         val editTextDateCloseDate = view?.findViewById<EditText>(R.id.editTextDateCloseDate)
         val spinnerTenderStatus = view?.findViewById<Spinner>(R.id.spinnerTenderStatus)
         val btnAddNewTender = view?.findViewById<Button>(R.id.btnAddNewTender)
         val sharedPreferences = requireActivity().getSharedPreferences("UserDate", Context.MODE_PRIVATE)
-
         val CalendarOpenDate = Calendar.getInstance()
+
         val datePickerOnDataSetListenerOpenDate = DatePickerDialog.OnDateSetListener { _, year, monthOfYear, dayOfMonth ->
             CalendarOpenDate.set(Calendar.YEAR, year)
             CalendarOpenDate.set(Calendar.MONTH, monthOfYear)
             CalendarOpenDate.set(Calendar.DAY_OF_MONTH, dayOfMonth)
             updateLabel(CalendarOpenDate, editTextDateOpenDate!!)
-            }
+        }
         val datePickerOnDataSetListenerCloseDate = DatePickerDialog.OnDateSetListener { _, year, monthOfYear, dayOfMonth ->
             CalendarOpenDate.set(Calendar.YEAR, year)
             CalendarOpenDate.set(Calendar.MONTH, monthOfYear)
@@ -75,11 +84,32 @@ class addTenderFragment : Fragment(), AdapterView.OnItemSelectedListener {
         spinnerTenderStatus?.onItemSelectedListener = this
         btnAddNewTender?.setOnClickListener {
             if (editTextDateOpenDate?.text!!.isNotEmpty()&&editTextDateCloseDate?.text!!.isNotEmpty()){
-                viewModel.addTender(System.currentTimeMillis().toString(),sharedPreferences.getString("uuidUser", "test").toString(),UUID.randomUUID().toString(), editTextDateOpenDate.text.toString(), editTextDateCloseDate.text.toString(), tenderStatus)
+                viewModel.addTenderJSON(999,System.currentTimeMillis().toString(),sharedPreferences.getString("uuidUser", "null").toString(),UUID.randomUUID().toString(), editTextDateOpenDate.text.toString(), editTextDateCloseDate.text.toString(), tenderStatus )
+                viewModel.getNewTenderObserver().observe(requireActivity(), Observer<TenderModelAPI?>{
+                    if (it.createdBy !="null"){
+                        Toast.makeText(requireContext(), "Request is successful", Toast.LENGTH_SHORT).show()
+                        viewModel.addTender(it.id!!, it.createdDate!!, it.createdBy!!, it.tenderNo!!, it.openDate!!, it.closeDate!!, it.statusId!!)
+                        editTextDateOpenDate.text.clear()
+                        editTextDateCloseDate.text.clear()
+                    }else{
+                        Toast.makeText(requireContext(), "Request error", Toast.LENGTH_SHORT).show()
+                    }
+
+                })
+
+                viewModel.requestState.observe(requireActivity()) {
+                    if(it.pending)
+                        Log.e("Loading", "retrofit request is in progress, show loading spinner")
+
+                    if(it.successful)
+                        Log.e("Success", "retrofit request is successful")
+
+                }
             }else{
                 Toast.makeText(requireContext(), "Sva polja moja biti popunjena", Toast.LENGTH_SHORT).show()
             }
         }
+
     }
     private fun updateLabel(myCalendar: Calendar, dateEditText: EditText) {
         val myFormat: String = "YYYY-MM-dd"

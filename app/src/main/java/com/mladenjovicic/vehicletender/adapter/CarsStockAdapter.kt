@@ -22,7 +22,7 @@ class CarsStockAdapter(val activity: Fragment): RecyclerView.Adapter<CarsStockAd
         parent: ViewGroup,
         viewType: Int
     ): CarsStockAdapter.MyViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.car_stock_list_row, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.row_car_stock_list, parent, false)
         return CarsStockAdapter.MyViewHolder(view)
     }
 

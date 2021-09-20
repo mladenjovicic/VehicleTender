@@ -67,7 +67,7 @@ interface RetrofitInterface {
     @POST("tenderStock")
     fun CreateTenderStock(@Body newStockInfoModelAPI: StockInfoModelAPI):Call<StockInfoModelAPI>
 
-    @GET("tenderUSer")
+    @GET("tenderUser")
     fun getTenderUser():Call<List<TenderUserModelAPI>>
 
     @Headers("Content-Type: application/json")

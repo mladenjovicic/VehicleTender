@@ -1,8 +1,11 @@
 package com.mladenjovicic.vehicletender.data.API
 
 import android.content.Context
+import android.location.Location
 import android.util.Log
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.mladenjovicic.vehicletender.adapter.CarsStockAdapter
 import com.mladenjovicic.vehicletender.data.db.RoomDB
 import com.mladenjovicic.vehicletender.data.model.RequestState
 import com.mladenjovicic.vehicletender.data.model.api.*
@@ -19,46 +22,27 @@ class RetrofitService(private val retrofitInstance: RetrofitInstanceN) {
 
     private val retrofitInterface = retrofitInstance.getRetrofit().create(RetrofitInterface::class.java)
 
-    fun addLocationJSON(id:Int?, city:String, zipCode: String){
+    fun addLocationJSON(id:Int?,
+                        city:String,
+                        zipCode: String,
+                        requestState: MutableLiveData<RequestState>,
+                        liveData: MutableLiveData<LocationModelAPI?>){
         val service = RetrofitInstance.getRetrofit().create(RetrofitInterface::class.java)
         service.createLocation(LocationModelAPI(id,city, zipCode)).enqueue(object : retrofit2.Callback<LocationModelAPI> {
             override fun onResponse(call: retrofit2.Call<LocationModelAPI>, response: Response<LocationModelAPI>) {
                 var newlyCreatedDestination = response.body()
                 if(response.code() == 201){
-                    println("Successfully Added"+newlyCreatedDestination.toString())
+                    println("Successfully Added"+newlyCreatedDestination.toString()+ " "+ response.code())
+                    requestState.postValue(RequestState.success)
+                    liveData.postValue(LocationModelAPI(response.body()!!.id, response.body()!!.city, response.body()!!.zipCOde))
 
                 }else {
+                    liveData.postValue(LocationModelAPI(null, "null", "null"))
                     Log.d("error post json", "error create locatio ${response.code()}")
+                    requestState.postValue(RequestState.failed)
                 }
             }
-
             override fun onFailure(call: retrofit2.Call<LocationModelAPI>, t: Throwable) {
-                Log.d("error post json", "error post json ${t.localizedMessage}")
-            }
-        })
-    }
-
-
-    fun addManufacturerJSON(manufacturerModelAPI: ManufacturerModelAPI,
-                            liveData: MutableLiveData<ManufacturerModelAPI>,
-                            requestState: MutableLiveData<RequestState>){
-
-        requestState.postValue(RequestState.pending)
-        val call = retrofitInterface.CreateManufacturer(manufacturerModelAPI)
-        call.enqueue(object :Callback<ManufacturerModelAPI>{
-            override fun onResponse(
-                call: Call<ManufacturerModelAPI>,
-                response: Response<ManufacturerModelAPI>
-            ) {
-                var body = response.body()
-                if (body != null) {
-                    liveData.postValue(body)
-                    requestState.postValue(RequestState.success)
-                } else
-                    requestState.postValue(RequestState.failed)
-            }
-
-            override fun onFailure(call: Call<ManufacturerModelAPI>, t: Throwable) {
                 requestState.postValue(
                     RequestState(
                         pending = false,
@@ -71,39 +55,152 @@ class RetrofitService(private val retrofitInstance: RetrofitInstanceN) {
     }
 
 
-    fun addCarModelJSON(id:Int?, ModelName:String,ModelNO:String, ManufacturerId:Int){
+    fun addManufacturerJSON(id:Int?,
+                            ManufacturerName:String,
+                            liveData: MutableLiveData<ManufacturerModelAPI?>,
+                            requestState: MutableLiveData<RequestState>){
+
         val service = RetrofitInstance.getRetrofit().create(RetrofitInterface::class.java)
-        service.CreateCarModel(CarModelApi(id,ModelName, ModelNO, ManufacturerId)).enqueue(object : retrofit2.Callback<CarModelApi> {
-            override fun onResponse(call: retrofit2.Call<CarModelApi>, response: Response<CarModelApi>) {
+        service.CreateManufacturer(ManufacturerModelAPI(id,ManufacturerName)).enqueue(object : retrofit2.Callback<ManufacturerModelAPI> {
+            override fun onResponse(call: retrofit2.Call<ManufacturerModelAPI>, response: Response<ManufacturerModelAPI>) {
                 var newlyCreatedDestination = response.body()
                 if(response.code() == 201){
-                    println("Successfully Added"+newlyCreatedDestination.toString())
-                }else{
-                    Log.d("error post json",  "error create locatio ${response.code()}")
+                    println("Successfully Added"+newlyCreatedDestination.toString()+ " "+ response.code())
+                    requestState.postValue(RequestState.success)
+                    liveData.postValue(ManufacturerModelAPI(response.body()!!.ID, response.body()!!.ManufacturerName))
+
+                }else {
+                    liveData.postValue(ManufacturerModelAPI(null, "null"))
+                    Log.d("error post json", "error create locatio ${response.code()}")
+                    requestState.postValue(RequestState.failed)
                 }
             }
-            override fun onFailure(call: retrofit2.Call<CarModelApi>, t: Throwable) {
-                Log.d("error post json", "error post json ${t.localizedMessage}")
+            override fun onFailure(call: retrofit2.Call<ManufacturerModelAPI>, t: Throwable) {
+                requestState.postValue(
+                    RequestState(
+                        pending = false,
+                        successful = false,
+                        errorMessage = t.message.toString()
+                    )
+                )
             }
         })
     }
 
 
-    fun addTenderJSON(context: Context, createdDate:String, createdBy:String, tenderNo:String, openDate:String, closeDate:String, statusId:Int){
+    fun addCarModelJSON(id:Int?,
+                        ModelName:String,
+                        ModelNO:String,
+                        ManufacturerId:Int,
+                        liveData: MutableLiveData<CarModelApi?>,
+                        requestState: MutableLiveData<RequestState>
+    ){
+        val service = RetrofitInstance.getRetrofit().create(RetrofitInterface::class.java)
+        service.CreateCarModel(CarModelApi(id,ModelName, ModelNO, ManufacturerId)).enqueue(object : retrofit2.Callback<CarModelApi> {
+            override fun onResponse(call: retrofit2.Call<CarModelApi>, response: Response<CarModelApi>) {
+                var newlyCreatedDestination = response.body()
+                if(response.code() == 201){
+                    println("Successfully Added"+newlyCreatedDestination.toString()+ " "+ response.code())
+                    requestState.postValue(RequestState.success)
+                    liveData.postValue(CarModelApi(response.body()!!.ID, response.body()!!.ModelName, response.body()!!.ModelNO, response.body()!!.ManufacturerId))
+
+                }else {
+                    liveData.postValue(CarModelApi(null, "null", "null", null))
+                    Log.d("error post json", "error create locatio ${response.code()}")
+                    requestState.postValue(RequestState.failed)
+                }
+            }
+            override fun onFailure(call: retrofit2.Call<CarModelApi>, t: Throwable) {
+                requestState.postValue(
+                    RequestState(
+                        pending = false,
+                        successful = false,
+                        errorMessage = t.message.toString()
+                    )
+                )
+            }
+        })
+    }
+
+
+    fun addTenderJSON(
+        id: Int?,
+        createdDate:String,
+        createdBy:String,
+        tenderNo:String,
+        openDate:String,
+        closeDate:String,
+        statusId:Int,
+        liveData: MutableLiveData<TenderModelAPI?>,
+        requestState: MutableLiveData<RequestState>){
         val service = RetrofitInstance.getRetrofit().create(RetrofitInterface::class.java)
 
-        service.CreateTender(TenderModelAPI(0, createdDate, createdBy, tenderNo, openDate, closeDate, statusId)).enqueue(object : retrofit2.Callback<TenderModelAPI> {
+        service.CreateTender(TenderModelAPI(id, createdDate, createdBy, tenderNo, openDate, closeDate, statusId)).enqueue(object : retrofit2.Callback<TenderModelAPI> {
             override fun onResponse(call: retrofit2.Call<TenderModelAPI>, response: Response<TenderModelAPI>) {
-                var newlyCreatedDestination = response.body() // Use it or ignore it
+                var newlyCreatedDestination = response.body()
                 if(response.code() == 201){
-                    println("Successfully Added" + newlyCreatedDestination.toString())
+                    println("Successfully Added"+newlyCreatedDestination.toString()+ " "+ response.code())
+                    requestState.postValue(RequestState.success)
+                    liveData.postValue(TenderModelAPI(response.body()!!.id, response.body()!!.createdDate,response.body()!!.createdBy, response.body()!!.tenderNo, response.body()!!.openDate, response.body()!!.closeDate, response.body()!!.statusId))
                 }else {
+
+                    liveData.postValue(TenderModelAPI(null, "null", "null","null","null","null", null))
                     Log.d("error post json", "error create locatio ${response.code()}")
+                    requestState.postValue(RequestState.failed)
                 }
             }
 
             override fun onFailure(call: retrofit2.Call<TenderModelAPI>, t: Throwable) {
-                Log.d("Error Tender Insert", "Error Tender Insert "+ t.localizedMessage )
+                requestState.postValue(
+                    RequestState(
+                        pending = false,
+                        successful = false,
+                        errorMessage = t.message.toString()
+                    )
+                )
+            }
+        })
+    }
+
+    fun addCarStockJSON(
+        id: Int?,
+        year:Int,
+        modelLineId:Int,
+        mileage:Double,
+        price:Double,
+        comments:String,
+        locationId:Int,
+        regNo:String,
+        isSold:Boolean,
+        liveData: MutableLiveData<StockInfoModelAPI?>,
+        requestState: MutableLiveData<RequestState>
+    ){
+        val service = RetrofitInstance.getRetrofit().create(RetrofitInterface::class.java)
+
+        service.CreateCarStock(StockInfoModelAPI(id, year, modelLineId, mileage, price, comments, locationId, regNo, isSold)).enqueue(object : retrofit2.Callback<StockInfoModelAPI> {
+            override fun onResponse(call: retrofit2.Call<StockInfoModelAPI>, response: Response<StockInfoModelAPI>) {
+                var newlyCreatedDestination = response.body()
+                if(response.code() == 201){
+                    println("Successfully Added"+newlyCreatedDestination.toString()+ " "+ response.code())
+                    requestState.postValue(RequestState.success)
+                    liveData.postValue(StockInfoModelAPI(response.body()!!.id, response.body()!!.year,response.body()!!.modelLineId, response.body()!!.mileage, response.body()!!.price, response.body()!!.comments,
+                        response.body()!!.locationId,response.body()!!.regNo,response.body()!!.isSold))
+                }else {
+
+                    liveData.postValue(StockInfoModelAPI(null, null,null,null,null,"",null,"", null))
+                    Log.d("error post json", "error create locatio ${response.code()}")
+                    requestState.postValue(RequestState.failed)
+                }
+            }
+
+            override fun onFailure(call: retrofit2.Call<StockInfoModelAPI>, t: Throwable) {
+                requestState.postValue(
+                    RequestState(
+                        pending = false,
+                        successful = false,
+                        errorMessage = t.message.toString()
+                    )
+                )
             }
         })
     }

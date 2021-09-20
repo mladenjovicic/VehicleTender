@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.View
 import android.widget.*
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import com.mladenjovicic.vehicletender.ui.updateUser.UserUpdateViewModel
 
 class UpdateUserActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
@@ -14,7 +13,7 @@ class UpdateUserActivity : AppCompatActivity(), AdapterView.OnItemSelectedListen
     private lateinit var viewModel: UserUpdateViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.update_user_activity)
+        setContentView(R.layout.activity_update_user)
         //viewModel = ViewModelProvider(this).get(UserUpdateViewModel::class.java)
         viewModel = ViewModelsProviderUtils.getUpdteUserViewMode(this)
         var userId = ""

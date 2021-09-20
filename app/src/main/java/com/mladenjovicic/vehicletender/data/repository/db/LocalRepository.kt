@@ -189,6 +189,7 @@ class LocalRepository(private val databaseService: DatabaseService) {
     }
 
     fun insertDataTender(
+        id:Int,
         createdDate: String,
         createdBy: String,
         tenderNo: String,
@@ -198,7 +199,7 @@ class LocalRepository(private val databaseService: DatabaseService) {
     ) {
         CoroutineScope(IO).launch {
             val tenderInsert =
-                TenderModelDB(createdDate, createdBy, tenderNo, openDate, closeDate, statusId)
+                TenderModelDB(id, createdDate, createdBy, tenderNo, openDate, closeDate, statusId)
             databaseService.tenderDAO.InsertTender(tenderInsert)
         }
     }

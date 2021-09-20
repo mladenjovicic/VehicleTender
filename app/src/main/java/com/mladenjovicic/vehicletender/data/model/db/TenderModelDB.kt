@@ -6,6 +6,8 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "tender")
 data class TenderModelDB(
+    @ColumnInfo(name = "idServer")
+    var idServer:Int?,
     @ColumnInfo(name = "createdDate")
     var createdDate:String,
     @ColumnInfo(name = "createdBy")

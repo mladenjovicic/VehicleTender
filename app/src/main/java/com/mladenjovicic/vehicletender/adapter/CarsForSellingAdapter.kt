@@ -9,7 +9,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.mladenjovicic.vehicletender.R
 import com.mladenjovicic.vehicletender.data.model.db.TenderStockModelDB
 import com.mladenjovicic.vehicletender.data.model.db.stockCarList
-import com.mladenjovicic.vehicletender.data.repository.db.dbRepository
+import com.mladenjovicic.vehicletender.data.repository.db.LocalRepository
+import com.mladenjovicic.vehicletender.data.repository.db.dbRepositoryOld
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -26,7 +27,7 @@ class CarsForSellingAdapter(val activity: Activity): RecyclerView.Adapter<CarsFo
         parent: ViewGroup,
         viewType: Int
     ): CarsForSellingAdapter.MyViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.car_stock_list_row, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.row_car_stock_list, parent, false)
         return CarsForSellingAdapter.MyViewHolder(view)
     }
 
@@ -42,9 +43,9 @@ class CarsForSellingAdapter(val activity: Activity): RecyclerView.Adapter<CarsFo
 
             if(click == 1){
                 CoroutineScope(Dispatchers.IO).launch {
-                    dbRepository.roomDB?.tenderStockDAO()?.deleteTenderStock(carForSellingList!![position].Id!!,tenderId)}
+                    dbRepositoryOld.roomDB?.tenderStockDAO()?.deleteTenderStock(carForSellingList!![position].Id!!,tenderId)}
             CoroutineScope(Dispatchers.IO).launch {
-            dbRepository.roomDB?.tenderStockDAO()?.InsertTenderStock(tenderStock)
+            dbRepositoryOld.roomDB?.tenderStockDAO()?.InsertTenderStock(tenderStock)
                 click = 0
 
             }
@@ -52,7 +53,8 @@ class CarsForSellingAdapter(val activity: Activity): RecyclerView.Adapter<CarsFo
             }else{
                 click = 1
                 CoroutineScope(Dispatchers.IO).launch {
-                dbRepository.roomDB?.tenderStockDAO()?.deleteTenderStock(carForSellingList!![position].Id!!,tenderId)}
+                    //LocalRepository.
+                dbRepositoryOld.roomDB?.tenderStockDAO()?.deleteTenderStock(carForSellingList!![position].Id!!,tenderId)}
                 Toast.makeText(holder.itemView.context,"Remove car in Tender stock", Toast.LENGTH_SHORT).show()
             }
         }

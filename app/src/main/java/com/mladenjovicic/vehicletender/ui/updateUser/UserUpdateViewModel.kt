@@ -1,13 +1,10 @@
 package com.mladenjovicic.vehicletender.ui.updateUser
 
-import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import com.mladenjovicic.vehicletender.data.model.db.LocationModelDB
 import com.mladenjovicic.vehicletender.data.model.db.UserModelDB
-import com.mladenjovicic.vehicletender.data.repository.LoginRepository
 import com.mladenjovicic.vehicletender.data.repository.UserUpdateRespository
-import com.mladenjovicic.vehicletender.data.repository.db.dbRepository
 
 class UserUpdateViewModel(private val userUpdateRepositror: UserUpdateRespository) : ViewModel() {
     var userModelDB:LiveData<UserModelDB>?=null

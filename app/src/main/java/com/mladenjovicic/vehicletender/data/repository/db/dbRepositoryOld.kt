@@ -11,7 +11,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
 
-class dbRepository {
+class dbRepositoryOld {
     companion object{
         var roomDB:RoomDB?= null
         var locationModelDB:LiveData<List<LocationModelDB>>?= null
@@ -174,10 +174,10 @@ class dbRepository {
             return stockCarList
         }
 
-        fun insertDataTender(context: Context, createdDate:String, createdBy:String, tenderNo:String, openDate:String, closeDate:String, statusId:Int){
+        fun insertDataTender(context: Context, id:Int,createdDate:String, createdBy:String, tenderNo:String, openDate:String, closeDate:String, statusId:Int){
             roomDB = initializeDB(context)
             CoroutineScope(IO).launch {
-                val tenderInsert = TenderModelDB(createdDate,createdBy,tenderNo,openDate,closeDate,statusId)
+                val tenderInsert = TenderModelDB(id, createdDate,createdBy,tenderNo,openDate,closeDate,statusId)
                 roomDB!!.tenderDAO().InsertTender(tenderInsert)
             }
         }

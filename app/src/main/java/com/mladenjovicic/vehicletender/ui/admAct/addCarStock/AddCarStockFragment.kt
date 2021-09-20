@@ -1,16 +1,16 @@
 package com.mladenjovicic.vehicletender.ui.admAct.addCarStock
 
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.lifecycle.Observer
 import com.mladenjovicic.vehicletender.R
 import com.mladenjovicic.vehicletender.ViewModelsProviderUtils
-import java.beans.PropertyChangeSupport
-import kotlin.properties.Delegates
+import com.mladenjovicic.vehicletender.data.model.api.StockInfoModelAPI
 
 class AddCarStockFragment : Fragment(), AdapterView.OnItemSelectedListener {
     var carLocation = 0
@@ -35,7 +35,7 @@ class AddCarStockFragment : Fragment(), AdapterView.OnItemSelectedListener {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.add_car_stock_fragment, container, false)
+        return inflater.inflate(R.layout.fragment_add_car_stock, container, false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -45,6 +45,11 @@ class AddCarStockFragment : Fragment(), AdapterView.OnItemSelectedListener {
        // viewModel = ViewModelProvider(this).get(AddCarStockViewModel::class.java)
 
         viewModel = ViewModelsProviderUtils.addCarStock(this)
+        addCarStock()
+
+
+    }
+    fun addCarStock(){
         val spinnerCarBrand = view?.findViewById<Spinner>(R.id.spinnerCarBrand)
         val spinnerCarModel= view?.findViewById<Spinner>(R.id.spinnerCarModel)
         val spinnerCarLocation = view?.findViewById<Spinner>(R.id.spinnerCarLocation)
@@ -86,7 +91,6 @@ class AddCarStockFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
         viewModel.getCarModelsID()?.observe(viewLifecycleOwner,{ location->
             location?.forEach {
-                println("dev12" + it.model_name)
                 listCarModels?.add(it.manufacturer_name+ ", "+it.model_name + " " + it.model_no)
 
             }
@@ -97,19 +101,31 @@ class AddCarStockFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
         btnAddStockCar?.setOnClickListener {
             if(editTextCarYear?.text!!.isNotEmpty() && editTextCarMileage?.text!!.isNotEmpty() && editTextCarPrice?.text!!.isNotEmpty()&&editTextCarReg?.text!!.isNotEmpty()&&editTextCarComment?.text!!.isNotEmpty()){
-                viewModel.addCarStock(editTextCarYear?.text.toString().toInt(),carBrand,editTextCarMileage.text.toString().toDouble(),editTextCarPrice.text.toString().toDouble(),editTextCarComment.text.toString(),
-                        carLocation,editTextCarReg.text.toString(),false )
-                editTextCarYear.text.clear()
-                editTextCarMileage.text.clear()
-                editTextCarPrice.text.clear()
-                editTextCarReg.text.clear()
-                editTextCarComment.text.clear()
+                viewModel.addCarStockJSON(999, editTextCarYear?.text.toString().toInt(),carBrand,editTextCarMileage.text.toString().toDouble(),
+                    editTextCarPrice.text.toString().toDouble(),editTextCarComment.text.toString(), carLocation,editTextCarReg.text.toString(),false)
+                viewModel.getNewCarStockObserver().observe(requireActivity(), Observer<StockInfoModelAPI?> {
+                    if(it.regNo!="null"){
+                        Toast.makeText(requireContext(), "Request is successful", Toast.LENGTH_SHORT).show()
+                        viewModel.addCarStock(it.id!!, it.year!!,it.modelLineId!!, it.mileage!!,it.price!!,it.comments!!,it.locationId!!,it.regNo!!, it.isSold!!)
+                        editTextCarYear.text.clear()
+                        editTextCarMileage.text.clear()
+                        editTextCarPrice.text.clear()
+                        editTextCarReg.text.clear()
+                        editTextCarComment.text.clear()
+                    }else{
+                        Toast.makeText(requireContext(), "Request is error", Toast.LENGTH_SHORT).show()
+                    }
+                })
+                viewModel.requestState.observe(requireActivity()) {
+                    if(it.pending)
+                        Log.e("Loading", "retrofit request is in progress, show loading spinner")
+                    if(it.successful)
+                        Log.e("Success", "retrofit request is successful")
+                }
             }else{
                 Toast.makeText(requireContext(), "Sva polja moraju biti popunjena", Toast.LENGTH_SHORT).show()
             }
-
         }
-
     }
 
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {

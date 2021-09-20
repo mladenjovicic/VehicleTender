@@ -6,7 +6,6 @@ import android.view.MenuItem
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
 import com.mladenjovicic.vehicletender.ui.admAct.ListCarStock.ListCarStockFragment
 import com.mladenjovicic.vehicletender.ui.admAct.ListUser.ListUserFragment
@@ -15,7 +14,6 @@ import com.mladenjovicic.vehicletender.ui.admAct.addCars.AddManafacturaAndCarFra
 import com.mladenjovicic.vehicletender.ui.admAct.addLocation.AddLocationFragment
 import com.mladenjovicic.vehicletender.ui.admAct.addTender.addTenderFragment
 import com.mladenjovicic.vehicletender.ui.admAct.addUser.AddUserFragment
-import com.mladenjovicic.vehicletender.ui.admAct.admin.AdminPanelActivityFragment
 import com.mladenjovicic.vehicletender.ui.admAct.listTender.ListTenderFragment
 
 class AdminPanelActivity : AppCompatActivity() {
@@ -23,7 +21,7 @@ class AdminPanelActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.admin_panel_activity2_activity)
+        setContentView(R.layout.activity_admin_panel_activity2)
 
         val drawerLayout = findViewById<DrawerLayout>(R.id.drawerLay)
         val navView = findViewById<NavigationView>(R.id.nav_view)

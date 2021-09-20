@@ -5,8 +5,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import com.mladenjovicic.vehicletender.data.model.db.UserModelDB
 import com.mladenjovicic.vehicletender.data.repository.AdminRepository
-import com.mladenjovicic.vehicletender.data.repository.UserUpdateRespository
-import com.mladenjovicic.vehicletender.data.repository.db.dbRepository
 
 
 //class ListUserViewModel(private val adminRepository: AdminRepository) : ViewModel() {

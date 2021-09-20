@@ -21,7 +21,7 @@ class TenderActivAdapter(val activity: Fragment): RecyclerView.Adapter<TenderAct
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TenderActivAdapter.MyViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.tender_list_row, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.row_tender_list, parent, false)
         return TenderActivAdapter.MyViewHolder(view)
     }
 
