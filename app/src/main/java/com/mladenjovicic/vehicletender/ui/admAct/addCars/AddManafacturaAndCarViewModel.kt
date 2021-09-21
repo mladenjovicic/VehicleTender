@@ -38,6 +38,7 @@ class AddManafacturaAndCarViewModel(private val addManafacturaAndCarRepository: 
             addManafacturaAndCarRepository.addManufacturer(id,manufacturer_name)
      }
     fun addManufacturerJSON(id:Int?,ManufacturerName:String){
+        createNewManufacturer.postValue(null)
         addManafacturaAndCarRepository.addManufacturerJSON(id, ManufacturerName,  createNewManufacturer, requestState)
     }
 
@@ -52,6 +53,7 @@ class AddManafacturaAndCarViewModel(private val addManafacturaAndCarRepository: 
     }
 
     fun addCarModelJSON(id:Int?, model_name:String, model_no:String, manufacturer_id:Int){
+        createNewCarModele.postValue(null)
         addManafacturaAndCarRepository.addCarModelJSON(id, model_name, model_no, manufacturer_id, createNewCarModele, requestState)
     }
 

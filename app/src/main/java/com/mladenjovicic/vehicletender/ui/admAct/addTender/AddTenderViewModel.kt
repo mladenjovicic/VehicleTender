@@ -33,6 +33,7 @@ class AddTenderViewModel(private val addTenderRepository: AdminRepository) : Vie
     }
 
     fun addTenderJSON(id:Int?, createdDate:String,createdBy:String,tenderNo:String,openDate:String,closeDate:String,statusId:Int){
+        createNewTender.postValue(null)
         addTenderRepository.addTenderJSON(id, createdDate, createdBy, tenderNo, openDate, closeDate, statusId,createNewTender,requestState )
     }
 

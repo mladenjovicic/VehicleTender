@@ -3,6 +3,7 @@ package com.mladenjovicic.vehicletender.data.repository
 import androidx.lifecycle.LiveData
 import com.mladenjovicic.vehicletender.data.API.RetrofitService
 import com.mladenjovicic.vehicletender.data.model.db.TenderModelDB
+import com.mladenjovicic.vehicletender.data.model.db.TenderStockModelDB
 import com.mladenjovicic.vehicletender.data.model.db.stockCarList
 import com.mladenjovicic.vehicletender.data.repository.db.LocalRepository
 
@@ -16,5 +17,12 @@ class TenderUseRepositroy (private val retrofitService: RetrofitService,
     fun getCarStockListActive(isSold: Boolean):LiveData<List<stockCarList>>?{
 
         return localRepository.getCarStockListActive(isSold)
+    }
+
+    fun insertTenderStock(id:Int, tenderId:String, saleDate:String){
+        localRepository.insertTenderStock(id, tenderId, saleDate)
+    }
+    fun deleteTenderStock(id:Int, tenderId:String, saleDate:String){
+        localRepository.deleteTenderStock(id, tenderId, saleDate)
     }
 }

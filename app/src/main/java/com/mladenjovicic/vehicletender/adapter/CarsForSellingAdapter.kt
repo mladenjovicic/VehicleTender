@@ -11,11 +11,12 @@ import com.mladenjovicic.vehicletender.data.model.db.TenderStockModelDB
 import com.mladenjovicic.vehicletender.data.model.db.stockCarList
 import com.mladenjovicic.vehicletender.data.repository.db.LocalRepository
 import com.mladenjovicic.vehicletender.data.repository.db.dbRepositoryOld
+import com.mladenjovicic.vehicletender.ui.tender.TenderUseViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class CarsForSellingAdapter(val activity: Activity): RecyclerView.Adapter<CarsForSellingAdapter.MyViewHolder>()  {
+class CarsForSellingAdapter(val activity: Activity,  val viewModel: TenderUseViewModel ): RecyclerView.Adapter<CarsForSellingAdapter.MyViewHolder>()  {
 
     private var carForSellingList:List<stockCarList>?=null
     fun setCarForSellingList(carStock: List<stockCarList>){
@@ -39,22 +40,26 @@ class CarsForSellingAdapter(val activity: Activity): RecyclerView.Adapter<CarsFo
             var tenderStock:TenderStockModelDB?=null
 
 
+
+
             tenderStock = TenderStockModelDB(carForSellingList!![position].Id!!, tenderId, saleDate)
+            println("dev21" + tenderStock)
 
             if(click == 1){
                 CoroutineScope(Dispatchers.IO).launch {
-                    dbRepositoryOld.roomDB?.tenderStockDAO()?.deleteTenderStock(carForSellingList!![position].Id!!,tenderId)}
+                    viewModel.deleteTenderStock(carForSellingList!![position].Id!!,tenderId,saleDate)
+
+                }
             CoroutineScope(Dispatchers.IO).launch {
             dbRepositoryOld.roomDB?.tenderStockDAO()?.InsertTenderStock(tenderStock)
                 click = 0
-
             }
                 Toast.makeText(holder.itemView.context,"Add car in Tender stock", Toast.LENGTH_SHORT).show()
             }else{
                 click = 1
                 CoroutineScope(Dispatchers.IO).launch {
-                    //LocalRepository.
-                dbRepositoryOld.roomDB?.tenderStockDAO()?.deleteTenderStock(carForSellingList!![position].Id!!,tenderId)}
+                    viewModel.insertTenderStock(carForSellingList!![position].Id!!,tenderId,saleDate)
+                }
                 Toast.makeText(holder.itemView.context,"Remove car in Tender stock", Toast.LENGTH_SHORT).show()
             }
         }
@@ -65,6 +70,8 @@ class CarsForSellingAdapter(val activity: Activity): RecyclerView.Adapter<CarsFo
         if(carForSellingList == null)return 0
         else return carForSellingList?.size!!
     }
+
+
 
     class MyViewHolder(itemView: View):RecyclerView.ViewHolder(itemView){
 
@@ -80,7 +87,7 @@ class CarsForSellingAdapter(val activity: Activity): RecyclerView.Adapter<CarsFo
         val textViewCarRegShow = itemView.findViewById<TextView>(R.id.textViewCarRegShow)
         val textViewCarComementShow = itemView.findViewById<TextView>(R.id.textViewCarComementShow)
         val imageButtonAdd = itemView.findViewById<ImageView>(R.id.imageButtonAdd)
-        //val imageButtonRemove = itemView.findViewById<ImageView>(R.id.imageButtonRemove)
+        val imageButtonRemove = itemView.findViewById<ImageView>(R.id.imageButtonRemove)
 
 
         fun bind(date:stockCarList, activity: Activity){
@@ -94,7 +101,6 @@ class CarsForSellingAdapter(val activity: Activity): RecyclerView.Adapter<CarsFo
             textViewCarCityShow.text = "Car location: \n"+date.city
             textViewCarRegShow.text = "Car registration: \n" +date.regNo
             textViewCarComementShow.text = "Car comment: \n"+ date.comments
-
         }
 
 

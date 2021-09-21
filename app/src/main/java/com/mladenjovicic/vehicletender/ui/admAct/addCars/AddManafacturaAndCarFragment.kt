@@ -44,7 +44,7 @@ class AddManafacturaAndCarFragment : Fragment(), AdapterView.OnItemSelectedListe
            if(editTextAddNewManufacturer?.text!!.isNotEmpty()){
                viewModel.addManufacturerJSON(999, editTextAddNewManufacturer.text.toString())
                viewModel.getNewManufacturerObserver().observe(requireActivity(), Observer<ManufacturerModelAPI?>{
-                   if(it.ManufacturerName!="null"){
+                   if(it!=null){
                        Toast.makeText(requireContext(), "Request is successful", Toast.LENGTH_SHORT).show()
                        viewModel.addManufacturer(it.ID!!, it.ManufacturerName!!)
                        editTextAddNewManufacturer?.text?.clear()
@@ -91,7 +91,7 @@ class AddManafacturaAndCarFragment : Fragment(), AdapterView.OnItemSelectedListe
                 viewModel.addCarModelJSON(999, editTextAddModelName.text.toString(), editTextModelNumber.text.toString(), idMan)
 
                 viewModel.getNewCarModelObserver().observe(requireActivity(), Observer<CarModelApi?>{
-                    if(it.ModelName != "null"){
+                    if(it != null){
                         Toast.makeText(requireContext(), "Request is successful", Toast.LENGTH_SHORT).show()
                         viewModel.addCarModel(it.ID!!,it.ModelName!!,it.ModelName!!, it.ManufacturerId!!)
                         editTextAddModelName?.text?.clear()

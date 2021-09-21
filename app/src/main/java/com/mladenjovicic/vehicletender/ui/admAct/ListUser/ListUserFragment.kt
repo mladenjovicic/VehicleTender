@@ -29,8 +29,6 @@ class ListUserFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        //viewModel = ViewModelsProviderUtils.get(this)
-      //  viewModel = ViewModelProvider(this).get(ListUserViewModel::class.java)
         viewModel = ViewModelsProviderUtils.getListUserViewModel(this)
         viewModel.getUsersList(requireContext())
         initRecyclerViewAllUser()

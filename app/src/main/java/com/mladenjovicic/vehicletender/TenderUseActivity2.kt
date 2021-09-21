@@ -57,7 +57,7 @@ class TenderUseActivity2 : AppCompatActivity() {
 
     private fun initRecyclerViewCarsForSelling(){
         val recyclerViewRecyclerViewCarsForSelling = findViewById<RecyclerView>(R.id.recyclerViewrecyclerViewCarsForSelling)
-        recyclerViewCarsForSelling = CarsForSellingAdapter(this)
+        recyclerViewCarsForSelling = CarsForSellingAdapter(this, viewModel)
         recyclerViewRecyclerViewCarsForSelling?.adapter = recyclerViewCarsForSelling
     }
 

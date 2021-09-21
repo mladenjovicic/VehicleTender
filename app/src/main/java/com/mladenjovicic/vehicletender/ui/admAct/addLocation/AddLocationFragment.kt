@@ -60,7 +60,7 @@ class AddLocationFragment : Fragment() {
 
         viewModel.getNewLocationObserver().observe(requireActivity(), Observer<LocationModelAPI?>{
 
-                if(it.city!="null"){
+                if(it!=null){
                     Toast.makeText(requireContext(), "Request is successful", Toast.LENGTH_SHORT).show()
                     viewModel.addNewLocation(it.id!!, it.city.toString(), it.zipCOde.toString())
                     editTextNameNewLocation!!.text.clear()

@@ -23,7 +23,7 @@ interface RetrofitInterface {
 
     @Headers("Content-Type: application/json")
     @POST("Status")
-    fun CreateLocation(@Body newStatus:StatusModelAPI):Call<StatusModelAPI>
+    fun CreateStatus(@Body newStatus:StatusModelAPI):Call<StatusModelAPI>
 
     @GET("Manufacturer")
     fun getManufacturerList():Call<List<ManufacturerModelAPI>>
@@ -65,14 +65,14 @@ interface RetrofitInterface {
 
     @Headers("Content-Type: application/json")
     @POST("tenderStock")
-    fun CreateTenderStock(@Body newStockInfoModelAPI: StockInfoModelAPI):Call<StockInfoModelAPI>
+    fun CreateTenderStock(@Body newStockInfoModelAPI: TenderStockModelAPI):Call<TenderStockModelAPI>
 
     @GET("tenderUser")
     fun getTenderUser():Call<List<TenderUserModelAPI>>
 
     @Headers("Content-Type: application/json")
     @POST("tenderUser")
-    fun CreateTenderUser(@Body newStockInfoModelAPI: StockInfoModelAPI):Call<TenderUserModelAPI>
+    fun CreateTenderUser(@Body newStockInfoModelAPI: TenderUserModelAPI):Call<TenderUserModelAPI>
 
 
 }

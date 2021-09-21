@@ -3,6 +3,7 @@ package com.mladenjovicic.vehicletender.ui.tender
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import com.mladenjovicic.vehicletender.data.model.db.TenderModelDB
+import com.mladenjovicic.vehicletender.data.model.db.TenderStockModelDB
 import com.mladenjovicic.vehicletender.data.model.db.stockCarList
 import com.mladenjovicic.vehicletender.data.repository.TenderUseRepositroy
 
@@ -19,5 +20,16 @@ class TenderUseViewModel(private val tenderUseRepositroy: TenderUseRepositroy):V
     fun getStockCarList(isSold:Boolean):LiveData<List<stockCarList>>?{
         stockCarList = tenderUseRepositroy.getCarStockListActive(isSold)
         return stockCarList
+    }
+
+    fun setSelected(){
+
+    }
+
+    fun insertTenderStock(id:Int, tenderId:String, saleDate:String){
+       tenderUseRepositroy.insertTenderStock(id, tenderId, saleDate)
+    }
+    fun deleteTenderStock(id:Int, tenderId: String, saleDate: String){
+        tenderUseRepositroy.deleteTenderStock(id, tenderId, saleDate)
     }
 }

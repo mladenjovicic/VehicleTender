@@ -86,7 +86,7 @@ class addTenderFragment : Fragment(), AdapterView.OnItemSelectedListener {
             if (editTextDateOpenDate?.text!!.isNotEmpty()&&editTextDateCloseDate?.text!!.isNotEmpty()){
                 viewModel.addTenderJSON(999,System.currentTimeMillis().toString(),sharedPreferences.getString("uuidUser", "null").toString(),UUID.randomUUID().toString(), editTextDateOpenDate.text.toString(), editTextDateCloseDate.text.toString(), tenderStatus )
                 viewModel.getNewTenderObserver().observe(requireActivity(), Observer<TenderModelAPI?>{
-                    if (it.createdBy !="null"){
+                    if (it !=null){
                         Toast.makeText(requireContext(), "Request is successful", Toast.LENGTH_SHORT).show()
                         viewModel.addTender(it.id!!, it.createdDate!!, it.createdBy!!, it.tenderNo!!, it.openDate!!, it.closeDate!!, it.statusId!!)
                         editTextDateOpenDate.text.clear()

@@ -3,6 +3,8 @@ package com.mladenjovicic.vehicletender.data.repository.db
 import android.content.Context
 import androidx.lifecycle.LiveData
 import com.mladenjovicic.vehicletender.data.db.DatabaseService
+import com.mladenjovicic.vehicletender.data.db.RoomDB
+import com.mladenjovicic.vehicletender.data.db.VTDatabase
 import com.mladenjovicic.vehicletender.data.model.db.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.IO
@@ -21,6 +23,19 @@ class LocalRepository(private val databaseService: DatabaseService) {
     var status: LiveData<List<StatusModelDB>>? = null
     var tenderModelDBList: LiveData<List<TenderModelDB>>? = null
     var tenderModelDB: LiveData<TenderModelDB>? = null
+    companion object{
+        var databaseService:DatabaseService?= null
+
+        fun initializeDB(context: Context): DatabaseService {
+        return  DatabaseService.getInstance(context)
+        }
+
+        fun delete(){
+
+        }
+
+    }
+
 
     fun insertDataLocation(id:Int ,city: String, zipCode: String) {
         CoroutineScope(IO).launch {
@@ -227,5 +242,8 @@ class LocalRepository(private val databaseService: DatabaseService) {
             val tenderUserInsert = TenderUserModelDB(tenderId, userId)
             databaseService.tenderUserDAO.InsertTenderUser(tenderUserInsert)
         }
+    }
+    fun deleteTenderStock(id:Int, tenderId:String, saleDate:String){
+        databaseService.tenderStockDAO.deleteTenderStock(id, tenderId)
     }
 }

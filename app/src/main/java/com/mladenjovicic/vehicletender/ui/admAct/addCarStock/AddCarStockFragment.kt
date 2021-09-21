@@ -16,14 +16,6 @@ class AddCarStockFragment : Fragment(), AdapterView.OnItemSelectedListener {
     var carLocation = 0
     var carBrand:Int =0
 
-
-
-
-
-    //private val changeSupport: PropertyChangeSupport?= PropertyChangeSupport(carBrand)
-
-
-
     companion object {
         fun newInstance() = AddCarStockFragment()
     }
@@ -40,9 +32,6 @@ class AddCarStockFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-
-
-       // viewModel = ViewModelProvider(this).get(AddCarStockViewModel::class.java)
 
         viewModel = ViewModelsProviderUtils.addCarStock(this)
         addCarStock()
@@ -104,7 +93,7 @@ class AddCarStockFragment : Fragment(), AdapterView.OnItemSelectedListener {
                 viewModel.addCarStockJSON(999, editTextCarYear?.text.toString().toInt(),carBrand,editTextCarMileage.text.toString().toDouble(),
                     editTextCarPrice.text.toString().toDouble(),editTextCarComment.text.toString(), carLocation,editTextCarReg.text.toString(),false)
                 viewModel.getNewCarStockObserver().observe(requireActivity(), Observer<StockInfoModelAPI?> {
-                    if(it.regNo!="null"){
+                    if(it!=null){
                         Toast.makeText(requireContext(), "Request is successful", Toast.LENGTH_SHORT).show()
                         viewModel.addCarStock(it.id!!, it.year!!,it.modelLineId!!, it.mileage!!,it.price!!,it.comments!!,it.locationId!!,it.regNo!!, it.isSold!!)
                         editTextCarYear.text.clear()
