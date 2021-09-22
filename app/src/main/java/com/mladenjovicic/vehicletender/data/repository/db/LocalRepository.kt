@@ -23,19 +23,9 @@ class LocalRepository(private val databaseService: DatabaseService) {
     var status: LiveData<List<StatusModelDB>>? = null
     var tenderModelDBList: LiveData<List<TenderModelDB>>? = null
     var tenderModelDB: LiveData<TenderModelDB>? = null
-    companion object{
-        var databaseService:DatabaseService?= null
-
-        fun initializeDB(context: Context): DatabaseService {
-        return  DatabaseService.getInstance(context)
-        }
-
-        fun delete(){
-
-        }
-
-    }
-
+    var bidModelDB:LiveData<List<BidModelDB>>? = null
+    var tenderStockModelDB:LiveData<List<TenderStockModelDB>>?= null
+    var tenderFullListID:LiveData<List<TenderFullListID>>?=null
 
     fun insertDataLocation(id:Int ,city: String, zipCode: String) {
         CoroutineScope(IO).launch {
@@ -147,6 +137,11 @@ class LocalRepository(private val databaseService: DatabaseService) {
         }
     }
 
+    fun getBid():LiveData<List<BidModelDB>>?{
+        bidModelDB = databaseService.bidDAO.getBid()
+        return bidModelDB
+    }
+
     fun insertStatus(id:Int, statusType: String) {
         CoroutineScope(IO).launch {
             val statusInsert = StatusModelDB(id, statusType)
@@ -236,6 +231,10 @@ class LocalRepository(private val databaseService: DatabaseService) {
             databaseService.tenderStockDAO.InsertTenderStock(tenderStockInsert)
         }
     }
+    fun getTenderStock():LiveData<List<TenderStockModelDB>>?{
+        tenderStockModelDB= databaseService.tenderStockDAO.getTenderStock()
+        return tenderStockModelDB
+    }
 
     fun insertTenderUser(tenderId: Int, userId: String) {
         CoroutineScope(IO).launch {
@@ -245,5 +244,10 @@ class LocalRepository(private val databaseService: DatabaseService) {
     }
     fun deleteTenderStock(id:Int, tenderId:String, saleDate:String){
         databaseService.tenderStockDAO.deleteTenderStock(id, tenderId)
+    }
+
+    fun getTenderFullListID(tenderId: String):LiveData<List<TenderFullListID>>?{
+        tenderFullListID = databaseService.tenderStockDAO.getTenderID(tenderId)
+        return tenderFullListID
     }
 }

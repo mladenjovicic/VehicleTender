@@ -2,7 +2,6 @@ package com.mladenjovicic.vehicletender
 
 import com.mladenjovicic.vehicletender.ui.login.LoginViewModel
 import androidx.fragment.app.FragmentActivity
-import androidx.lifecycle.ReportFragment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.mladenjovicic.vehicletender.ui.admAct.ListCarStock.ListCarStockFragment
@@ -21,10 +20,12 @@ import com.mladenjovicic.vehicletender.ui.admAct.addUser.AddUserFragment
 import com.mladenjovicic.vehicletender.ui.admAct.addUser.AddUserViewModel
 import com.mladenjovicic.vehicletender.ui.admAct.listTender.ListTenderFragment
 import com.mladenjovicic.vehicletender.ui.admAct.listTender.ListTenderViewModel
+import com.mladenjovicic.vehicletender.ui.fragmentuserbidtender.UserBidTenderViewModel
+import com.mladenjovicic.vehicletender.ui.fragmentuserbidtender.fragmentUserBidTender
 import com.mladenjovicic.vehicletender.ui.mainAct.history.HistoryFragment
 import com.mladenjovicic.vehicletender.ui.mainAct.history.SecViewModel
-import com.mladenjovicic.vehicletender.ui.mainAct.main.MainFragment
-import com.mladenjovicic.vehicletender.ui.mainAct.main.MainViewModel
+import com.mladenjovicic.vehicletender.ui.mainAct.main.UserHomeFragment
+import com.mladenjovicic.vehicletender.ui.mainAct.main.UserHomeViewModel
 import com.mladenjovicic.vehicletender.ui.mainAct.reports.ReportsFragment
 import com.mladenjovicic.vehicletender.ui.mainAct.reports.ReportsViewModel
 import com.mladenjovicic.vehicletender.ui.tender.TenderUseViewModel
@@ -37,6 +38,13 @@ object ViewModelsProviderUtils {
     class LoginViewModelFactory : ViewModelProvider.Factory {
         override fun <T : ViewModel> create(modelClass: Class<T>): T { return InjectorUtils.getLoginViewModel() as T }
     }
+    fun getUserBidViewModel(activity: fragmentUserBidTender) =
+        ViewModelProvider(activity, UserBidViewModelFactory()).get(UserBidTenderViewModel::class.java)
+
+    class UserBidViewModelFactory : ViewModelProvider.Factory {
+        override fun <T : ViewModel> create(modelClass: Class<T>): T { return InjectorUtils.getUserBidViewModel() as T }
+    }
+
 
     fun getTenderViewModel(activity: FragmentActivity)=
         ViewModelProvider(activity, TenderUseViewModelFactory()).get(TenderUseViewModel::class.java)
@@ -111,8 +119,8 @@ object ViewModelsProviderUtils {
     class ReportsViewModelFactory:ViewModelProvider.Factory{
         override fun <T : ViewModel> create(modelClass: Class<T>): T { return InjectorUtils.getReportsViewModel() as T }
     }
-    fun mainUser(activity: MainFragment)=
-        ViewModelProvider(activity, mainViewModelFactory()).get(MainViewModel::class.java)
+    fun mainUser(activity: UserHomeFragment)=
+        ViewModelProvider(activity, mainViewModelFactory()).get(UserHomeViewModel::class.java)
 
     class mainViewModelFactory:ViewModelProvider.Factory{
         override fun <T : ViewModel> create(modelClass: Class<T>): T { return InjectorUtils.getMainViewModel() as T }

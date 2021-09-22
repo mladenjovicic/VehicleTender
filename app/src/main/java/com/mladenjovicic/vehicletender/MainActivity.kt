@@ -9,7 +9,7 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.mladenjovicic.vehicletender.ui.mainAct.main.MainFragment
+import com.mladenjovicic.vehicletender.ui.mainAct.main.UserHomeFragment
 import com.mladenjovicic.vehicletender.ui.mainAct.reports.ReportsFragment
 import com.mladenjovicic.vehicletender.ui.mainAct.history.HistoryFragment
 
@@ -20,13 +20,13 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
-        val mainFragment = MainFragment()
+        val mainFragment = UserHomeFragment()
         val reportsFragment = ReportsFragment()
         val historyFragment= HistoryFragment()
 
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
-                    .replace(R.id.containerTenderss, MainFragment.newInstance())
+                    .replace(R.id.containerTenderss, UserHomeFragment.newInstance())
                     .commitNow()
             bottomNavigationView.setSelectedItemId(R.id.home)
         }

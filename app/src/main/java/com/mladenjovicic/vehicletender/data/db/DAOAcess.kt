@@ -113,6 +113,8 @@ interface DAOAcessBid{
 
     @Query("select * from bid")
     fun getBid(): LiveData<List<BidModelDB>>
+
+
 }
 
 @Dao
@@ -128,6 +130,11 @@ interface  DAOAcessTenderStock{
 
     @Query("delete from tenderStock where stockId =:stockId and tenderId = :tenderId")
     fun deleteTenderStock(stockId:Int, tenderId:String)
+
+    @Query("select tenderStock.id, tenderStock.stockId, tenderStock.tenderId, tenderStock.saleDate,stockInfo.id as stockInfoId, stockInfo.year, stockInfo.mileage, stockInfo.price, stockInfo.comments, stockInfo.regNo, stockInfo.isSold, location.city, location.zipCOde, car_models.model_name, car_models.model_no, manufacturer.manufacturer_name  from tenderStock left join stockInfo on tenderStock.stockId =  stockInfo.id left join location on stockInfo.locationId = location.idServer left join car_models on stockInfo.modelLineId = car_models.IdServer left join manufacturer on car_models.manufacturer_id = manufacturer.IdServer where tenderId = :tenderId")
+    fun getTenderID(tenderId:String):LiveData<List<TenderFullListID>>
+
+
 }
 
 @Dao

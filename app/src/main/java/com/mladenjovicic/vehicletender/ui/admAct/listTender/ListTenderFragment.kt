@@ -30,7 +30,6 @@ class ListTenderFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        //viewModel = ViewModelProvider(this).get(ListTenderViewModel::class.java)
         viewModel = ViewModelsProviderUtils.getListTender(this)
         val recyclerViewListActivesTender= view?.findViewById<RecyclerView>(R.id.recyclerViewListActivesTender)
         val recyclerViewListCloseTender= view?.findViewById<RecyclerView>(R.id.recyclerViewListCloseTender)

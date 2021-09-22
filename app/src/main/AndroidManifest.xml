@@ -2,20 +2,20 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.mladenjovicic.vehicletender">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
-        android:usesCleartextTraffic="true"
+        android:name=".VTApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.VehicleTender"
-        android:name=".VTApplication">
-
-        <activity android:name=".TenderUseActivity2"></activity>
+        android:usesCleartextTraffic="true">
+        <activity android:name=".UserBidTender"></activity>
+        <activity android:name=".TenderUseActivity2" />
         <activity android:name=".TenderActivity" />
         <activity android:name=".ui.TenderActivity" />
         <activity android:name=".UpdateUserActivity" />

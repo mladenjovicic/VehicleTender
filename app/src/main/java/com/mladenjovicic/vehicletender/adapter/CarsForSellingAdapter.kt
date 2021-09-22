@@ -34,13 +34,11 @@ class CarsForSellingAdapter(val activity: Activity,  val viewModel: TenderUseVie
 
     override fun onBindViewHolder(holder: CarsForSellingAdapter.MyViewHolder, position: Int) {
         holder.bind(carForSellingList?.get(position)!!, activity)
-        var click = 1
+        var click = 0
         holder.imageButtonAdd.setOnClickListener {
+            viewModel.deleteTenderStock(carForSellingList!![position].Id!!,tenderId,saleDate)
 
             var tenderStock:TenderStockModelDB?=null
-
-
-
 
             tenderStock = TenderStockModelDB(carForSellingList!![position].Id!!, tenderId, saleDate)
             println("dev21" + tenderStock)
@@ -48,10 +46,8 @@ class CarsForSellingAdapter(val activity: Activity,  val viewModel: TenderUseVie
             if(click == 1){
                 CoroutineScope(Dispatchers.IO).launch {
                     viewModel.deleteTenderStock(carForSellingList!![position].Id!!,tenderId,saleDate)
-
                 }
             CoroutineScope(Dispatchers.IO).launch {
-            dbRepositoryOld.roomDB?.tenderStockDAO()?.InsertTenderStock(tenderStock)
                 click = 0
             }
                 Toast.makeText(holder.itemView.context,"Add car in Tender stock", Toast.LENGTH_SHORT).show()
@@ -70,8 +66,6 @@ class CarsForSellingAdapter(val activity: Activity,  val viewModel: TenderUseVie
         if(carForSellingList == null)return 0
         else return carForSellingList?.size!!
     }
-
-
 
     class MyViewHolder(itemView: View):RecyclerView.ViewHolder(itemView){
 

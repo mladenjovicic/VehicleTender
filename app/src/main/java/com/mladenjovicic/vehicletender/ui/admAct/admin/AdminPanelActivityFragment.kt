@@ -7,7 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.mladenjovicic.vehicletender.R
-import com.mladenjovicic.vehicletender.ui.mainAct.main.MainViewModel
+import com.mladenjovicic.vehicletender.ui.mainAct.main.UserHomeViewModel
 
 class AdminPanelActivityFragment : Fragment() {
 
@@ -15,7 +15,7 @@ class AdminPanelActivityFragment : Fragment() {
         fun newInstance() = AdminPanelActivityFragment()
     }
 
-    private lateinit var viewModel: MainViewModel
+    private lateinit var viewModel: UserHomeViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -26,7 +26,7 @@ class AdminPanelActivityFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
+        viewModel = ViewModelProvider(this).get(UserHomeViewModel::class.java)
         // TODO: Use the ViewModel
     }
 

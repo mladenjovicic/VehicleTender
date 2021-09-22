@@ -12,7 +12,7 @@ import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
 
 class dbRepositoryOld {
-    companion object{
+    /*companion object{
         var roomDB:RoomDB?= null
         var locationModelDB:LiveData<List<LocationModelDB>>?= null
         var checkLocationModelDB:LiveData<LocationModelDB>?= null
@@ -212,6 +212,6 @@ class dbRepositoryOld {
         }
     }
 
-
+*/
 }
 

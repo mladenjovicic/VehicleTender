@@ -1,8 +1,6 @@
 package com.mladenjovicic.vehicletender
 
 import android.content.Context
-import androidx.lifecycle.ReportFragment
-import com.mladenjovicic.vehicletender.data.API.RetrofitInstance
 import com.mladenjovicic.vehicletender.data.API.RetrofitInstanceN
 import com.mladenjovicic.vehicletender.data.API.RetrofitService
 import com.mladenjovicic.vehicletender.data.db.DatabaseService
@@ -12,17 +10,14 @@ import com.mladenjovicic.vehicletender.ui.admAct.ListCarStock.ListCarStockViewMo
 import com.mladenjovicic.vehicletender.ui.admAct.ListUser.ListUserViewModel
 import com.mladenjovicic.vehicletender.ui.admAct.addCarStock.AddCarStockViewModel
 import com.mladenjovicic.vehicletender.ui.admAct.addCars.AddManafacturaAndCarViewModel
-import com.mladenjovicic.vehicletender.ui.admAct.addLocation.AddLocationFragment
 import com.mladenjovicic.vehicletender.ui.admAct.addLocation.AddLocationViewModel
 import com.mladenjovicic.vehicletender.ui.admAct.addTender.AddTenderViewModel
 import com.mladenjovicic.vehicletender.ui.admAct.addUser.AddUserViewModel
 import com.mladenjovicic.vehicletender.ui.admAct.listTender.ListTenderViewModel
+import com.mladenjovicic.vehicletender.ui.fragmentuserbidtender.UserBidTenderViewModel
 import com.mladenjovicic.vehicletender.ui.login.LoginViewModel
-import com.mladenjovicic.vehicletender.ui.mainAct.history.HistoryFragment
 import com.mladenjovicic.vehicletender.ui.mainAct.history.SecViewModel
-import com.mladenjovicic.vehicletender.ui.mainAct.main.MainFragment
-import com.mladenjovicic.vehicletender.ui.mainAct.main.MainViewModel
-import com.mladenjovicic.vehicletender.ui.mainAct.reports.ReportsFragment
+import com.mladenjovicic.vehicletender.ui.mainAct.main.UserHomeViewModel
 import com.mladenjovicic.vehicletender.ui.mainAct.reports.ReportsViewModel
 import com.mladenjovicic.vehicletender.ui.tender.TenderUseViewModel
 import com.mladenjovicic.vehicletender.ui.updateUser.UserUpdateViewModel
@@ -41,6 +36,9 @@ object  InjectorUtils {
     private val loginRepository by lazy { LoginRepository(retrofitService, localRepository) }
 
     fun getLoginViewModel() = LoginViewModel(loginRepository)
+
+    private val userBidRepositroy by lazy {UserBidRepository(retrofitService, localRepository)}
+    fun getUserBidViewModel() = UserBidTenderViewModel(userBidRepositroy)
 
     private val tenderUseRepository by lazy { TenderUseRepositroy(retrofitService, localRepository)}
 
@@ -72,7 +70,7 @@ object  InjectorUtils {
 
     fun getHistoryViewModel() = SecViewModel(mainRepository)
 
-    fun getMainViewModel() =  MainViewModel(mainRepository)
+    fun getMainViewModel() =  UserHomeViewModel(mainRepository)
 
     fun getReportsViewModel() = ReportsViewModel(mainRepository)
 }
