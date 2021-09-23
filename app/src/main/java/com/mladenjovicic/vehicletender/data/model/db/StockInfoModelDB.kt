@@ -7,6 +7,9 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "stockInfo", indices = arrayOf(Index(value = arrayOf("regNo"), unique = true)))
 data class StockInfoModelDB(
+                            @ColumnInfo(name = "serverId")
+                            var serverId:Int,
+
                             @ColumnInfo(name ="year")
                      var year:Int,
                             @ColumnInfo(name ="modelLineId")

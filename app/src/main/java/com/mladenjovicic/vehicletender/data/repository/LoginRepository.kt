@@ -4,10 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.mladenjovicic.vehicletender.data.API.RetrofitService
 import com.mladenjovicic.vehicletender.data.model.RequestState
-import com.mladenjovicic.vehicletender.data.model.api.CarModelApi
-import com.mladenjovicic.vehicletender.data.model.api.LocationModelAPI
-import com.mladenjovicic.vehicletender.data.model.api.ManufacturerModelAPI
-import com.mladenjovicic.vehicletender.data.model.api.StatusModelAPI
+import com.mladenjovicic.vehicletender.data.model.api.*
 import com.mladenjovicic.vehicletender.data.model.db.LocationModelDB
 import com.mladenjovicic.vehicletender.data.model.db.UserModelDB
 import com.mladenjovicic.vehicletender.data.repository.db.LocalRepository
@@ -15,25 +12,50 @@ import com.mladenjovicic.vehicletender.data.repository.db.LocalRepository
 class LoginRepository(private val retrofitService: RetrofitService,
                       private val localRepository:LocalRepository) {
 
-    fun getLocations(
+    fun getLocationsJSON(
         livedata: MutableLiveData<List<LocationModelAPI>>,
         requestState: MutableLiveData<RequestState>
     ) = retrofitService.readLocaitonJSON(livedata, requestState)
 
-    fun getCarsModel(
+    fun getCarsModelJSON(
         livedata: MutableLiveData<List<CarModelApi>>,
         requestState: MutableLiveData<RequestState>
     ) = retrofitService.readCarModelJSON(livedata, requestState)
 
-    fun getManufacturer(
+    fun getManufacturerJSON(
         livedata: MutableLiveData<List<ManufacturerModelAPI>>,
         requestState: MutableLiveData<RequestState>
     )= retrofitService.readManufacturerJSON(livedata, requestState)
 
-    fun getStatus(
+    fun getStatusJSON(
                    livedata: MutableLiveData<List<StatusModelAPI>>,
                   requestState: MutableLiveData<RequestState>
     ) = retrofitService.readStatusJSON(livedata, requestState)
+
+    fun getTenderUserJSON(
+        livedata: MutableLiveData<List<TenderUserModelAPI>>,
+        requestState: MutableLiveData<RequestState>
+    )=retrofitService.readTenderUserJSON(livedata, requestState)
+
+    fun getTenderStockJSON(
+        livedata: MutableLiveData<List<TenderStockModelAPI>>,
+        requestState: MutableLiveData<RequestState>
+    )= retrofitService.readTenderStockJSON(livedata, requestState)
+
+    fun getBidJSON(
+        livedata: MutableLiveData<List<BidModelAPI>>,
+        requestState: MutableLiveData<RequestState>
+    )= retrofitService.readBidJSON(livedata, requestState)
+
+    fun getTenderJSON(
+        livedata: MutableLiveData<List<TenderModelAPI>>,
+        requestState: MutableLiveData<RequestState>
+    )= retrofitService.readTenderJSON(livedata, requestState)
+
+    fun getCarStockJSON(
+        livedata: MutableLiveData<List<StockInfoModelAPI>>,
+        requestState: MutableLiveData<RequestState>
+    ) = retrofitService.readCarStockJSON(livedata, requestState)
 
     fun addNewUser(
         uuid: String,
@@ -82,6 +104,42 @@ class LoginRepository(private val retrofitService: RetrofitService,
     fun addTenderStatus(id:Int, statusType: String) {
         localRepository.insertStatus(id, statusType)
     }
+
+    fun addTenderUser(serverId:Int, tenderId: String, userId: String){
+        localRepository.insertTenderUser(serverId, tenderId, userId)
+    }
+
+    fun addTenderStock(serverId: Int, stockId: Int, tenderId: String, saleDate: String){
+        localRepository.insertTenderStock(serverId, stockId,tenderId,saleDate)
+    }
+
+    fun addBid(serverId:Int, userId: String, stockId: Int, price: Double, isWinningPrice: Boolean){
+        localRepository.insertDataBid(serverId,userId, stockId, price, isWinningPrice)
+    }
+
+    fun addTender(
+        id:Int,
+        createdDate: String,
+        createdBy: String,
+        tenderNo: String,
+        openDate: String,
+        closeDate: String,
+        statusId: Int){
+        localRepository.insertDataTender(id, createdDate, createdBy, tenderNo, openDate, closeDate, statusId)
+    }
+    fun addCarStock(
+        serverId: Int,
+        year: Int,
+        modelLineId: Int,
+        mileage: Double,
+        price: Double,
+        comments: String,
+        locationId: Int,
+        regNo: String,
+        isSold: Boolean){
+        localRepository.insertStockInfo(serverId, year, modelLineId,mileage,price, comments, locationId, regNo, isSold)
+    }
+
 
     fun checkUser(email: String, password: String): LiveData<UserModelDB>? {
         return localRepository.getUserData(email, password)

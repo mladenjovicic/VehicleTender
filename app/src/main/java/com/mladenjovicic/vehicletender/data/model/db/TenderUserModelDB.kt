@@ -5,8 +5,10 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 @Entity(tableName = "tenderUser")
 data class TenderUserModelDB(
+                      @ColumnInfo(name = "serverId")
+                      var serverId:Int,
                       @ColumnInfo(name ="tenderId")
-                      var tenderId:Int,
+                      var tenderId:String,
                       @ColumnInfo(name ="userId")
                       var userId:String){
 

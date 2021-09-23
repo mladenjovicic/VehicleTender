@@ -20,7 +20,7 @@ data class TenderFullListID(@ColumnInfo(name ="id")
                             @ColumnInfo(name ="price")
                             var price:Double,
                             @ColumnInfo(name ="comments")
-                            var comments:String,
+                            var comments:String?,
                             @ColumnInfo(name ="regNo")
                             var regNo:String,
                             @ColumnInfo(name ="isSold")
@@ -30,12 +30,9 @@ data class TenderFullListID(@ColumnInfo(name ="id")
                             @ColumnInfo(name ="zipCOde")
                             var zipCOde:String,
                             @ColumnInfo(name ="model_name")
-                            var model_name:String,
+                            var model_name:String?,
                             @ColumnInfo(name ="model_no")
                             var model_no:String,
                             @ColumnInfo(name ="manufacturer_name")
                             var manufacturer_name:String) {
-    /*@PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = "tenderStockId")
-    var Id:Int?=null*/
 }

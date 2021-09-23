@@ -26,6 +26,7 @@ class LocalRepository(private val databaseService: DatabaseService) {
     var bidModelDB:LiveData<List<BidModelDB>>? = null
     var tenderStockModelDB:LiveData<List<TenderStockModelDB>>?= null
     var tenderFullListID:LiveData<List<TenderFullListID>>?=null
+    var stockCarUpdate:LiveData<List<stockCarUpdate>>?= null
 
     fun insertDataLocation(id:Int ,city: String, zipCode: String) {
         CoroutineScope(IO).launch {
@@ -130,9 +131,9 @@ class LocalRepository(private val databaseService: DatabaseService) {
         return carModelDB
     }
 
-    fun insertDataBid(userId: String, stockId: Int, price: Double, isWinningPrice: Boolean) {
+    fun insertDataBid(serverId:Int, userId: String, stockId: Int, price: Double, isWinningPrice: Boolean) {
         CoroutineScope(IO).launch {
-            val bidInsert = BidModelDB(userId, stockId, price, isWinningPrice)
+            val bidInsert = BidModelDB(serverId, userId, stockId, price, isWinningPrice)
             databaseService.bidDAO.InsertBid(bidInsert)
         }
     }
@@ -157,6 +158,7 @@ class LocalRepository(private val databaseService: DatabaseService) {
     }
 
     fun insertStockInfo(
+        serverId: Int,
         year: Int,
         modelLineId: Int,
         mileage: Double,
@@ -168,6 +170,7 @@ class LocalRepository(private val databaseService: DatabaseService) {
     ) {
         CoroutineScope(IO).launch {
             val stockInfoInsert = StockInfoModelDB(
+                serverId,
                 year,
                 modelLineId,
                 mileage,
@@ -198,6 +201,11 @@ class LocalRepository(private val databaseService: DatabaseService) {
         return stockCarList
     }
 
+    fun getCarStockListUpdate(isSold: Boolean):LiveData<List<stockCarUpdate>>?{
+        stockCarUpdate = databaseService.stockInfoDAO.getStockListCarUpdate(isSold)
+        return stockCarUpdate
+    }
+
     fun insertDataTender(
         id:Int,
         createdDate: String,
@@ -225,9 +233,9 @@ class LocalRepository(private val databaseService: DatabaseService) {
 
     }
 
-    fun insertTenderStock(stockId: Int, tenderId: String, saleDate: String) {
+    fun insertTenderStock(serverId: Int, stockId: Int, tenderId: String, saleDate: String) {
         CoroutineScope(IO).launch {
-            val tenderStockInsert = TenderStockModelDB(stockId, tenderId, saleDate)
+            val tenderStockInsert = TenderStockModelDB(serverId, stockId, tenderId, saleDate)
             databaseService.tenderStockDAO.InsertTenderStock(tenderStockInsert)
         }
     }
@@ -236,15 +244,17 @@ class LocalRepository(private val databaseService: DatabaseService) {
         return tenderStockModelDB
     }
 
-    fun insertTenderUser(tenderId: Int, userId: String) {
+    fun insertTenderUser(serverId:Int, tenderId: String, userId: String) {
         CoroutineScope(IO).launch {
-            val tenderUserInsert = TenderUserModelDB(tenderId, userId)
+            val tenderUserInsert = TenderUserModelDB(serverId, tenderId, userId)
             databaseService.tenderUserDAO.InsertTenderUser(tenderUserInsert)
         }
     }
     fun deleteTenderStock(id:Int, tenderId:String, saleDate:String){
         databaseService.tenderStockDAO.deleteTenderStock(id, tenderId)
     }
+
+
 
     fun getTenderFullListID(tenderId: String):LiveData<List<TenderFullListID>>?{
         tenderFullListID = databaseService.tenderStockDAO.getTenderID(tenderId)

@@ -24,7 +24,9 @@ class AdminRepository(private val retrofitService: RetrofitService,
      return localRepository.getDataManafactura()
   }
 
- fun addCarStock(year:Int,
+ fun addCarStock(
+     serverId: Int,
+     year:Int,
                     modedLineId:Int,
                     mileage:Double,
                     price:Double,
@@ -32,7 +34,7 @@ class AdminRepository(private val retrofitService: RetrofitService,
                     locationId:Int,
                     regNo:String,
                     isSold:Boolean  ){
-        localRepository.insertStockInfo( year,modedLineId,mileage,price,comments, locationId, regNo, isSold )
+        localRepository.insertStockInfo( serverId, year,modedLineId,mileage,price,comments, locationId, regNo, isSold )
  }
     fun getListLocation(): LiveData<List<LocationModelDB>>? {
         return localRepository.getListLocation()!!

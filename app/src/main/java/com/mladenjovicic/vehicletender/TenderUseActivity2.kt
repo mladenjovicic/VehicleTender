@@ -32,6 +32,7 @@ class TenderUseActivity2 : AppCompatActivity() {
 
         viewModel.getTenderBYTenderNo( tenderNo)
         viewModel.getStockCarList( false)
+        viewModel.getStockCarUpdate(false)
 
         initRecyclerViewCarsForSelling()
 
@@ -47,7 +48,7 @@ class TenderUseActivity2 : AppCompatActivity() {
             }
         })
 
-        viewModel.stockCarList?.observe(this, Observer {
+        viewModel.stockCarUpdate?.observe(this, Observer {
             recyclerViewCarsForSelling.setCarForSellingList(it)
             recyclerViewCarsForSelling.saleDate= saleDate
             recyclerViewCarsForSelling.tenderId = tenderNo

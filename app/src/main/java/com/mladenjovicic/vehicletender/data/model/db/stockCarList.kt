@@ -5,6 +5,8 @@ import androidx.room.ColumnInfo
 data class stockCarList(
                         @ColumnInfo(name = "id")
                         var Id:Int?=null,
+                        @ColumnInfo(name = "serverId")
+                        var serverId:Int,
                         @ColumnInfo(name ="year")
                         var year:Int,
                         @ColumnInfo(name ="mileage")

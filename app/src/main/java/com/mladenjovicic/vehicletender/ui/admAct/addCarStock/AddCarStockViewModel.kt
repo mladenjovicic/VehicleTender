@@ -23,7 +23,8 @@ class AddCarStockViewModel(private val AddCarStockRepositror: AdminRepository) :
     }
 
     fun addCarStock(
-        id:Int,
+
+        serverId:Int,
         year:Int,
         modedLineId:Int,
         mileage:Double,
@@ -32,7 +33,7 @@ class AddCarStockViewModel(private val AddCarStockRepositror: AdminRepository) :
         locationId:Int,
         regNo:String,
         isSold:Boolean){
-        AddCarStockRepositror.addCarStock(year,modedLineId,mileage,price,comments, locationId, regNo, isSold )
+        AddCarStockRepositror.addCarStock(serverId,year,modedLineId,mileage,price,comments, locationId, regNo, isSold )
     }
 
     fun getListLocation (): LiveData<List<LocationModelDB>>? {

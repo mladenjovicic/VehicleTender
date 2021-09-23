@@ -6,6 +6,8 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "tenderStock")
 data class TenderStockModelDB(
+        @ColumnInfo(name = "serverId")
+        var serverId:Int,
         @ColumnInfo(name ="stockId")
         var stockId:Int,
         @ColumnInfo(name ="tenderId")

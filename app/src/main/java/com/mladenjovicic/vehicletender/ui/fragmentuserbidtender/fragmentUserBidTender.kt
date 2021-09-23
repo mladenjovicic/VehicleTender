@@ -31,23 +31,26 @@ class fragmentUserBidTender : Fragment() {
         super.onActivityCreated(savedInstanceState)
         val sharedPreferences = requireActivity().getSharedPreferences("UserDate", Context.MODE_PRIVATE)
         var userStatus = sharedPreferences.getInt("status_user", 5)
+        var uuidUser = sharedPreferences.getString("uuidUser", "")
         viewModel = ViewModelsProviderUtils.getUserBidViewModel(this)
         viewModel.getTenderStock()
         var tenderNo = getActivity()?.intent?.extras?.get("tenderNo") as String
         var statusId = getActivity()?.intent?.extras?.get("statusId") as Int
         viewModel.getTenderFullListID(tenderNo)
-        initRecyclerVBidUser(userStatus,statusId)
+        initRecyclerVBidUser(userStatus,statusId, uuidUser!!)
         //var userId= intent!!.extras?.get("uuid") as String
 
         viewModel.tenderFullListID?.observe(requireActivity()){
+
+            if(it.isNotEmpty()){
             recyclerViewUserBidList.setTenderActivList(it)
-            recyclerViewUserBidList.notifyDataSetChanged()
+            recyclerViewUserBidList.notifyDataSetChanged()}
         }
     }
 
-    private fun initRecyclerVBidUser(userStatus:Int, tenderStatus:Int){
+    private fun initRecyclerVBidUser(userStatus:Int, tenderStatus:Int, uuidUser:String){
         val recyclerViewListCloseTender= view?.findViewById<RecyclerView>(R.id.recyclerViewUserBId)
-        recyclerViewUserBidList = BidAdapter(this,userStatus,tenderStatus)
+        recyclerViewUserBidList = BidAdapter(this,userStatus,tenderStatus, viewModel, uuidUser,requireActivity())
         recyclerViewListCloseTender?.adapter = recyclerViewUserBidList
     }
 

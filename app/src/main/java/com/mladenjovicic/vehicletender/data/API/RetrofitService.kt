@@ -1,17 +1,9 @@
 package com.mladenjovicic.vehicletender.data.API
 
-import android.content.Context
-import android.location.Location
 import android.util.Log
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.mladenjovicic.vehicletender.adapter.CarsStockAdapter
-import com.mladenjovicic.vehicletender.data.db.RoomDB
 import com.mladenjovicic.vehicletender.data.model.RequestState
 import com.mladenjovicic.vehicletender.data.model.api.*
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 //import okhttp3.Callback
 import retrofit2.Call
 import retrofit2.Response
@@ -243,8 +235,8 @@ class RetrofitService(private val retrofitInstance: RetrofitInstanceN) {
     fun addBidJSON(
         id: Int?,
         TUserId:String,
-        TStockId:String,
-        Price:String,
+        TStockId:Int,
+        Price:Double,
         IsWinningPrice:Boolean,
         liveData: MutableLiveData<BidModelAPI?>,
         requestState: MutableLiveData<RequestState>){

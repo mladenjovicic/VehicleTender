@@ -5,12 +5,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.lifecycle.liveData
 import androidx.recyclerview.widget.RecyclerView
 import com.mladenjovicic.vehicletender.R
 import com.mladenjovicic.vehicletender.data.model.db.TenderStockModelDB
 import com.mladenjovicic.vehicletender.data.model.db.stockCarList
-import com.mladenjovicic.vehicletender.data.repository.db.LocalRepository
-import com.mladenjovicic.vehicletender.data.repository.db.dbRepositoryOld
+import com.mladenjovicic.vehicletender.data.model.db.stockCarUpdate
 import com.mladenjovicic.vehicletender.ui.tender.TenderUseViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -18,8 +18,8 @@ import kotlinx.coroutines.launch
 
 class CarsForSellingAdapter(val activity: Activity,  val viewModel: TenderUseViewModel ): RecyclerView.Adapter<CarsForSellingAdapter.MyViewHolder>()  {
 
-    private var carForSellingList:List<stockCarList>?=null
-    fun setCarForSellingList(carStock: List<stockCarList>){
+    private var carForSellingList:List<stockCarUpdate>?=null
+    fun setCarForSellingList(carStock: List<stockCarUpdate>){
         this.carForSellingList = carStock
     }
     var saleDate = ""
@@ -36,28 +36,19 @@ class CarsForSellingAdapter(val activity: Activity,  val viewModel: TenderUseVie
         holder.bind(carForSellingList?.get(position)!!, activity)
         var click = 0
         holder.imageButtonAdd.setOnClickListener {
-            viewModel.deleteTenderStock(carForSellingList!![position].Id!!,tenderId,saleDate)
 
             var tenderStock:TenderStockModelDB?=null
-
-            tenderStock = TenderStockModelDB(carForSellingList!![position].Id!!, tenderId, saleDate)
-            println("dev21" + tenderStock)
-
-            if(click == 1){
-                CoroutineScope(Dispatchers.IO).launch {
-                    viewModel.deleteTenderStock(carForSellingList!![position].Id!!,tenderId,saleDate)
-                }
             CoroutineScope(Dispatchers.IO).launch {
-                click = 0
+                viewModel.insertTenderStock(carForSellingList!![position].serverId!!,carForSellingList!![position].serverId, tenderId,saleDate)
             }
-                Toast.makeText(holder.itemView.context,"Add car in Tender stock", Toast.LENGTH_SHORT).show()
-            }else{
-                click = 1
-                CoroutineScope(Dispatchers.IO).launch {
-                    viewModel.insertTenderStock(carForSellingList!![position].Id!!,tenderId,saleDate)
-                }
-                Toast.makeText(holder.itemView.context,"Remove car in Tender stock", Toast.LENGTH_SHORT).show()
-            }
+            Toast.makeText(holder.itemView.context,"Add car in Tender stock", Toast.LENGTH_SHORT).show()
+
+        }
+
+        holder.imageButtonRemove.setOnClickListener {
+            CoroutineScope(Dispatchers.IO).launch {
+            viewModel.deleteTenderStock(carForSellingList!![position].serverId!!,tenderId,saleDate)}
+            Toast.makeText(holder.itemView.context,"Remove car in Tender stock", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -84,7 +75,7 @@ class CarsForSellingAdapter(val activity: Activity,  val viewModel: TenderUseVie
         val imageButtonRemove = itemView.findViewById<ImageView>(R.id.imageButtonRemove)
 
 
-        fun bind(date:stockCarList, activity: Activity){
+        fun bind(date:stockCarUpdate, activity: Activity){
             imageButtonAdd.visibility = View.VISIBLE
             textViewManufacturerName.text ="Manufacturer: \n" +  date.manufacturer_name.toString()
             textViewModelName.text = "Model name: \n" + date.model_name
@@ -95,6 +86,14 @@ class CarsForSellingAdapter(val activity: Activity,  val viewModel: TenderUseVie
             textViewCarCityShow.text = "Car location: \n"+date.city
             textViewCarRegShow.text = "Car registration: \n" +date.regNo
             textViewCarComementShow.text = "Car comment: \n"+ date.comments
+            if(date.tenderId == null){
+                imageButtonAdd.visibility = View.VISIBLE
+                imageButtonRemove.visibility = View.GONE
+            }else{
+                imageButtonAdd.visibility = View.GONE
+                imageButtonRemove.visibility = View.VISIBLE
+            }
+
         }
 
 

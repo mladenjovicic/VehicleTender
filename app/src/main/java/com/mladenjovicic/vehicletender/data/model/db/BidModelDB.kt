@@ -6,6 +6,8 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "bid")
 data class BidModelDB(
+        @ColumnInfo(name="serverId")
+        var serverId:Int,
         @ColumnInfo(name ="userId")
         var userId:String,
         @ColumnInfo(name ="stockId")

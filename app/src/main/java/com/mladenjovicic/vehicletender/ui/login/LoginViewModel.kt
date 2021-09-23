@@ -4,13 +4,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.mladenjovicic.vehicletender.data.model.RequestState
-import com.mladenjovicic.vehicletender.data.model.api.CarModelApi
-import com.mladenjovicic.vehicletender.data.model.api.LocationModelAPI
-import com.mladenjovicic.vehicletender.data.model.api.ManufacturerModelAPI
-import com.mladenjovicic.vehicletender.data.model.api.StatusModelAPI
+import com.mladenjovicic.vehicletender.data.model.api.*
 import com.mladenjovicic.vehicletender.data.model.db.LocationModelDB
 import com.mladenjovicic.vehicletender.data.model.db.UserModelDB
 import com.mladenjovicic.vehicletender.data.repository.LoginRepository
+import kotlin.math.log
 
 class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel() {
         var userModelDB:LiveData<UserModelDB>?=null
@@ -20,27 +18,55 @@ class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel()
         val statusLiveData = MutableLiveData<List<StatusModelAPI>>()
         val manufacturerLiveData = MutableLiveData<List<ManufacturerModelAPI>>()
         val carModelLiveData= MutableLiveData<List<CarModelApi>>()
+        val tenderUserLiveData = MutableLiveData<List<TenderUserModelAPI>>()
+        val tenderStockLiveData = MutableLiveData<List<TenderStockModelAPI>>()
+        val bidLiveData = MutableLiveData<List<BidModelAPI>>()
+        val tenderLiveData = MutableLiveData<List<TenderModelAPI>>()
+        val carStockLiveData = MutableLiveData<List<StockInfoModelAPI>>()
         val requestState = MutableLiveData<RequestState>()
         init {
-            getLocations()
-            getStatus()
-            getCarModels()
-            getManufacturer()
+            getLocationsJSON()
+            getStatusJSON()
+            getCarModelsJSON()
+            getManufacturerJSON()
+
+            getTenderUserJSON()
+            getTenderStockJSON()
+            getBidJSON()
+            getTenderJSON()
+            getCarStockJSON()
+        }
+        private fun getCarStockJSON(){
+            loginRepository.getCarStockJSON(carStockLiveData, requestState)
+        }
+        private fun getTenderJSON(){
+            loginRepository.getTenderJSON(tenderLiveData,requestState)
+
+        }
+        private fun getBidJSON(){
+            loginRepository.getBidJSON(bidLiveData, requestState)
+        }
+        private fun getTenderStockJSON(){
+            loginRepository.getTenderStockJSON(tenderStockLiveData, requestState)
         }
 
-        private fun getLocations() {
-        loginRepository.getLocations(locationsLiveData, requestState)
+        private fun getTenderUserJSON(){
+            loginRepository.getTenderUserJSON(tenderUserLiveData,requestState)
         }
 
-        private fun getStatus(){
-            loginRepository.getStatus(statusLiveData, requestState)
+        private fun getLocationsJSON() {
+        loginRepository.getLocationsJSON(locationsLiveData, requestState)
         }
 
-        private fun getCarModels(){
-            loginRepository.getCarsModel(carModelLiveData, requestState)
+        private fun getStatusJSON(){
+            loginRepository.getStatusJSON(statusLiveData, requestState)
         }
-        private fun getManufacturer(){
-            loginRepository.getManufacturer(manufacturerLiveData, requestState)
+
+        private fun getCarModelsJSON(){
+            loginRepository.getCarsModelJSON(carModelLiveData, requestState)
+        }
+        private fun getManufacturerJSON(){
+            loginRepository.getManufacturerJSON(manufacturerLiveData, requestState)
         }
     fun addNewUser(
         uuid: String,
@@ -87,6 +113,40 @@ class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel()
         fun addCarList(id:Int, car: String) {
         loginRepository.addCarList(id, car)
         }
+
+        fun addTenderUser(serverID: Int, tenderId: String, userId: String){
+            loginRepository.addTenderUser(serverID, tenderId, userId)
+        }
+        fun addTenderStock(serverID: Int,stockId: Int, tenderId: String, saleDate: String){
+            loginRepository.addTenderStock(serverID,stockId,tenderId,saleDate)
+        }
+        fun addBid(serverID:Int, userId: String, stockId: Int, price: Double, isWinningPrice: Boolean){
+        loginRepository.addBid(serverID, userId, stockId, price, isWinningPrice)
+        }
+        fun addTender(
+            id:Int,
+            createdDate: String,
+            createdBy: String,
+            tenderNo: String,
+            openDate: String,
+            closeDate: String,
+            statusId: Int){
+            loginRepository.addTender(id, createdDate, createdBy, tenderNo, openDate, closeDate, statusId)
+        }
+
+        fun addCarStock(
+            serverID: Int,
+            year: Int,
+            modelLineId: Int,
+            mileage: Double,
+            price: Double,
+            comments: String,
+            locationId: Int,
+            regNo: String,
+            isSold: Boolean){
+            loginRepository.addCarStock(serverID,year, modelLineId, mileage, price, comments, locationId, regNo, isSold)
+        }
+
 
         fun addTenderStatus(id: Int, statusType: String) {
         loginRepository.addTenderStatus(id, statusType)

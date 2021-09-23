@@ -5,11 +5,13 @@ import androidx.lifecycle.ViewModel
 import com.mladenjovicic.vehicletender.data.model.db.TenderModelDB
 import com.mladenjovicic.vehicletender.data.model.db.TenderStockModelDB
 import com.mladenjovicic.vehicletender.data.model.db.stockCarList
+import com.mladenjovicic.vehicletender.data.model.db.stockCarUpdate
 import com.mladenjovicic.vehicletender.data.repository.TenderUseRepositroy
 
 class TenderUseViewModel(private val tenderUseRepositroy: TenderUseRepositroy):ViewModel() {
     var tenderModelDB:LiveData<TenderModelDB>?=null
     var stockCarList:LiveData<List<stockCarList>>?=null
+    var stockCarUpdate:LiveData<List<stockCarUpdate>>?=null
 
     fun getTenderBYTenderNo(tenderNo:String):LiveData<TenderModelDB>?{
         tenderModelDB = tenderUseRepositroy.getTenderNo(tenderNo)
@@ -22,12 +24,16 @@ class TenderUseViewModel(private val tenderUseRepositroy: TenderUseRepositroy):V
         return stockCarList
     }
 
+    fun getStockCarUpdate(isSold: Boolean):LiveData<List<stockCarUpdate>>?{
+        stockCarUpdate = tenderUseRepositroy.getCarStockUpdate(isSold)
+        return stockCarUpdate    }
+
     fun setSelected(){
 
     }
 
-    fun insertTenderStock(id:Int, tenderId:String, saleDate:String){
-       tenderUseRepositroy.insertTenderStock(id, tenderId, saleDate)
+    fun insertTenderStock(serverId:Int, id:Int, tenderId:String, saleDate:String){
+       tenderUseRepositroy.insertTenderStock(serverId, id, tenderId, saleDate)
     }
     fun deleteTenderStock(id:Int, tenderId: String, saleDate: String){
         tenderUseRepositroy.deleteTenderStock(id, tenderId, saleDate)
