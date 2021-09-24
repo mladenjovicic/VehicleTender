@@ -196,6 +196,7 @@ class RetrofitService(private val retrofitInstance: RetrofitInstanceN) {
             }
         })
     }
+
     fun addTenderStockJSON(
         id: Int?,
         stockId:Int,
@@ -303,7 +304,6 @@ class RetrofitService(private val retrofitInstance: RetrofitInstanceN) {
                 )
             }
         })
-
     }
 
     fun readLocaitonJSON(
@@ -602,4 +602,41 @@ class RetrofitService(private val retrofitInstance: RetrofitInstanceN) {
         })
 
     }
+
+    fun getToken(
+        username:String,
+        password:String,
+        liveData: MutableLiveData<GetTokenAPI?>,
+        requestState: MutableLiveData<RequestState>
+    ){
+        val service = RetrofitInstance.getRetrofit().create(RetrofitInterface::class.java)
+
+
+        service.getToken(RequestToken("password", username,password)).enqueue(object : retrofit2.Callback<GetTokenAPI> {
+            override fun onResponse(call: retrofit2.Call<GetTokenAPI>, response: Response<GetTokenAPI>) {
+                var newlyCreatedDestination = response.body()
+                if(response.code() == 201){
+                    println("Successfully Added"+newlyCreatedDestination.toString()+ " "+ response.code())
+                    requestState.postValue(RequestState.success)
+                    liveData.postValue(GetTokenAPI(response.body()!!.access_token, response.body()!!.token_type,response.body()!!.expires_in,response.body()!!.issued,response.body()!!.expires))
+                }else {
+
+                    liveData.postValue(null)
+                    Log.d("error post json", "error create locatio ${response.code()}")
+                    requestState.postValue(RequestState.failed)
+                }
+            }
+
+            override fun onFailure(call: retrofit2.Call<GetTokenAPI>, t: Throwable) {
+                requestState.postValue(
+                    RequestState(
+                        pending = false,
+                        successful = false,
+                        errorMessage = t.message.toString()
+                    )
+                )
+            }
+        })
+    }
+
 }

@@ -14,7 +14,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.VehicleTender"
         android:usesCleartextTraffic="true">
-        <activity android:name=".UserBidTender"></activity>
+        <activity android:name=".WinBidActivity"></activity>
+        <activity android:name=".UserBidTender" />
         <activity android:name=".TenderUseActivity2" />
         <activity android:name=".TenderActivity" />
         <activity android:name=".ui.TenderActivity" />

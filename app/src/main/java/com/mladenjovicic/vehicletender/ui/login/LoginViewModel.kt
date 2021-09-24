@@ -24,6 +24,7 @@ class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel()
         val tenderLiveData = MutableLiveData<List<TenderModelAPI>>()
         val carStockLiveData = MutableLiveData<List<StockInfoModelAPI>>()
         val requestState = MutableLiveData<RequestState>()
+        lateinit var  getTokenAPI: MutableLiveData<GetTokenAPI?>
         init {
             getLocationsJSON()
             getStatusJSON()
@@ -35,6 +36,18 @@ class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel()
             getBidJSON()
             getTenderJSON()
             getCarStockJSON()
+            getTokenAPI = MutableLiveData()
+        }
+
+         fun getTokenObserver():MutableLiveData<GetTokenAPI?>{
+             return getTokenAPI
+        }
+
+         fun getToken(
+            username:String,
+            password:String
+        ){
+            loginRepository.getToken(username, password, getTokenAPI, requestState)
         }
         private fun getCarStockJSON(){
             loginRepository.getCarStockJSON(carStockLiveData, requestState)

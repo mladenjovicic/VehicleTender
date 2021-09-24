@@ -31,10 +31,12 @@ class UsersListAdapter(val activity: Fragment):RecyclerView.Adapter<UsersListAda
             if(holder.userRow != null){
                 val intent = Intent(holder.userRow.context, UpdateUserActivity::class.java)
                 intent.putExtra("uuid", usersList!![position].uuId)
+                intent.putExtra("userLocation", usersList!![position].id_location)
                 holder.userRow.context.startActivity(intent)
             }else{
                 val intent = Intent(holder.textViewUserNameSurname?.context, UpdateUserActivity::class.java)
                 intent.putExtra("uuid", usersList!![position].uuId)
+                intent.putExtra("userLocation", usersList!![position].id_location)
                 holder.textViewUserNameSurname?.context!!.startActivity(intent)
             }
 

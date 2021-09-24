@@ -20,7 +20,7 @@ data class stockCarList(
                         @ColumnInfo(name ="isSold")
                         var isSold:Boolean,
                         @ColumnInfo(name ="city")
-                        var city:String,
+                        var city:String?,
                         @ColumnInfo(name ="model_name")
                         var model_name:String,
                         @ColumnInfo(name ="model_no")

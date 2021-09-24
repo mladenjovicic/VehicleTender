@@ -47,6 +47,7 @@ class AddCarStockViewModel(private val AddCarStockRepositror: AdminRepository) :
     fun getCarModelsID():LiveData<List<ManAndCarModel>>?{
         return AddCarStockRepositror.getCarModelsID()
     }
+
     fun addCarStockJSON(
         id: Int?,
         year:Int,

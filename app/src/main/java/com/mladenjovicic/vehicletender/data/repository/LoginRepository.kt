@@ -145,4 +145,11 @@ class LoginRepository(private val retrofitService: RetrofitService,
         return localRepository.getUserData(email, password)
     }
 
+    fun getToken(
+        username:String,
+        password:String,
+        liveData: MutableLiveData<GetTokenAPI?>,
+        requestState: MutableLiveData<RequestState>)=
+        retrofitService.getToken( username, password,liveData,requestState)
+
 }

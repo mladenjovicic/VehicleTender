@@ -53,31 +53,32 @@ class AddLocationFragment : Fragment() {
 
     }
     fun addLocationJSON(city:String, zipCode:String){
-        viewModel.addLocationJSON(70,city, zipCode)
+        val rnds = (0..9999).random()
+        viewModel.addLocationJSON(rnds,city, zipCode)
         val editTextNameNewLocation = view?.findViewById<EditText>(R.id.editTextNameNewLocation)
         val editTextSaveZipCodeNewLocation = view?.findViewById<EditText>(R.id.editTextSaveZipCodeNewLocation)
-
-
-        viewModel.getNewLocationObserver().observe(requireActivity(), Observer<LocationModelAPI?>{
-
-                if(it!=null){
-                    Toast.makeText(requireContext(), "Request is successful", Toast.LENGTH_SHORT).show()
-                    viewModel.addNewLocation(it.id!!, it.city.toString(), it.zipCOde.toString())
-                    editTextNameNewLocation!!.text.clear()
-                    editTextSaveZipCodeNewLocation!!.text.clear()
-                }else{
-                    Toast.makeText(requireContext(), "Request is error", Toast.LENGTH_SHORT).show()
-                }
-
-        })
 
         viewModel.requestState.observe(requireActivity()) {
             if(it.pending)
                 Log.e("Loading", "retrofit request is in progress, show loading spinner")
 
-            if(it.successful)
+            if(it.successful){
                 Log.e("Success", "retrofit request is successful")
+                var count = 0
+                viewModel.getNewLocationObserver().observe(requireActivity(), Observer<LocationModelAPI?>{
 
+                    if(it!=null){
+                        Toast.makeText(requireContext(), "Request is successful", Toast.LENGTH_SHORT).show()
+                        viewModel.addNewLocation(it.id!!, it.city.toString(), it.zipCOde.toString())
+                        editTextNameNewLocation!!.text.clear()
+                        editTextSaveZipCodeNewLocation!!.text.clear()
+                        viewModel.createNewLocation.postValue(null)
+                    }
+                })
+            }
+            else{
+                Toast.makeText(requireContext(), it.errorMessage.toString(), Toast.LENGTH_SHORT).show()
+            }
         }
     }
 

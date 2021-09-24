@@ -4,6 +4,8 @@ import androidx.room.ColumnInfo
 import androidx.room.PrimaryKey
 
 data class ManAndCarModel(
+         @ColumnInfo(name = "IdServer")
+        var IdServer:Int?=null,
         @ColumnInfo(name ="model_name")
         var model_name:String,
         @ColumnInfo(name ="model_no")

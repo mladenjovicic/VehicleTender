@@ -14,9 +14,9 @@ class UpdateUserActivity : AppCompatActivity(), AdapterView.OnItemSelectedListen
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_update_user)
-        //viewModel = ViewModelProvider(this).get(UserUpdateViewModel::class.java)
         viewModel = ViewModelsProviderUtils.getUpdteUserViewMode(this)
         var userId = ""
+        var userLocationId = "0"
         val textViewIDUserUpdate = findViewById<TextView>(R.id.textViewIDUserUpdate)
         val editTextUserNameUpdate = findViewById<EditText>(R.id.editTextUserNameUpdate)
         val editTextSurnameUserUpdate = findViewById<EditText>(R.id.editTextSurnameUserUpdate)
@@ -36,9 +36,18 @@ class UpdateUserActivity : AppCompatActivity(), AdapterView.OnItemSelectedListen
         val listLocation = this.let {
             ArrayAdapter<Any>(it, R.layout.spinner_item)
         }
+
+        var count = 0
+        userLocationId= intent!!.extras?.get("userLocation") as String
+
         viewModel.getListLocation()?.observe(this, Observer { location->
             location.forEach {
-                listLocation.add(it.city + " " + it.zipCOde)  }
+                listLocation.add(it.city + " " + it.zipCOde)
+                if (it.idServer == userLocationId.toInt() ){
+                    spinnerUserLocationUpdate.setSelection(count)
+                }
+                count++
+            }
         })
 
         listLocation.setDropDownViewResource(R.layout.spinner_dropdown_item)
@@ -59,23 +68,26 @@ class UpdateUserActivity : AppCompatActivity(), AdapterView.OnItemSelectedListen
                 editTextPhoneUpdate.setText(it.phone)
                 editTextCompanyUserUpdate.setText(it.company_name)
                 spinnerUserStatusUpdate.setSelection(it.status_user)
-                spinnerUserLocationUpdate.setSelection((it.id_location.toInt()))
-
             }
         })
-
 
         btnUpdateUser.setOnClickListener {
             viewModel.updateUser(userId, editTextUserNameUpdate.text.toString(),editTextSurnameUserUpdate.text.toString(), editTextEmailUserUpdate.text.toString(),editTextPasswordUpdate.text.toString(),statusUser, userLoc.toString(), editTextPhoneUpdate.text.toString(),editTextCompanyUserUpdate.text.toString()   )
         }
-
     }
 
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, pos: Int, id: Long) {
         when(parent?.id){
             R.id.spinnerUserStatusUpdate -> statusUser = pos
-            R.id.spinnerUserLocationUpdate-> userLoc = pos
+            R.id.spinnerUserLocationUpdate-> {getLocationID(pos)}
         }
+    }
+
+    fun getLocationID(pos: Int){
+        viewModel.getListLocation()?.observe(this, Observer { location->
+            location.forEach {
+                userLoc = location[pos].idServer!!}
+        })
     }
 
     override fun onNothingSelected(parent: AdapterView<*>?) {

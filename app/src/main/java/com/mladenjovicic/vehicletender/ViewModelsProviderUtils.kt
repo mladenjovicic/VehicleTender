@@ -4,6 +4,7 @@ import com.mladenjovicic.vehicletender.ui.login.LoginViewModel
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.mladenjovicic.vehicletender.adapter.BidWinAdapter
 import com.mladenjovicic.vehicletender.ui.admAct.ListCarStock.ListCarStockFragment
 import com.mladenjovicic.vehicletender.ui.admAct.ListCarStock.ListCarStockViewModel
 import com.mladenjovicic.vehicletender.ui.admAct.ListUser.ListUserFragment
@@ -20,8 +21,8 @@ import com.mladenjovicic.vehicletender.ui.admAct.addUser.AddUserFragment
 import com.mladenjovicic.vehicletender.ui.admAct.addUser.AddUserViewModel
 import com.mladenjovicic.vehicletender.ui.admAct.listTender.ListTenderFragment
 import com.mladenjovicic.vehicletender.ui.admAct.listTender.ListTenderViewModel
-import com.mladenjovicic.vehicletender.ui.fragmentuserbidtender.UserBidTenderViewModel
-import com.mladenjovicic.vehicletender.ui.fragmentuserbidtender.fragmentUserBidTender
+import com.mladenjovicic.vehicletender.ui.userBid.UserBidTenderViewModel
+import com.mladenjovicic.vehicletender.ui.userBid.fragmentUserBidTender
 import com.mladenjovicic.vehicletender.ui.mainAct.history.HistoryFragment
 import com.mladenjovicic.vehicletender.ui.mainAct.history.SecViewModel
 import com.mladenjovicic.vehicletender.ui.mainAct.main.UserHomeFragment
@@ -30,6 +31,8 @@ import com.mladenjovicic.vehicletender.ui.mainAct.reports.ReportsFragment
 import com.mladenjovicic.vehicletender.ui.mainAct.reports.ReportsViewModel
 import com.mladenjovicic.vehicletender.ui.tender.TenderUseViewModel
 import com.mladenjovicic.vehicletender.ui.updateUser.UserUpdateViewModel
+import com.mladenjovicic.vehicletender.ui.winBid.WinBidFragment
+import com.mladenjovicic.vehicletender.ui.winBid.WinBidViewModel
 
 object ViewModelsProviderUtils {
     fun getLoginViewModel(activity: FragmentActivity) =
@@ -43,6 +46,13 @@ object ViewModelsProviderUtils {
 
     class UserBidViewModelFactory : ViewModelProvider.Factory {
         override fun <T : ViewModel> create(modelClass: Class<T>): T { return InjectorUtils.getUserBidViewModel() as T }
+    }
+
+    fun getBidWinViewModel(activity: WinBidFragment) =
+        ViewModelProvider(activity, WinBidViewModelFactory()).get(WinBidViewModel::class.java)
+
+    class WinBidViewModelFactory : ViewModelProvider.Factory {
+        override fun <T : ViewModel> create(modelClass: Class<T>): T { return InjectorUtils.getWinBidViewModel() as T }
     }
 
 

@@ -78,8 +78,8 @@ class AddCarStockFragment : Fragment(), AdapterView.OnItemSelectedListener {
             ArrayAdapter<Any>(it, R.layout.spinner_item)
         }
 
-        viewModel.getCarModelsID()?.observe(viewLifecycleOwner,{ location->
-            location?.forEach {
+        viewModel.getCarModelsID()?.observe(viewLifecycleOwner,{ carModel->
+            carModel?.forEach {
                 listCarModels?.add(it.manufacturer_name+ ", "+it.model_name + " " + it.model_no)
 
             }
@@ -89,41 +89,62 @@ class AddCarStockFragment : Fragment(), AdapterView.OnItemSelectedListener {
         spinnerCarModel?.onItemSelectedListener = this
 
         btnAddStockCar?.setOnClickListener {
+            val rnds = (0..9999).random()
             if(editTextCarYear?.text!!.isNotEmpty() && editTextCarMileage?.text!!.isNotEmpty() && editTextCarPrice?.text!!.isNotEmpty()&&editTextCarReg?.text!!.isNotEmpty()&&editTextCarComment?.text!!.isNotEmpty()){
-                viewModel.addCarStockJSON(999, editTextCarYear?.text.toString().toInt(),carBrand,editTextCarMileage.text.toString().toDouble(),
+                viewModel.addCarStockJSON(rnds, editTextCarYear?.text.toString().toInt(),carBrand,editTextCarMileage.text.toString().toDouble(),
                     editTextCarPrice.text.toString().toDouble(),editTextCarComment.text.toString(), carLocation,editTextCarReg.text.toString(),false)
-                viewModel.getNewCarStockObserver().observe(requireActivity(), Observer<StockInfoModelAPI?> {
-                    if(it!=null){
-                        Toast.makeText(requireContext(), "Request is successful", Toast.LENGTH_SHORT).show()
-                        viewModel.addCarStock(it.id!!, it.year!!,it.modelLineId!!, it.mileage!!,it.price!!,it.comments!!,it.locationId!!,it.regNo!!, it.isSold!!)
-                        editTextCarYear.text.clear()
-                        editTextCarMileage.text.clear()
-                        editTextCarPrice.text.clear()
-                        editTextCarReg.text.clear()
-                        editTextCarComment.text.clear()
-                    }else{
-                        Toast.makeText(requireContext(), "Request is error", Toast.LENGTH_SHORT).show()
-                    }
-                })
+
+
                 viewModel.requestState.observe(requireActivity()) {
                     if(it.pending)
                         Log.e("Loading", "retrofit request is in progress, show loading spinner")
-                    if(it.successful)
+                    if(it.successful){
                         Log.e("Success", "retrofit request is successful")
+                        viewModel.getNewCarStockObserver().observe(requireActivity(), Observer<StockInfoModelAPI?> {
+                            if(it!=null){
+                                Toast.makeText(requireContext(), "Request is successful", Toast.LENGTH_SHORT).show()
+                                viewModel.addCarStock(it.id!!, it.year!!,it.modelLineId!!, it.mileage!!,it.price!!,it.comments!!,it.locationId!!,it.regNo!!, it.isSold!!)
+                                editTextCarYear.text.clear()
+                                editTextCarMileage.text.clear()
+                                editTextCarPrice.text.clear()
+                                editTextCarReg.text.clear()
+                                editTextCarComment.text.clear()
+                                viewModel.createNewCarStock.postValue(null)
+
+                            }
+                        })
+                    }
+                    else{
+                        Toast.makeText(requireContext(), it.errorMessage.toString(), Toast.LENGTH_SHORT).show()
+                    }
                 }
-            }else{
-                Toast.makeText(requireContext(), "Sva polja moraju biti popunjena", Toast.LENGTH_SHORT).show()
             }
         }
     }
 
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
         when(parent?.id){
-            R.id.spinnerCarLocation -> carLocation = position + 1
-            R.id.spinnerCarModel -> carBrand = position +1
+            R.id.spinnerCarLocation -> {getLocationId(position)}
+            R.id.spinnerCarModel -> {getCarModelId(position)}
         }
     }
+    fun getLocationId( pos:Int){
+        viewModel.getListLocation()?.observe(viewLifecycleOwner,{ location->
+            location?.forEach {
+                carLocation = location[pos].idServer!!
+                println("deb10" +   location[pos].idServer!! )
+            }
+        })
+    }
+    fun getCarModelId(pos: Int){
+        viewModel.getCarModelsID()?.observe(viewLifecycleOwner,{ carModel->
+            carModel?.forEach {
+                carBrand = carModel[pos].IdServer!!
+                println("deb11" +   carModel[pos].IdServer!! )
 
+            }
+        })
+    }
     override fun onNothingSelected(parent: AdapterView<*>?) {
     }
 }

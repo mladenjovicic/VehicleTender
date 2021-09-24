@@ -17,7 +17,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class addTenderFragment : Fragment(), AdapterView.OnItemSelectedListener {
-    var tenderStatus = 1
+    var tenderStatus = -1
 
     companion object {
         fun newInstance() = addTenderFragment()
@@ -84,32 +84,32 @@ class addTenderFragment : Fragment(), AdapterView.OnItemSelectedListener {
         spinnerTenderStatus?.onItemSelectedListener = this
         btnAddNewTender?.setOnClickListener {
             if (editTextDateOpenDate?.text!!.isNotEmpty()&&editTextDateCloseDate?.text!!.isNotEmpty()){
-                viewModel.addTenderJSON(999,System.currentTimeMillis().toString(),sharedPreferences.getString("uuidUser", "null").toString(),UUID.randomUUID().toString(), editTextDateOpenDate.text.toString(), editTextDateCloseDate.text.toString(), tenderStatus )
-                viewModel.getNewTenderObserver().observe(requireActivity(), Observer<TenderModelAPI?>{
-                    if (it !=null){
-                        Toast.makeText(requireContext(), "Request is successful", Toast.LENGTH_SHORT).show()
-                        viewModel.addTender(it.id!!, it.createdDate!!, it.createdBy!!, it.tenderNo!!, it.openDate!!, it.closeDate!!, it.statusId!!)
-                        editTextDateOpenDate.text.clear()
-                        editTextDateCloseDate.text.clear()
-                    }else{
-                        Toast.makeText(requireContext(), "Request error", Toast.LENGTH_SHORT).show()
-                    }
+                val rnds = (0..9999).random()
+                viewModel.addTenderJSON(rnds,System.currentTimeMillis().toString(),sharedPreferences.getString("uuidUser", "null").toString(),UUID.randomUUID().toString(), editTextDateOpenDate.text.toString(), editTextDateCloseDate.text.toString(), tenderStatus )
 
-                })
 
                 viewModel.requestState.observe(requireActivity()) {
                     if(it.pending)
                         Log.e("Loading", "retrofit request is in progress, show loading spinner")
 
-                    if(it.successful)
+                    if(it.successful){
                         Log.e("Success", "retrofit request is successful")
 
+                        viewModel.getNewTenderObserver().observe(requireActivity(), Observer<TenderModelAPI?>{
+                            if (it !=null){
+                                Toast.makeText(requireContext(), "Request is successful", Toast.LENGTH_SHORT).show()
+                                viewModel.addTender(it.id!!, it.createdDate!!, it.createdBy!!, it.tenderNo!!, it.openDate!!, it.closeDate!!, it.statusId!!)
+                                editTextDateOpenDate.text.clear()
+                                editTextDateCloseDate.text.clear()
+                                viewModel.createNewTender.postValue(null)
+                            }
+                        })
+                    }
                 }
             }else{
                 Toast.makeText(requireContext(), "Sva polja moja biti popunjena", Toast.LENGTH_SHORT).show()
             }
         }
-
     }
     private fun updateLabel(myCalendar: Calendar, dateEditText: EditText) {
         val myFormat: String = "YYYY-MM-dd"
@@ -119,13 +119,18 @@ class addTenderFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
         when(parent?.id){
-            R.id.spinnerTenderStatus ->  tenderStatus = position
-
+            R.id.spinnerTenderStatus ->  getStatusId(position)
         }
     }
 
-    override fun onNothingSelected(parent: AdapterView<*>?) {
+    fun getStatusId(pos:Int){
+        viewModel.getListStatus()?.observe(viewLifecycleOwner,{ status->
+            status?.forEach {
+                tenderStatus = status[pos].idServer!!
+            }
+        })
 
     }
-
+    override fun onNothingSelected(parent: AdapterView<*>?) {
+    }
 }

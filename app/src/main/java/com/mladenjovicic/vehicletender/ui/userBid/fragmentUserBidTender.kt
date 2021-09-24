@@ -1,7 +1,6 @@
-package com.mladenjovicic.vehicletender.ui.fragmentuserbidtender
+package com.mladenjovicic.vehicletender.ui.userBid
 
 import android.content.Context
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater

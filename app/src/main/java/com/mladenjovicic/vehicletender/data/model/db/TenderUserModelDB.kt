@@ -2,8 +2,9 @@ package com.mladenjovicic.vehicletender.data.model.db
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
+import androidx.room.Index
 import androidx.room.PrimaryKey
-@Entity(tableName = "tenderUser")
+@Entity(tableName = "tenderUser", indices = arrayOf(Index(value = arrayOf("serverId"), unique = true)))
 data class TenderUserModelDB(
                       @ColumnInfo(name = "serverId")
                       var serverId:Int,

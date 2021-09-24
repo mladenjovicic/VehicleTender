@@ -2,13 +2,13 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/fragment_user_bid_tender"
+    android:id="@+id/win_bid"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.userBid.fragmentUserBidTender">
+    tools:context=".ui.winBid.WinBidFragment">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerViewUserBId"
+        android:id="@+id/recyclerVIewWinBid"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>

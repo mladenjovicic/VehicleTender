@@ -1,7 +1,6 @@
 package com.mladenjovicic.vehicletender.adapter
 
-import android.app.Activity
-import android.content.Context
+import android.content.Intent
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -12,10 +11,9 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import com.mladenjovicic.vehicletender.R
+import com.mladenjovicic.vehicletender.WinBidActivity
 import com.mladenjovicic.vehicletender.data.model.db.TenderFullListID
-import com.mladenjovicic.vehicletender.data.model.db.TenderModelDB
-import com.mladenjovicic.vehicletender.data.model.db.TenderStockModelDB
-import com.mladenjovicic.vehicletender.ui.fragmentuserbidtender.UserBidTenderViewModel
+import com.mladenjovicic.vehicletender.ui.userBid.UserBidTenderViewModel
 
 class BidAdapter(val activity: Fragment, userStatus:Int, tenderStatus:Int, val viewModel:UserBidTenderViewModel, uuidUser:String, context: LifecycleOwner): RecyclerView.Adapter<BidAdapter.MyViewHolder>() {
     var userStatus = userStatus
@@ -36,33 +34,51 @@ class BidAdapter(val activity: Fragment, userStatus:Int, tenderStatus:Int, val v
     override fun onBindViewHolder(holder: BidAdapter.MyViewHolder, position: Int) {
         holder.bind(TenderStockList?.get(position)!!, activity, userStatus,tenderStatus)
         holder.btnAddBid.setOnClickListener {
+            if(userStatus == 0){
             if(holder.editTextPriceBid.text.isNotEmpty()) {
+                val rnds = (0..9999).random()
                 viewModel.inserBidJSON(
-                    99,
+                    rnds,
                     uuidUser,
                     TenderStockList!![position].stockId,
                     holder.editTextPriceBid.text.toString().toDouble(),
                     false
                 )
-                viewModel.getNewBidObserver().observe(context, Observer {
-                    println("devvv " + it.toString())
-                    if(it!=null){
-                        viewModel.insertBid(it?.ID!!, it?.TUserId!!, it.TStockId, it.Price, it?.IsWinningPrice!!)
-                        Toast.makeText(holder.rowCarBid.context, "Add new bid", Toast.LENGTH_SHORT).show()
-                    }
 
-                })
 
                 viewModel.requestState.observe(context) {
                     if(it.pending)
                         Log.e("Loading", "retrofit request is in progress, show loading spinner")
 
-                    if(it.successful)
+                    if(it.successful){
                         Log.e("Success", "retrofit request is successful")
+                        viewModel.getNewBidObserver().observe(context, Observer {
+                            println("devvv " + it.toString())
+                            if(it!=null){
+                                viewModel.insertBid(it?.ID!!, it?.TUserId!!, it.TStockId, it.Price, it?.IsWinningPrice!!)
+                                Toast.makeText(holder.rowCarBid.context, "Add new bid", Toast.LENGTH_SHORT).show()
+                            }
+                        })
+                    }
+                    else{
+                        Toast.makeText(holder.rowCarBid.context, it.errorMessage.toString(), Toast.LENGTH_SHORT).show()
+                    }
+
 
                 }
             }else{
                 Toast.makeText(holder.rowCarBid.context, "Sva polja moraju biti popunjena", Toast.LENGTH_SHORT).show()
+            }}
+            if(userStatus == 2){
+                if(holder.rowCarBid != null){
+                    val intent = Intent(holder.rowCarBid.context, WinBidActivity::class.java)
+                    intent.putExtra("stockId", TenderStockList!![position].stockId)
+                    holder.rowCarBid.context.startActivity(intent)
+                }else{
+                    val intent = Intent(holder.btnAddBid?.context, WinBidActivity::class.java)
+                    intent.putExtra("stockId", TenderStockList!![position].stockId)
+                    holder.btnAddBid?.context!!.startActivity(intent)
+                }
             }
         }
     }

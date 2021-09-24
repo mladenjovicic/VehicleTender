@@ -1,4 +1,4 @@
-package com.mladenjovicic.vehicletender.ui.fragmentuserbidtender
+package com.mladenjovicic.vehicletender.ui.userBid
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

@@ -25,19 +25,20 @@ class LoginActivity : AppCompatActivity() {
     }
 
     fun addData(){
+        addLocationJSON()
+        addStatusJSON()
+        addManufacturerJSON()
+        addCarModelJSON()
+        addTenderUserJSON()
+        addTenderStockJSON()
+        addBidJSON()
+        addTenderJSON()
+        addCarStockJSON()
         viewModel.checkTableUser()
         viewModel.userModelDB?.observe(this, Observer {
 
             if (it == null) {
-                addLocationJSON()
-                addStatusJSON()
-                addManufacturerJSON()
-                addCarModelJSON()
-                addTenderUserJSON()
-                addTenderStockJSON()
-                addBidJSON()
-                addTenderJSON()
-                addCarStockJSON()
+
                 viewModel.addNewUser(UUID.randomUUID().toString(),
                     "Mladen",
                     "Jovicic",
@@ -238,6 +239,22 @@ class LoginActivity : AppCompatActivity() {
         val sharedPreferences: SharedPreferences =
             this.getSharedPreferences("UserDate", Context.MODE_PRIVATE)
         btnLoginUser.setOnClickListener {
+
+            viewModel.getToken(editTextEmailUser.text.toString(), editTextUserPassword.text.toString())
+            viewModel.getTokenAPI.observe(this, Observer {
+                println("test 236" + it.toString())
+            })
+
+            viewModel.requestState.observe(this) {
+                if(it.pending)
+                    Log.e("Loading", "retrofit request is in progress, show loading spinner")
+                if(it.successful)
+                    Log.e("Success", "retrofit request is successful")
+                else {
+                    Log.e("error", "retrofit request is ${it.errorMessage}")
+                }
+            }
+
             if (editTextEmailUser.text.isEmpty()) {
                 Toast.makeText(this, "User email is empty", Toast.LENGTH_SHORT).show()
             } else {

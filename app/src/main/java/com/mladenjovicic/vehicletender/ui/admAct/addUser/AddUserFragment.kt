@@ -45,7 +45,6 @@ class AddUserFragment : Fragment(), AdapterView.OnItemSelectedListener  {
         spinnerUserStatus?.onItemSelectedListener = this
 
 
-        //viewModel = ViewModelProvider(this).get(AddUserViewModel::class.java)
         viewModel = ViewModelsProviderUtils.AddNewUser(this)
 
             val listLocation = context?.let {
@@ -67,13 +66,19 @@ class AddUserFragment : Fragment(), AdapterView.OnItemSelectedListener  {
         }
     }
 
-
     override fun onItemSelected(parent: AdapterView<*>, view: View?, pos: Int, id: Long) {
         when(parent.id){
             R.id.spinnerUserStatus ->  statusUser = pos
-            R.id.spinnerUserLocation -> locationUser = (pos).toString()
+            R.id.spinnerUserLocation -> {getLocationID(pos)}
         }
+    }
 
+    fun getLocationID(pos: Int){
+        viewModel.getListLocation()?.observe(viewLifecycleOwner,{ location->
+            location?.forEach {
+                locationUser = location[pos].idServer.toString()
+            }
+        })
     }
 
     override fun onNothingSelected(parent: AdapterView<*>) {

@@ -30,7 +30,6 @@ class AddManafacturaAndCarFragment : Fragment(), AdapterView.OnItemSelectedListe
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        //viewModel = ViewModelProvider(this).get(AddManafacturaAndCarViewModel::class.java)
         viewModel = ViewModelsProviderUtils.AddManafacturaAndCar(this)
 
         addNewMan()
@@ -42,25 +41,30 @@ class AddManafacturaAndCarFragment : Fragment(), AdapterView.OnItemSelectedListe
         val spinnerAddManufacturer = view?.findViewById<Spinner>(R.id.spinnerAddManufacturer)
         btnAddNewManufacturer?.setOnClickListener {
            if(editTextAddNewManufacturer?.text!!.isNotEmpty()){
-               viewModel.addManufacturerJSON(999, editTextAddNewManufacturer.text.toString())
-               viewModel.getNewManufacturerObserver().observe(requireActivity(), Observer<ManufacturerModelAPI?>{
-                   if(it!=null){
-                       Toast.makeText(requireContext(), "Request is successful", Toast.LENGTH_SHORT).show()
-                       viewModel.addManufacturer(it.ID!!, it.ManufacturerName!!)
-                       editTextAddNewManufacturer?.text?.clear()
-                   }else{
-                       Toast.makeText(requireContext(), "Request is error", Toast.LENGTH_SHORT).show()
-                   }
-               })
+               val rnds = (0..9999).random()
+               viewModel.addManufacturerJSON(rnds, editTextAddNewManufacturer.text.toString())
            }else{
-               Toast.makeText(requireContext(), "Polje mora biti popunjeno", Toast.LENGTH_SHORT).show()
+               Toast.makeText(requireContext(), "Sva polja moraju bit popunjena", Toast.LENGTH_SHORT).show()
            }
+
             viewModel.requestState.observe(requireActivity()) {
                 if(it.pending)
                     Log.e("Loading", "retrofit request is in progress, show loading spinner")
 
-                if(it.successful)
+                if(it.successful){
                     Log.e("Success", "retrofit request is successful")
+                    viewModel.getNewManufacturerObserver().observe(requireActivity(), Observer<ManufacturerModelAPI?>{
+                        if(it!=null){
+                            Toast.makeText(requireContext(), "Request is successful", Toast.LENGTH_SHORT).show()
+                            viewModel.addManufacturer(it.ID!!, it.ManufacturerName!!)
+                            editTextAddNewManufacturer?.text?.clear()
+                            viewModel.createNewManufacturer.postValue(null)
+                        }
+                    })
+                }
+                else{
+                    Toast.makeText(requireContext(), it.errorMessage.toString(), Toast.LENGTH_SHORT).show()
+                }
 
             }}
     }
@@ -77,8 +81,9 @@ class AddManafacturaAndCarFragment : Fragment(), AdapterView.OnItemSelectedListe
         }
 
 
-        viewModel.getListManafactura()?.observe(viewLifecycleOwner,{ location->
-            location?.forEach {
+        viewModel.getListManafactura()?.observe(viewLifecycleOwner,{ man->
+            listMan?.clear()
+            man?.forEach {
                 listMan?.add(it.manufacturer_name)
             }
         })
@@ -87,25 +92,30 @@ class AddManafacturaAndCarFragment : Fragment(), AdapterView.OnItemSelectedListe
         spinnerAddManufacturer?.onItemSelectedListener = this
         btnAddCar?.setOnClickListener {
 
-            if(editTextAddModelName?.text!!.isNotEmpty()&&editTextModelNumber?.text!!.isNotEmpty()&&idMan>0){
-                viewModel.addCarModelJSON(999, editTextAddModelName.text.toString(), editTextModelNumber.text.toString(), idMan)
+            if(editTextAddModelName?.text!!.isNotEmpty()&&editTextModelNumber?.text!!.isNotEmpty()&&idMan>=0){
+                val rnds = (0..9999).random()
+                viewModel.addCarModelJSON(rnds, editTextAddModelName.text.toString(), editTextModelNumber.text.toString(), idMan)
 
-                viewModel.getNewCarModelObserver().observe(requireActivity(), Observer<CarModelApi?>{
-                    if(it != null){
-                        Toast.makeText(requireContext(), "Request is successful", Toast.LENGTH_SHORT).show()
-                        viewModel.addCarModel(it.ID!!,it.ModelName!!,it.ModelName!!, it.ManufacturerId!!)
-                        editTextAddModelName?.text?.clear()
-                        editTextModelNumber?.text?.clear()
-                    }else{
-                        Toast.makeText(requireContext(), "Request is error", Toast.LENGTH_SHORT).show()
-                    }
-                })
                 viewModel.requestState.observe(requireActivity()) {
                     if(it.pending)
                         Log.e("Loading", "retrofit request is in progress, show loading spinner")
 
-                    if(it.successful)
+                    if(it.successful){
                         Log.e("Success", "retrofit request is successful")
+
+                        viewModel.getNewCarModelObserver().observe(requireActivity(), Observer<CarModelApi?>{
+                            if(it != null){
+                                Toast.makeText(requireContext(), "Request is successful", Toast.LENGTH_SHORT).show()
+                                viewModel.addCarModel(it.ID!!,it.ModelName!!,it.ModelName!!, it.ManufacturerId!!)
+                                editTextAddModelName?.text?.clear()
+                                editTextModelNumber?.text?.clear()
+                                viewModel.createNewCarModele.postValue(null)
+                            }
+                        })
+                    }
+                    else{
+                        Toast.makeText(requireContext(), it.errorMessage.toString(), Toast.LENGTH_SHORT).show()
+                    }
 
                 }
             }else{
@@ -113,9 +123,17 @@ class AddManafacturaAndCarFragment : Fragment(), AdapterView.OnItemSelectedListe
             }
         }
     }
+    fun getIDLocation(pos:Int){
+        viewModel.getListManafactura()?.observe(viewLifecycleOwner,{ location->
+            location?.forEach {
+                println("dev66" + location[pos].IdServer)
+                idMan = location[pos].IdServer!!
+            }
+        })
+    }
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, pos: Int, id: Long) {
         when(parent?.id){
-            R.id.spinnerAddManufacturer -> idMan = pos+1
+            R.id.spinnerAddManufacturer -> {getIDLocation(pos)}
         }
     }
     override fun onNothingSelected(p0: AdapterView<*>?) {

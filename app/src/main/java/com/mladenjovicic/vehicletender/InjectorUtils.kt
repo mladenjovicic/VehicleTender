@@ -14,13 +14,14 @@ import com.mladenjovicic.vehicletender.ui.admAct.addLocation.AddLocationViewMode
 import com.mladenjovicic.vehicletender.ui.admAct.addTender.AddTenderViewModel
 import com.mladenjovicic.vehicletender.ui.admAct.addUser.AddUserViewModel
 import com.mladenjovicic.vehicletender.ui.admAct.listTender.ListTenderViewModel
-import com.mladenjovicic.vehicletender.ui.fragmentuserbidtender.UserBidTenderViewModel
+import com.mladenjovicic.vehicletender.ui.userBid.UserBidTenderViewModel
 import com.mladenjovicic.vehicletender.ui.login.LoginViewModel
 import com.mladenjovicic.vehicletender.ui.mainAct.history.SecViewModel
 import com.mladenjovicic.vehicletender.ui.mainAct.main.UserHomeViewModel
 import com.mladenjovicic.vehicletender.ui.mainAct.reports.ReportsViewModel
 import com.mladenjovicic.vehicletender.ui.tender.TenderUseViewModel
 import com.mladenjovicic.vehicletender.ui.updateUser.UserUpdateViewModel
+import com.mladenjovicic.vehicletender.ui.winBid.WinBidViewModel
 
 object  InjectorUtils {
     fun getContext(): Context = VTApplication.instance.applicationContext
@@ -73,4 +74,8 @@ object  InjectorUtils {
     fun getMainViewModel() =  UserHomeViewModel(mainRepository)
 
     fun getReportsViewModel() = ReportsViewModel(mainRepository)
+
+    private val winBidRepository by lazy { WinBidReposiory(retrofitService, localRepository)}
+
+    fun getWinBidViewModel() = WinBidViewModel(winBidRepository)
 }

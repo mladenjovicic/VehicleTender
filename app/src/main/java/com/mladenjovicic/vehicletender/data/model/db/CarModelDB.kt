@@ -2,9 +2,10 @@ package com.mladenjovicic.vehicletender.data.model.db
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
+import androidx.room.Index
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "car_models")
+@Entity(tableName = "car_models", indices = arrayOf(Index(value = arrayOf("IdServer"), unique = true)))
 data class CarModelDB(
         @ColumnInfo(name = "IdServer")
         var IdServer:Int?=null,

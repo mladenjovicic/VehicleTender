@@ -78,7 +78,7 @@ interface DAOAcessCarModels{
     @Query("select * from car_models where manufacturer_id =:manufacturer_id")
     fun getAllModelCarID(manufacturer_id:Int):LiveData<List<CarModelDB>>
 
-    @Query("select car_models.model_name, car_models.model_no, manufacturer.manufacturer_name from car_models left join manufacturer on car_models.manufacturer_id  = manufacturer.IdServer order by car_models.IdServer asc")
+    @Query("select car_models.IdServer,car_models.model_name, car_models.model_no, manufacturer.manufacturer_name from car_models left join manufacturer on car_models.manufacturer_id  = manufacturer.IdServer order by car_models.IdServer asc")
     fun getCarsInfo():LiveData<List<ManAndCarModel>>
 }
 
@@ -90,13 +90,13 @@ interface DAOAcessStockInfo{
     @Query("select * from stockInfo")
     fun getStockInfo():LiveData<List<StockInfoModelDB>>
 
-    @Query("select stockInfo.id, stockInfo.serverId,  stockInfo.year, stockInfo.mileage, stockInfo.price, stockInfo.comments, stockInfo.regNo, stockInfo.isSold, location.city, car_models.model_name, car_models.model_no, manufacturer.manufacturer_name from stockInfo left join location on stockInfo.locationId = location.id left join car_models on stockInfo.modelLineId = car_models.id left join manufacturer on car_models.manufacturer_id  = manufacturer.id order by stockInfo.id desc")
+    @Query("select stockInfo.id, stockInfo.serverId,  stockInfo.year, stockInfo.mileage, stockInfo.price, stockInfo.comments, stockInfo.regNo, stockInfo.isSold, location.city, car_models.model_name, car_models.model_no, manufacturer.manufacturer_name from stockInfo left join location on stockInfo.locationId = location.idServer left join car_models on stockInfo.modelLineId = car_models.IdServer left join manufacturer on car_models.manufacturer_id  = manufacturer.IdServer order by stockInfo.id desc")
     fun getStockInfoList():LiveData<List<stockCarList>>
 
-    @Query("select stockInfo.id, stockInfo.serverId, stockInfo.year, stockInfo.mileage, stockInfo.price, stockInfo.comments, stockInfo.regNo, stockInfo.isSold, location.city, car_models.model_name, car_models.model_no, manufacturer.manufacturer_name from stockInfo left join location on stockInfo.locationId = location.id left join car_models on stockInfo.modelLineId = car_models.IdServer left join manufacturer on car_models.manufacturer_id  = manufacturer.IdServer where isSold =:isSold order by stockInfo.id desc")
+    @Query("select stockInfo.id, stockInfo.serverId, stockInfo.year, stockInfo.mileage, stockInfo.price, stockInfo.comments, stockInfo.regNo, stockInfo.isSold, location.city, car_models.model_name, car_models.model_no, manufacturer.manufacturer_name from stockInfo left join location on stockInfo.locationId = location.idServer left join car_models on stockInfo.modelLineId = car_models.IdServer left join manufacturer on car_models.manufacturer_id  = manufacturer.IdServer where isSold =:isSold order by stockInfo.id desc")
     fun getStockCarActivesList(isSold:Boolean):LiveData<List<stockCarList>>
 
-    @Query("select stockInfo.id, stockInfo.serverId,  stockInfo.year, stockInfo.mileage, stockInfo.price, stockInfo.comments, stockInfo.regNo, stockInfo.isSold, location.city, car_models.model_name, car_models.model_no, manufacturer.manufacturer_name, tenderStock.tenderId  from stockInfo left join location on stockInfo.locationId = location.id left join car_models on stockInfo.modelLineId = car_models.id left join manufacturer on car_models.manufacturer_id  = manufacturer.id left join tenderStock on stockInfo.serverId = tenderStock.stockId where isSold =:isSold order by stockInfo.id desc")
+    @Query("select stockInfo.id, stockInfo.serverId,  stockInfo.year, stockInfo.mileage, stockInfo.price, stockInfo.comments, stockInfo.regNo, stockInfo.isSold, location.city, car_models.model_name, car_models.model_no, manufacturer.manufacturer_name, tenderStock.tenderId  from stockInfo left join location on stockInfo.locationId = location.idServer left join car_models on stockInfo.modelLineId = car_models.IdServer left join manufacturer on car_models.manufacturer_id  = manufacturer.IdServer left join tenderStock on stockInfo.serverId = tenderStock.stockId where isSold =:isSold order by stockInfo.id desc")
     fun getStockListCarUpdate(isSold: Boolean):LiveData<List<stockCarUpdate>>
 }
 
@@ -114,8 +114,8 @@ interface DAOAcessBid{
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun  InsertBid(bidModelDB: BidModelDB)
 
-    @Query("select * from bid")
-    fun getBid(): LiveData<List<BidModelDB>>
+    @Query("select * from bid where stockId = :stockId")
+    fun getBid(stockId:Int): LiveData<List<BidModelDB>>
 
 
 }

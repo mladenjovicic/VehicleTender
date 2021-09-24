@@ -1,5 +1,6 @@
 package com.mladenjovicic.vehicletender.data.API
 
+import androidx.databinding.Bindable
 import com.mladenjovicic.vehicletender.data.model.api.*
 import com.mladenjovicic.vehicletender.data.model.db.CarModelDB
 import retrofit2.Call
@@ -74,5 +75,7 @@ interface RetrofitInterface {
     @POST("tenderUser")
     fun CreateTenderUser(@Body newStockInfoModelAPI: TenderUserModelAPI):Call<TenderUserModelAPI>
 
-
+    @Headers("Content-Type: application/x-www-form-urlencoded")
+    @POST("token")
+    fun getToken(@Body newGetToken:RequestToken):Call<GetTokenAPI>
 }

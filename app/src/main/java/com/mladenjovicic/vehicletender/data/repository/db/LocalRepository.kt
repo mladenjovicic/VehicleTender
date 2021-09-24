@@ -138,8 +138,8 @@ class LocalRepository(private val databaseService: DatabaseService) {
         }
     }
 
-    fun getBid():LiveData<List<BidModelDB>>?{
-        bidModelDB = databaseService.bidDAO.getBid()
+    fun getBid(stockId: Int):LiveData<List<BidModelDB>>?{
+        bidModelDB = databaseService.bidDAO.getBid(stockId)
         return bidModelDB
     }
 
