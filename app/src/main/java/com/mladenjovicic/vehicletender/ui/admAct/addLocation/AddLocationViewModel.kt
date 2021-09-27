@@ -34,9 +34,9 @@ class AddLocationViewModel(private val AddLocationRepository: AdminRepository) :
             return AddLocationRepository.getListLocation()!!
         }
 
-    fun addLocationJSON(id:Int?, city:String, zipCode: String){
+    fun addLocationJSON(token:String, id:Int?, city:String, zipCode: String){
         createNewLocation.postValue(null)
-        AddLocationRepository.addLocationJSON(id, city,zipCode, requestState, createNewLocation )
+        AddLocationRepository.addLocationJSON(token, id, city,zipCode, requestState, createNewLocation )
     }
 
 }

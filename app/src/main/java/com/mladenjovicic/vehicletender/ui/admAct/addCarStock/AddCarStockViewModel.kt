@@ -49,6 +49,7 @@ class AddCarStockViewModel(private val AddCarStockRepositror: AdminRepository) :
     }
 
     fun addCarStockJSON(
+        token:String,
         id: Int?,
         year:Int,
         modelLineId:Int,
@@ -59,6 +60,6 @@ class AddCarStockViewModel(private val AddCarStockRepositror: AdminRepository) :
         regNo:String,
         isSold:Boolean,){
         createNewCarStock.postValue(null)
-        AddCarStockRepositror.addCarStockJSON(id, year, modelLineId, mileage, price, comments, locationId, regNo, isSold,createNewCarStock, requestState)
+        AddCarStockRepositror.addCarStockJSON(token, id, year, modelLineId, mileage, price, comments, locationId, regNo, isSold,createNewCarStock, requestState)
     }
 }

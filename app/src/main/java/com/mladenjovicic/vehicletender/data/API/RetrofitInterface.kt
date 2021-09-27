@@ -11,71 +11,82 @@ import retrofit2.http.*
 
 interface RetrofitInterface {
 
-    @GET("locations")
-    fun getLocationList():Call<List<LocationModelAPI>>
+    @GET("api/location")
+    fun getLocationList(@Header ("Authorization") Token:String):Call<List<LocationModelAPI>>
 
     @Headers("Content-Type: application/json")
-    @POST("locations")
-    fun createLocation(@Body  newLocation: LocationModelAPI):Call<LocationModelAPI>
+    @POST("api/location/addlocation")
+    fun createLocation(@Header ("Authorization") Token:String, @Body  newLocation: LocationModelAPI):Call<LocationModelAPI>
 
 
     @GET("Status")
-    fun getStatusList():Call<List<StatusModelAPI>>
+    fun getStatusList(@Header ("Authorization") Token:String):Call<List<StatusModelAPI>>
 
     @Headers("Content-Type: application/json")
     @POST("Status")
-    fun CreateStatus(@Body newStatus:StatusModelAPI):Call<StatusModelAPI>
+    fun CreateStatus(@Header ("Authorization") Token:String, @Body newStatus:StatusModelAPI):Call<StatusModelAPI>
 
     @GET("Manufacturer")
-    fun getManufacturerList():Call<List<ManufacturerModelAPI>>
+    fun getManufacturerList(@Header ("Authorization") Token:String):Call<List<ManufacturerModelAPI>>
 
     @Headers("Content-Type: application/json")
     @POST("Manufacturer")
-    fun CreateManufacturer(@Body newStatus:ManufacturerModelAPI):Call<ManufacturerModelAPI>
+    fun CreateManufacturer(@Header ("Authorization") Token:String, @Body newStatus:ManufacturerModelAPI):Call<ManufacturerModelAPI>
 
     @GET("bid")
-    fun getBidList():Call<List<BidModelAPI>>
+    fun getBidList(@Header ("Authorization") Token:String):Call<List<BidModelAPI>>
 
     @Headers("Content-Type: application/json")
     @POST("bid")
-    fun CreateBid(@Body newBid:BidModelAPI):Call<BidModelAPI>
+    fun CreateBid(@Header ("Authorization") Token:String, @Body newBid:BidModelAPI):Call<BidModelAPI>
 
     @GET("CarModel")
-    fun getCarModelList():Call<List<CarModelApi>>
+    fun getCarModelList(@Header ("Authorization") Token:String):Call<List<CarModelApi>>
 
     @Headers("Content-Type: application/json")
     @POST("CarModel")
-    fun CreateCarModel(@Body newCarModel: CarModelApi):Call<CarModelApi>
+    fun CreateCarModel(@Header ("Authorization") Token:String, @Body newCarModel: CarModelApi):Call<CarModelApi>
 
     @GET("tender")
-    fun getTenderList():Call<List<TenderModelAPI>>
+    fun getTenderList(@Header ("Authorization") Token:String):Call<List<TenderModelAPI>>
 
     @Headers("Content-Type: application/json")
     @POST("tender")
-    fun CreateTender(@Body newTenderModelAPI: TenderModelAPI):Call<TenderModelAPI>
+    fun CreateTender(@Header ("Authorization") Token:String, @Body newTenderModelAPI: TenderModelAPI):Call<TenderModelAPI>
 
     @GET("carStock")
-    fun getCarStockList():Call<List<StockInfoModelAPI>>
+    fun getCarStockList(@Header ("Authorization") Token:String):Call<List<StockInfoModelAPI>>
 
     @Headers("Content-Type: application/json")
     @POST("carStock")
-    fun CreateCarStock(@Body newStockInfoModelAPI: StockInfoModelAPI):Call<StockInfoModelAPI>
+    fun CreateCarStock(@Header ("Authorization") Token:String, @Body newStockInfoModelAPI: StockInfoModelAPI):Call<StockInfoModelAPI>
 
     @GET("tenderStock")
-    fun getTenderStock():Call<List<TenderStockModelAPI>>
+    fun getTenderStock(@Header ("Authorization") Token:String):Call<List<TenderStockModelAPI>>
 
     @Headers("Content-Type: application/json")
     @POST("tenderStock")
-    fun CreateTenderStock(@Body newStockInfoModelAPI: TenderStockModelAPI):Call<TenderStockModelAPI>
+    fun CreateTenderStock(@Header ("Authorization") Token:String, @Body newStockInfoModelAPI: TenderStockModelAPI):Call<TenderStockModelAPI>
 
     @GET("tenderUser")
-    fun getTenderUser():Call<List<TenderUserModelAPI>>
+    fun getTenderUser(@Header ("Authorization") Token:String):Call<List<TenderUserModelAPI>>
 
     @Headers("Content-Type: application/json")
     @POST("tenderUser")
-    fun CreateTenderUser(@Body newStockInfoModelAPI: TenderUserModelAPI):Call<TenderUserModelAPI>
+    fun CreateTenderUser(@Header ("Authorization") Token:String, @Body newStockInfoModelAPI: TenderUserModelAPI):Call<TenderUserModelAPI>
 
+   /* @Headers("Content-Type: application/x-www-form-urlencoded")
+    @POST("token")
+    fun getToken(@Body newGetToken:RequestToken):Call<GetTokenAPI>*/
+/*
+    @Headers("Content-Type: application/x-www-form-urlencoded")*/
+    @FormUrlEncoded
     @Headers("Content-Type: application/x-www-form-urlencoded")
     @POST("token")
-    fun getToken(@Body newGetToken:RequestToken):Call<GetTokenAPI>
+    fun getToken(@Field("grant_type") grant_type:String, @Field("username") username:String, @Field("password") password:String ):Call<GetTokenAPI>
+
+    //@FormUrlEncoded
+    @Headers("Content-Type: application/x-www-form-urlencoded")
+    @GET("api/values")
+    fun getListUser(@Header ("Authorization") Token:String /*@Field("Authorization") Authorization:String*/):Call<List<UserListTest>>
 }

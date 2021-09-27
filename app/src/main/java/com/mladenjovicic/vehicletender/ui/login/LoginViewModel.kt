@@ -25,9 +25,11 @@ class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel()
         val carStockLiveData = MutableLiveData<List<StockInfoModelAPI>>()
         val requestState = MutableLiveData<RequestState>()
         lateinit var  getTokenAPI: MutableLiveData<GetTokenAPI?>
+        lateinit var getUserListTest: MutableLiveData<List<UserListTest?>>
+        var Authorization = ""
         init {
-            getLocationsJSON()
-            getStatusJSON()
+            //getLocationsJSON(Authorization)
+            /*getStatusJSON()
             getCarModelsJSON()
             getManufacturerJSON()
 
@@ -35,12 +37,16 @@ class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel()
             getTenderStockJSON()
             getBidJSON()
             getTenderJSON()
-            getCarStockJSON()
+            getCarStockJSON()*/
             getTokenAPI = MutableLiveData()
+            getUserListTest = MutableLiveData()
         }
 
          fun getTokenObserver():MutableLiveData<GetTokenAPI?>{
              return getTokenAPI
+        }
+        fun getUserListObserver():MutableLiveData<List<UserListTest?>>{
+            return getUserListTest
         }
 
          fun getToken(
@@ -49,37 +55,41 @@ class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel()
         ){
             loginRepository.getToken(username, password, getTokenAPI, requestState)
         }
-        private fun getCarStockJSON(){
-            loginRepository.getCarStockJSON(carStockLiveData, requestState)
+
+    fun getUserList(token:String){
+        loginRepository.getUserList(token,getUserListTest, requestState)
+    }
+        fun getCarStockJSON(token:String){
+            loginRepository.getCarStockJSON(token, carStockLiveData, requestState)
         }
-        private fun getTenderJSON(){
-            loginRepository.getTenderJSON(tenderLiveData,requestState)
+         fun getTenderJSON(token:String){
+            loginRepository.getTenderJSON(token, tenderLiveData,requestState)
 
         }
-        private fun getBidJSON(){
-            loginRepository.getBidJSON(bidLiveData, requestState)
+         fun getBidJSON(token:String){
+            loginRepository.getBidJSON(token, bidLiveData, requestState)
         }
-        private fun getTenderStockJSON(){
-            loginRepository.getTenderStockJSON(tenderStockLiveData, requestState)
-        }
-
-        private fun getTenderUserJSON(){
-            loginRepository.getTenderUserJSON(tenderUserLiveData,requestState)
+         fun getTenderStockJSON(token:String){
+            loginRepository.getTenderStockJSON(token, tenderStockLiveData, requestState)
         }
 
-        private fun getLocationsJSON() {
-        loginRepository.getLocationsJSON(locationsLiveData, requestState)
+         fun getTenderUserJSON(token:String){
+            loginRepository.getTenderUserJSON(token, tenderUserLiveData,requestState)
         }
 
-        private fun getStatusJSON(){
-            loginRepository.getStatusJSON(statusLiveData, requestState)
+        fun getLocationsJSON(token:String) {
+        loginRepository.getLocationsJSON(token, locationsLiveData, requestState)
         }
 
-        private fun getCarModelsJSON(){
-            loginRepository.getCarsModelJSON(carModelLiveData, requestState)
+         fun getStatusJSON(token: String){
+            loginRepository.getStatusJSON(token, statusLiveData, requestState)
         }
-        private fun getManufacturerJSON(){
-            loginRepository.getManufacturerJSON(manufacturerLiveData, requestState)
+
+         fun getCarModelsJSON(token:String){
+            loginRepository.getCarsModelJSON(token, carModelLiveData, requestState)
+        }
+         fun getManufacturerJSON(token:String){
+            loginRepository.getManufacturerJSON(token, manufacturerLiveData, requestState)
         }
     fun addNewUser(
         uuid: String,

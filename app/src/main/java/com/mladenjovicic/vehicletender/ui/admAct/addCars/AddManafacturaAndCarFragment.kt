@@ -42,7 +42,7 @@ class AddManafacturaAndCarFragment : Fragment(), AdapterView.OnItemSelectedListe
         btnAddNewManufacturer?.setOnClickListener {
            if(editTextAddNewManufacturer?.text!!.isNotEmpty()){
                val rnds = (0..9999).random()
-               viewModel.addManufacturerJSON(rnds, editTextAddNewManufacturer.text.toString())
+               viewModel.addManufacturerJSON("",null, editTextAddNewManufacturer.text.toString())
            }else{
                Toast.makeText(requireContext(), "Sva polja moraju bit popunjena", Toast.LENGTH_SHORT).show()
            }
@@ -94,7 +94,7 @@ class AddManafacturaAndCarFragment : Fragment(), AdapterView.OnItemSelectedListe
 
             if(editTextAddModelName?.text!!.isNotEmpty()&&editTextModelNumber?.text!!.isNotEmpty()&&idMan>=0){
                 val rnds = (0..9999).random()
-                viewModel.addCarModelJSON(rnds, editTextAddModelName.text.toString(), editTextModelNumber.text.toString(), idMan)
+                viewModel.addCarModelJSON("",null, editTextAddModelName.text.toString(), editTextModelNumber.text.toString(), idMan)
 
                 viewModel.requestState.observe(requireActivity()) {
                     if(it.pending)

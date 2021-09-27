@@ -11,29 +11,33 @@ import retrofit2.Callback
 
 class RetrofitService(private val retrofitInstance: RetrofitInstanceN) {
 
-
     private val retrofitInterface = retrofitInstance.getRetrofit().create(RetrofitInterface::class.java)
 
     fun addLocationJSON(
+        token:String,
         id:Int?,
         city:String,
         zipCode: String,
         requestState: MutableLiveData<RequestState>,
         liveData: MutableLiveData<LocationModelAPI?>){
         val service = RetrofitInstance.getRetrofit().create(RetrofitInterface::class.java)
-        service.createLocation(LocationModelAPI(id,city, zipCode)).enqueue(object : retrofit2.Callback<LocationModelAPI> {
+        service.createLocation(token, LocationModelAPI(id,city, zipCode)).enqueue(object : retrofit2.Callback<LocationModelAPI> {
             override fun onResponse(call: retrofit2.Call<LocationModelAPI>, response: Response<LocationModelAPI>) {
                 var newlyCreatedDestination = response.body()
-                if(response.code() == 201){
+                println("Successfully Added"+newlyCreatedDestination.toString()+ " "+ response.code())
+                requestState.postValue(RequestState.success)
+                liveData.postValue(LocationModelAPI(response.body()!!.Id, response.body()!!.City, response.body()!!.ZipCode))
+
+                /*if(response.code() == 201){
                     println("Successfully Added"+newlyCreatedDestination.toString()+ " "+ response.code())
                     requestState.postValue(RequestState.success)
-                    liveData.postValue(LocationModelAPI(response.body()!!.id, response.body()!!.city, response.body()!!.zipCOde))
+                    liveData.postValue(LocationModelAPI(response.body()!!.Id, response.body()!!.City, response.body()!!.ZipCode))
 
                 }else {
                     liveData.postValue(null)
                     Log.d("error post json", "error create locatio ${response.code()}")
                     requestState.postValue(RequestState.failed)
-                }
+                }*/
             }
             override fun onFailure(call: retrofit2.Call<LocationModelAPI>, t: Throwable) {
                 requestState.postValue(
@@ -48,13 +52,14 @@ class RetrofitService(private val retrofitInstance: RetrofitInstanceN) {
     }
 
     fun addManufacturerJSON(
+        token: String,
         id:Int?,
         ManufacturerName:String,
         liveData: MutableLiveData<ManufacturerModelAPI?>,
         requestState: MutableLiveData<RequestState>){
 
         val service = RetrofitInstance.getRetrofit().create(RetrofitInterface::class.java)
-        service.CreateManufacturer(ManufacturerModelAPI(id,ManufacturerName)).enqueue(object : retrofit2.Callback<ManufacturerModelAPI> {
+        service.CreateManufacturer(token, ManufacturerModelAPI(id,ManufacturerName)).enqueue(object : retrofit2.Callback<ManufacturerModelAPI> {
             override fun onResponse(call: retrofit2.Call<ManufacturerModelAPI>, response: Response<ManufacturerModelAPI>) {
                 var newlyCreatedDestination = response.body()
                 if(response.code() == 201){
@@ -81,6 +86,7 @@ class RetrofitService(private val retrofitInstance: RetrofitInstanceN) {
     }
 
     fun addCarModelJSON(
+        token: String,
         id:Int?,
         ModelName:String,
         ModelNO:String,
@@ -89,7 +95,7 @@ class RetrofitService(private val retrofitInstance: RetrofitInstanceN) {
         requestState: MutableLiveData<RequestState>
     ){
         val service = RetrofitInstance.getRetrofit().create(RetrofitInterface::class.java)
-        service.CreateCarModel(CarModelApi(id,ModelName, ModelNO, ManufacturerId)).enqueue(object : retrofit2.Callback<CarModelApi> {
+        service.CreateCarModel(token, CarModelApi(id,ModelName, ModelNO, ManufacturerId)).enqueue(object : retrofit2.Callback<CarModelApi> {
             override fun onResponse(call: retrofit2.Call<CarModelApi>, response: Response<CarModelApi>) {
                 var newlyCreatedDestination = response.body()
                 if(response.code() == 201){
@@ -116,6 +122,7 @@ class RetrofitService(private val retrofitInstance: RetrofitInstanceN) {
     }
 
     fun addTenderJSON(
+        token: String,
         id: Int?,
         createdDate:String,
         createdBy:String,
@@ -127,7 +134,7 @@ class RetrofitService(private val retrofitInstance: RetrofitInstanceN) {
         requestState: MutableLiveData<RequestState>){
         val service = RetrofitInstance.getRetrofit().create(RetrofitInterface::class.java)
 
-        service.CreateTender(TenderModelAPI(id, createdDate, createdBy, tenderNo, openDate, closeDate, statusId)).enqueue(object : retrofit2.Callback<TenderModelAPI> {
+        service.CreateTender(token, TenderModelAPI(id, createdDate, createdBy, tenderNo, openDate, closeDate, statusId)).enqueue(object : retrofit2.Callback<TenderModelAPI> {
             override fun onResponse(call: retrofit2.Call<TenderModelAPI>, response: Response<TenderModelAPI>) {
                 var newlyCreatedDestination = response.body()
                 if(response.code() == 201){
@@ -155,6 +162,7 @@ class RetrofitService(private val retrofitInstance: RetrofitInstanceN) {
     }
 
     fun addCarStockJSON(
+        token: String,
         id: Int?,
         year:Int,
         modelLineId:Int,
@@ -169,7 +177,7 @@ class RetrofitService(private val retrofitInstance: RetrofitInstanceN) {
     ){
         val service = RetrofitInstance.getRetrofit().create(RetrofitInterface::class.java)
 
-        service.CreateCarStock(StockInfoModelAPI(id, year, modelLineId, mileage, price, comments, locationId, regNo, isSold)).enqueue(object : retrofit2.Callback<StockInfoModelAPI> {
+        service.CreateCarStock(token, StockInfoModelAPI(id, year, modelLineId, mileage, price, comments, locationId, regNo, isSold)).enqueue(object : retrofit2.Callback<StockInfoModelAPI> {
             override fun onResponse(call: retrofit2.Call<StockInfoModelAPI>, response: Response<StockInfoModelAPI>) {
                 var newlyCreatedDestination = response.body()
                 if(response.code() == 201){
@@ -198,6 +206,7 @@ class RetrofitService(private val retrofitInstance: RetrofitInstanceN) {
     }
 
     fun addTenderStockJSON(
+        token: String,
         id: Int?,
         stockId:Int,
         tenderId:String,
@@ -206,7 +215,7 @@ class RetrofitService(private val retrofitInstance: RetrofitInstanceN) {
         requestState: MutableLiveData<RequestState>){
         val service = RetrofitInstance.getRetrofit().create(RetrofitInterface::class.java)
 
-        service.CreateTenderStock(TenderStockModelAPI(id, stockId,tenderId,saleDate)).enqueue(object : retrofit2.Callback<TenderStockModelAPI> {
+        service.CreateTenderStock(token, TenderStockModelAPI(id, stockId,tenderId,saleDate)).enqueue(object : retrofit2.Callback<TenderStockModelAPI> {
             override fun onResponse(call: retrofit2.Call<TenderStockModelAPI>, response: Response<TenderStockModelAPI>) {
                 var newlyCreatedDestination = response.body()
                 if(response.code() == 201){
@@ -234,6 +243,7 @@ class RetrofitService(private val retrofitInstance: RetrofitInstanceN) {
     }
 
     fun addBidJSON(
+        token:String,
         id: Int?,
         TUserId:String,
         TStockId:Int,
@@ -244,7 +254,7 @@ class RetrofitService(private val retrofitInstance: RetrofitInstanceN) {
 
         val service = RetrofitInstance.getRetrofit().create(RetrofitInterface::class.java)
 
-        service.CreateBid(BidModelAPI(id, TUserId,TStockId,Price, IsWinningPrice)).enqueue(object : retrofit2.Callback<BidModelAPI> {
+        service.CreateBid(token, BidModelAPI(id, TUserId,TStockId,Price, IsWinningPrice)).enqueue(object : retrofit2.Callback<BidModelAPI> {
             override fun onResponse(call: retrofit2.Call<BidModelAPI>, response: Response<BidModelAPI>) {
                 var newlyCreatedDestination = response.body()
                 if(response.code() == 201){
@@ -273,13 +283,14 @@ class RetrofitService(private val retrofitInstance: RetrofitInstanceN) {
     }
 
     fun addTenderUserJSON(
+        token: String,
         id: Int?,
         tenderId:String,
         userId:String,
         liveData: MutableLiveData<TenderUserModelAPI?>,
         requestState: MutableLiveData<RequestState>){
         val service = RetrofitInstance.getRetrofit().create(RetrofitInterface::class.java)
-        service.CreateTenderUser(TenderUserModelAPI(id, tenderId,userId)).enqueue(object : retrofit2.Callback<TenderUserModelAPI> {
+        service.CreateTenderUser(token,TenderUserModelAPI(id, tenderId,userId)).enqueue(object : retrofit2.Callback<TenderUserModelAPI> {
             override fun onResponse(call: retrofit2.Call<TenderUserModelAPI>, response: Response<TenderUserModelAPI>) {
                 var newlyCreatedDestination = response.body()
                 if(response.code() == 201){
@@ -307,11 +318,12 @@ class RetrofitService(private val retrofitInstance: RetrofitInstanceN) {
     }
 
     fun readLocaitonJSON(
+        token:String,
         liveData: MutableLiveData<List<LocationModelAPI>>,
         requestState: MutableLiveData<RequestState>
     ){
         requestState.postValue(RequestState.pending)
-        val call = retrofitInterface.getLocationList()
+        val call = retrofitInterface.getLocationList(token)
         call.enqueue(object : Callback<List<LocationModelAPI>> {
             override fun onResponse(
                 call: Call<List<LocationModelAPI>>,
@@ -340,11 +352,12 @@ class RetrofitService(private val retrofitInstance: RetrofitInstanceN) {
 }
 
     fun readStatusJSON(
+        token: String,
         liveData: MutableLiveData<List<StatusModelAPI>>,
         requestState: MutableLiveData<RequestState>
     ){
         requestState.postValue(RequestState.pending)
-        val call = retrofitInterface.getStatusList()
+        val call = retrofitInterface.getStatusList(token)
         call.enqueue(object : Callback<List<StatusModelAPI>> {
             override fun onResponse(
                 call: Call<List<StatusModelAPI>>,
@@ -373,11 +386,12 @@ class RetrofitService(private val retrofitInstance: RetrofitInstanceN) {
     }
 
     fun readCarModelJSON(
+        token: String,
         liveData: MutableLiveData<List<CarModelApi>>,
         requestState: MutableLiveData<RequestState>
     ){
         requestState.postValue(RequestState.pending)
-        val call = retrofitInterface.getCarModelList()
+        val call = retrofitInterface.getCarModelList(token)
         call.enqueue(object : Callback<List<CarModelApi>> {
             override fun onResponse(
                 call: Call<List<CarModelApi>>,
@@ -406,11 +420,12 @@ class RetrofitService(private val retrofitInstance: RetrofitInstanceN) {
     }
 
     fun readManufacturerJSON(
+        token: String,
         liveData: MutableLiveData<List<ManufacturerModelAPI>>,
         requestState: MutableLiveData<RequestState>
     ){
         requestState.postValue(RequestState.pending)
-        val call = retrofitInterface.getManufacturerList()
+        val call = retrofitInterface.getManufacturerList(token)
         call.enqueue(object : Callback<List<ManufacturerModelAPI>> {
             override fun onResponse(
                 call: Call<List<ManufacturerModelAPI>>,
@@ -439,11 +454,12 @@ class RetrofitService(private val retrofitInstance: RetrofitInstanceN) {
     }
 
     fun readCarStockJSON(
+        token: String,
         liveData: MutableLiveData<List<StockInfoModelAPI>>,
         requestState: MutableLiveData<RequestState>
     ){
         requestState.postValue(RequestState.pending)
-        val call = retrofitInterface.getCarStockList()
+        val call = retrofitInterface.getCarStockList(token)
         call.enqueue(object : Callback<List<StockInfoModelAPI>> {
             override fun onResponse(
                 call: Call<List<StockInfoModelAPI>>,
@@ -472,11 +488,12 @@ class RetrofitService(private val retrofitInstance: RetrofitInstanceN) {
     }
 
     fun readTenderJSON(
+        token: String,
         liveData: MutableLiveData<List<TenderModelAPI>>,
         requestState: MutableLiveData<RequestState>
     ){
         requestState.postValue(RequestState.pending)
-        val call = retrofitInterface.getTenderList()
+        val call = retrofitInterface.getTenderList(token)
         call.enqueue(object : Callback<List<TenderModelAPI>> {
             override fun onResponse(
                 call: Call<List<TenderModelAPI>>,
@@ -505,11 +522,12 @@ class RetrofitService(private val retrofitInstance: RetrofitInstanceN) {
     }
 
     fun readBidJSON(
+        token: String,
         liveData: MutableLiveData<List<BidModelAPI>>,
         requestState: MutableLiveData<RequestState>
     ){
         requestState.postValue(RequestState.pending)
-        val call = retrofitInterface.getBidList()
+        val call = retrofitInterface.getBidList(token)
         call.enqueue(object : Callback<List<BidModelAPI>> {
             override fun onResponse(
                 call: Call<List<BidModelAPI>>,
@@ -538,11 +556,12 @@ class RetrofitService(private val retrofitInstance: RetrofitInstanceN) {
     }
 
     fun readTenderStockJSON(
+        token: String,
         liveData: MutableLiveData<List<TenderStockModelAPI>>,
         requestState: MutableLiveData<RequestState>
     ){
         requestState.postValue(RequestState.pending)
-        val call = retrofitInterface.getTenderStock()
+        val call = retrofitInterface.getTenderStock(token)
         call.enqueue(object : Callback<List<TenderStockModelAPI>> {
             override fun onResponse(
                 call: Call<List<TenderStockModelAPI>>,
@@ -571,11 +590,12 @@ class RetrofitService(private val retrofitInstance: RetrofitInstanceN) {
     }
 
     fun readTenderUserJSON(
+        token: String,
         liveData: MutableLiveData<List<TenderUserModelAPI>>,
         requestState: MutableLiveData<RequestState>
     ){
         requestState.postValue(RequestState.pending)
-        val call = retrofitInterface.getTenderUser()
+        val call = retrofitInterface.getTenderUser(token)
         call.enqueue(object : Callback<List<TenderUserModelAPI>> {
             override fun onResponse(
                 call: Call<List<TenderUserModelAPI>>,
@@ -602,8 +622,74 @@ class RetrofitService(private val retrofitInstance: RetrofitInstanceN) {
         })
 
     }
-
     fun getToken(
+            username:String,
+            password:String,
+            liveData: MutableLiveData<GetTokenAPI?>,
+            requestState: MutableLiveData<RequestState>
+    ){
+        requestState.postValue(RequestState.pending)
+        val call = retrofitInterface.getToken("password", username,password)
+        call.enqueue(object : Callback<GetTokenAPI> {
+            override fun onResponse(
+                    call: Call<GetTokenAPI>,
+                    response: Response<GetTokenAPI>
+            ) {
+                val body = response.body()
+                if (body != null) {
+                    liveData.postValue(body)
+                    requestState.postValue(RequestState.success)
+                } else
+                    requestState.postValue(RequestState.failed)
+
+            }
+
+            override fun onFailure(call: Call<GetTokenAPI>, t: Throwable) {
+                requestState.postValue(
+                        RequestState(
+                                pending = false,
+                                successful = false,
+                                errorMessage = t.message.toString()
+                        )
+                )
+            }
+        })
+
+    }
+    fun getListUser(
+    Authorization:String,
+    liveData: MutableLiveData<List<UserListTest?>>,
+    requestState: MutableLiveData<RequestState>
+    ){
+        requestState.postValue(RequestState.pending)
+        val call = retrofitInterface.getListUser(Authorization)
+        call.enqueue(object : Callback<List<UserListTest>> {
+            override fun onResponse(
+                    call: Call<List<UserListTest>>,
+                    response: Response<List<UserListTest>>
+            ) {
+                val body = response.body()
+                if (body != null) {
+                    liveData.postValue(body)
+                    requestState.postValue(RequestState.success)
+                } else
+                    requestState.postValue(RequestState.failed)
+
+            }
+
+            override fun onFailure(call: Call<List<UserListTest>>, t: Throwable) {
+                requestState.postValue(
+                        RequestState(
+                                pending = false,
+                                successful = false,
+                                errorMessage = t.message.toString()
+                        )
+                )
+            }
+        })
+
+    }
+    fun getToken1(
         username:String,
         password:String,
         liveData: MutableLiveData<GetTokenAPI?>,
@@ -612,7 +698,7 @@ class RetrofitService(private val retrofitInstance: RetrofitInstanceN) {
         val service = RetrofitInstance.getRetrofit().create(RetrofitInterface::class.java)
 
 
-        service.getToken(RequestToken("password", username,password)).enqueue(object : retrofit2.Callback<GetTokenAPI> {
+        service.getToken("password", username,password).enqueue(object : retrofit2.Callback<GetTokenAPI> {
             override fun onResponse(call: retrofit2.Call<GetTokenAPI>, response: Response<GetTokenAPI>) {
                 var newlyCreatedDestination = response.body()
                 if(response.code() == 201){

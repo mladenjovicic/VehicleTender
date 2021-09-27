@@ -35,8 +35,8 @@ class UserBidTenderViewModel(private val userBidRepository :  UserBidRepository)
         userBidRepository.insertBid(serverId, userId, stockId, price, isWinningPrice)
     }
 
-    fun inserBidJSON(serverId:Int, userId:String, stockId:Int, price:Double,isWinningPrice:Boolean){
+    fun inserBidJSON(token:String, serverId:Int?, userId:String, stockId:Int, price:Double,isWinningPrice:Boolean){
         createNewBid.postValue(null)
-        userBidRepository.addBidJON(serverId,userId,stockId,price,isWinningPrice, createNewBid, requestState)
+        userBidRepository.addBidJON(token, serverId,userId,stockId,price,isWinningPrice, createNewBid, requestState)
     }
 }

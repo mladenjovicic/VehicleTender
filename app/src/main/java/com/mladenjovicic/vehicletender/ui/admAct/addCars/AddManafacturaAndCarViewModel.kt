@@ -37,9 +37,9 @@ class AddManafacturaAndCarViewModel(private val addManafacturaAndCarRepository: 
     fun addManufacturer(id:Int,manufacturer_name:String){
             addManafacturaAndCarRepository.addManufacturer(id,manufacturer_name)
      }
-    fun addManufacturerJSON(id:Int?,ManufacturerName:String){
+    fun addManufacturerJSON(token:String, id:Int?,ManufacturerName:String){
         createNewManufacturer.postValue(null)
-        addManafacturaAndCarRepository.addManufacturerJSON(id, ManufacturerName,  createNewManufacturer, requestState)
+        addManafacturaAndCarRepository.addManufacturerJSON(token, id, ManufacturerName,  createNewManufacturer, requestState)
     }
 
     fun getListManafactura():LiveData<List<ManufacturerModelDB>>{
@@ -52,9 +52,9 @@ class AddManafacturaAndCarViewModel(private val addManafacturaAndCarRepository: 
             }
     }
 
-    fun addCarModelJSON(id:Int?, model_name:String, model_no:String, manufacturer_id:Int){
+    fun addCarModelJSON(token: String, id:Int?, model_name:String, model_no:String, manufacturer_id:Int){
         createNewCarModele.postValue(null)
-        addManafacturaAndCarRepository.addCarModelJSON(id, model_name, model_no, manufacturer_id, createNewCarModele, requestState)
+        addManafacturaAndCarRepository.addCarModelJSON(token, id, model_name, model_no, manufacturer_id, createNewCarModele, requestState)
     }
 
 }

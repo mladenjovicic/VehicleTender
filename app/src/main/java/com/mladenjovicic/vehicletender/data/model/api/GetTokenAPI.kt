@@ -7,7 +7,7 @@ data class GetTokenAPI(
     @SerializedName("token_type") var token_type:String?,
     @SerializedName("expires_in") var expires_in: Int?,
     @SerializedName(".issued") var issued: String?,
-    @SerializedName(".expires") var expires: String,
+    @SerializedName(".expires") var expires: String
 
 ) {
 }

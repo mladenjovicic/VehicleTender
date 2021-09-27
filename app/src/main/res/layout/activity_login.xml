@@ -27,7 +27,8 @@
         android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="@+id/imageView"
         app:layout_constraintStart_toStartOf="@+id/imageView"
-        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+        app:layout_constraintTop_toBottomOf="@+id/imageView"
+        android:text="admin@admin.com"/>
 
     <EditText
         android:id="@+id/editTextUserPassword"
@@ -37,7 +38,7 @@
         android:ems="10"
         android:hint="Enter password"
         android:inputType="textPassword"
-        android:text="1"
+        android:text="Admin!123"
         app:layout_constraintEnd_toEndOf="@+id/editTextEmailUser"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/editTextEmailUser"

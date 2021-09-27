@@ -13,49 +13,58 @@ class LoginRepository(private val retrofitService: RetrofitService,
                       private val localRepository:LocalRepository) {
 
     fun getLocationsJSON(
+        token:String,
         livedata: MutableLiveData<List<LocationModelAPI>>,
         requestState: MutableLiveData<RequestState>
-    ) = retrofitService.readLocaitonJSON(livedata, requestState)
+    ) = retrofitService.readLocaitonJSON(token, livedata, requestState)
 
     fun getCarsModelJSON(
+        token: String,
         livedata: MutableLiveData<List<CarModelApi>>,
         requestState: MutableLiveData<RequestState>
-    ) = retrofitService.readCarModelJSON(livedata, requestState)
+    ) = retrofitService.readCarModelJSON(token,livedata, requestState)
 
     fun getManufacturerJSON(
+        token: String,
         livedata: MutableLiveData<List<ManufacturerModelAPI>>,
         requestState: MutableLiveData<RequestState>
-    )= retrofitService.readManufacturerJSON(livedata, requestState)
+    )= retrofitService.readManufacturerJSON(token,livedata, requestState)
 
     fun getStatusJSON(
-                   livedata: MutableLiveData<List<StatusModelAPI>>,
-                  requestState: MutableLiveData<RequestState>
-    ) = retrofitService.readStatusJSON(livedata, requestState)
+            token: String,
+            livedata: MutableLiveData<List<StatusModelAPI>>,
+            requestState: MutableLiveData<RequestState>
+    ) = retrofitService.readStatusJSON(token, livedata, requestState)
 
     fun getTenderUserJSON(
+        token: String,
         livedata: MutableLiveData<List<TenderUserModelAPI>>,
         requestState: MutableLiveData<RequestState>
-    )=retrofitService.readTenderUserJSON(livedata, requestState)
+    )=retrofitService.readTenderUserJSON(token,livedata, requestState)
 
     fun getTenderStockJSON(
+        token: String,
         livedata: MutableLiveData<List<TenderStockModelAPI>>,
         requestState: MutableLiveData<RequestState>
-    )= retrofitService.readTenderStockJSON(livedata, requestState)
+    )= retrofitService.readTenderStockJSON(token,livedata, requestState)
 
     fun getBidJSON(
+        token: String,
         livedata: MutableLiveData<List<BidModelAPI>>,
         requestState: MutableLiveData<RequestState>
-    )= retrofitService.readBidJSON(livedata, requestState)
+    )= retrofitService.readBidJSON(token, livedata, requestState)
 
     fun getTenderJSON(
+        token: String,
         livedata: MutableLiveData<List<TenderModelAPI>>,
         requestState: MutableLiveData<RequestState>
-    )= retrofitService.readTenderJSON(livedata, requestState)
+    )= retrofitService.readTenderJSON(token,livedata, requestState)
 
     fun getCarStockJSON(
+        token: String,
         livedata: MutableLiveData<List<StockInfoModelAPI>>,
         requestState: MutableLiveData<RequestState>
-    ) = retrofitService.readCarStockJSON(livedata, requestState)
+    ) = retrofitService.readCarStockJSON(token ,livedata, requestState)
 
     fun addNewUser(
         uuid: String,
@@ -151,5 +160,11 @@ class LoginRepository(private val retrofitService: RetrofitService,
         liveData: MutableLiveData<GetTokenAPI?>,
         requestState: MutableLiveData<RequestState>)=
         retrofitService.getToken( username, password,liveData,requestState)
+
+    fun getUserList(
+            Authorization:String,
+            liveData: MutableLiveData<List<UserListTest?>>,
+            requestState: MutableLiveData<RequestState>) =
+            retrofitService.getListUser(Authorization,liveData,requestState)
 
 }

@@ -85,7 +85,7 @@ class addTenderFragment : Fragment(), AdapterView.OnItemSelectedListener {
         btnAddNewTender?.setOnClickListener {
             if (editTextDateOpenDate?.text!!.isNotEmpty()&&editTextDateCloseDate?.text!!.isNotEmpty()){
                 val rnds = (0..9999).random()
-                viewModel.addTenderJSON(rnds,System.currentTimeMillis().toString(),sharedPreferences.getString("uuidUser", "null").toString(),UUID.randomUUID().toString(), editTextDateOpenDate.text.toString(), editTextDateCloseDate.text.toString(), tenderStatus )
+                viewModel.addTenderJSON("",null,System.currentTimeMillis().toString(),sharedPreferences.getString("uuidUser", "null").toString(),UUID.randomUUID().toString(), editTextDateOpenDate.text.toString(), editTextDateCloseDate.text.toString(), tenderStatus )
 
 
                 viewModel.requestState.observe(requireActivity()) {

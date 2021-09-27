@@ -38,7 +38,8 @@ class BidAdapter(val activity: Fragment, userStatus:Int, tenderStatus:Int, val v
             if(holder.editTextPriceBid.text.isNotEmpty()) {
                 val rnds = (0..9999).random()
                 viewModel.inserBidJSON(
-                    rnds,
+                    "",
+                    null,
                     uuidUser,
                     TenderStockList!![position].stockId,
                     holder.editTextPriceBid.text.toString().toDouble(),

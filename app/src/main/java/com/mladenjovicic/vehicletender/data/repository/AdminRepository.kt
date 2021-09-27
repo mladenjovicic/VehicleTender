@@ -98,29 +98,33 @@ class AdminRepository(private val retrofitService: RetrofitService,
        localRepository.insertDataCar(IdServer, model_name, model_no, manufacturer_id)
     }
     fun addManufacturerJSON(
+        token: String,
         id:Int?,
         ManufacturerName:String,
         livedata: MutableLiveData<ManufacturerModelAPI?>,
         requestState: MutableLiveData<RequestState>
-    ) = retrofitService.addManufacturerJSON(id, ManufacturerName,livedata, requestState)
+    ) = retrofitService.addManufacturerJSON(token, id, ManufacturerName,livedata, requestState)
 
     fun addLocationJSON(
+        token:String,
         id:Int?,
         city:String,
         zipCode: String,
         requestState: MutableLiveData<RequestState>,
-        livedata: MutableLiveData<LocationModelAPI?>)= retrofitService.addLocationJSON(id, city, zipCode, requestState, livedata)
+        livedata: MutableLiveData<LocationModelAPI?>)= retrofitService.addLocationJSON(token, id, city, zipCode, requestState, livedata)
 
     fun addCarModelJSON(
+        token: String,
         IdServer:Int?,
         model_name:String,
         model_no:String,
         manufacturer_id:Int,
         livedata: MutableLiveData<CarModelApi?>,
         requestState: MutableLiveData<RequestState>)=
-        retrofitService.addCarModelJSON(IdServer, model_name, model_no, manufacturer_id,livedata, requestState)
+        retrofitService.addCarModelJSON(token, IdServer, model_name, model_no, manufacturer_id,livedata, requestState)
 
     fun addTenderJSON(
+        token: String,
         id: Int?,
         createdDate:String,
         createdBy:String,
@@ -129,9 +133,10 @@ class AdminRepository(private val retrofitService: RetrofitService,
         closeDate:String,
         statusId:Int,
         liveData: MutableLiveData<TenderModelAPI?>,
-        requestState: MutableLiveData<RequestState>) = retrofitService.addTenderJSON(id, createdDate,createdBy, tenderNo, openDate, closeDate, statusId, liveData,requestState)
+        requestState: MutableLiveData<RequestState>) = retrofitService.addTenderJSON(token, id, createdDate,createdBy, tenderNo, openDate, closeDate, statusId, liveData,requestState)
 
     fun addCarStockJSON(
+        token: String,
         id: Int?,
         year:Int,
         modelLineId:Int,
@@ -142,7 +147,7 @@ class AdminRepository(private val retrofitService: RetrofitService,
         regNo:String,
         isSold:Boolean,
         liveData: MutableLiveData<StockInfoModelAPI?>,
-        requestState: MutableLiveData<RequestState>)= retrofitService.addCarStockJSON(id, year, modelLineId, mileage, price, comments, locationId, regNo, isSold, liveData, requestState)
+        requestState: MutableLiveData<RequestState>)= retrofitService.addCarStockJSON(token, id, year, modelLineId, mileage, price, comments, locationId, regNo, isSold, liveData, requestState)
     }
 
 

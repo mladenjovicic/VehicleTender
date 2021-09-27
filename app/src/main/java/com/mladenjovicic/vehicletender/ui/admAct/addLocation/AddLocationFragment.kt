@@ -53,8 +53,8 @@ class AddLocationFragment : Fragment() {
 
     }
     fun addLocationJSON(city:String, zipCode:String){
-        val rnds = (0..9999).random()
-        viewModel.addLocationJSON(rnds,city, zipCode)
+
+        viewModel.addLocationJSON("bearer Ptm4EQV113pVRiSKX1R4FbyQ2zIvCUoVvJlS_tY8ijH4w739m_hSwgI3N23Z5Na8USQpJOA5bUpCkrUh8uqlaavTZvfq6WhDvKZ5fR9LYQruQwrCzvnNS9ryl_RFmxdYbDhW-ZhNRUiqqCRFuwNNUwqZPz2TRbOi5EsGR2UwFA4Wmmua9U7BaNscG78eDmFSqAeWGuGGArDNZzbff8H3C94yEULh8fVmy6dajbhn0SCAx1AzA1VeZqCS_a6SWCdfvNQwl82PNJgr0O3anDmI2T3rnw-ss_ahSI-awTHNmYfYAGYFdP7Ne29ZjLXaCMhZ81KtlwVXybmHK58M16BqLixScogF4A9aMMZG5exh0Gvr-1NYPr3zxGdTVbJXIUxE6GynAc5LJzY0Zihhmzv9Y6rOkoBk4lUTr1BRM4HATWuxNPMoQdbrJ5anUGrVVLRjdkwGE_CUh3ymvhyvqXszDtuwXMWTLon_-XfpufcsoD2SDGCgwWW5dwUpswSwE7DAn97EgZ2nSNU8OAaGZKBCpQ",null ,city, zipCode)
         val editTextNameNewLocation = view?.findViewById<EditText>(R.id.editTextNameNewLocation)
         val editTextSaveZipCodeNewLocation = view?.findViewById<EditText>(R.id.editTextSaveZipCodeNewLocation)
 
@@ -69,7 +69,7 @@ class AddLocationFragment : Fragment() {
 
                     if(it!=null){
                         Toast.makeText(requireContext(), "Request is successful", Toast.LENGTH_SHORT).show()
-                        viewModel.addNewLocation(it.id!!, it.city.toString(), it.zipCOde.toString())
+                        viewModel.addNewLocation(it.Id!!, it.City.toString(), it.ZipCode.toString())
                         editTextNameNewLocation!!.text.clear()
                         editTextSaveZipCodeNewLocation!!.text.clear()
                         viewModel.createNewLocation.postValue(null)

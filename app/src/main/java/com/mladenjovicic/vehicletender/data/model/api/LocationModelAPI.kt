@@ -3,7 +3,7 @@ package com.mladenjovicic.vehicletender.data.model.api
 import com.google.gson.annotations.SerializedName
 
 data class LocationModelAPI(
-        @SerializedName("id") var id : Int?,
-        @SerializedName("city") var city:String?,
-        @SerializedName("zipCOde") var zipCOde:String?
+        @SerializedName("Id") var Id : Int?,
+        @SerializedName("City") var City:String?,
+        @SerializedName("ZipCode") var ZipCode:String?
 )

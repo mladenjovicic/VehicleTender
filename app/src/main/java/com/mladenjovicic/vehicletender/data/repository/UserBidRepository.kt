@@ -25,6 +25,7 @@ class UserBidRepository(private val retrofitService: RetrofitService,
     }
 
     fun addBidJON(
+        token:String,
         id: Int?,
         TUserId:String,
         TStockId:Int,
@@ -32,5 +33,5 @@ class UserBidRepository(private val retrofitService: RetrofitService,
         IsWinningPrice:Boolean,
         liveData: MutableLiveData<BidModelAPI?>,
         requestState: MutableLiveData<RequestState>
-    ) = retrofitService.addBidJSON(id, TUserId,TStockId, Price, IsWinningPrice, liveData, requestState)
+    ) = retrofitService.addBidJSON(token, id, TUserId,TStockId, Price, IsWinningPrice, liveData, requestState)
 }

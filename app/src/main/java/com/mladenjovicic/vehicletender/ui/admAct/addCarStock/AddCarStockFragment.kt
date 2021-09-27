@@ -91,7 +91,7 @@ class AddCarStockFragment : Fragment(), AdapterView.OnItemSelectedListener {
         btnAddStockCar?.setOnClickListener {
             val rnds = (0..9999).random()
             if(editTextCarYear?.text!!.isNotEmpty() && editTextCarMileage?.text!!.isNotEmpty() && editTextCarPrice?.text!!.isNotEmpty()&&editTextCarReg?.text!!.isNotEmpty()&&editTextCarComment?.text!!.isNotEmpty()){
-                viewModel.addCarStockJSON(rnds, editTextCarYear?.text.toString().toInt(),carBrand,editTextCarMileage.text.toString().toDouble(),
+                viewModel.addCarStockJSON("", null, editTextCarYear?.text.toString().toInt(),carBrand,editTextCarMileage.text.toString().toDouble(),
                     editTextCarPrice.text.toString().toDouble(),editTextCarComment.text.toString(), carLocation,editTextCarReg.text.toString(),false)
 
 
