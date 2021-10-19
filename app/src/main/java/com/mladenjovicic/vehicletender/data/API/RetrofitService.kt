@@ -658,15 +658,15 @@ class RetrofitService(private val retrofitInstance: RetrofitInstanceN) {
     }
     fun getListUser(
     Authorization:String,
-    liveData: MutableLiveData<List<UserListTest?>>,
+    liveData: MutableLiveData<List<UserProfilAPI?>>,
     requestState: MutableLiveData<RequestState>
     ){
         requestState.postValue(RequestState.pending)
         val call = retrofitInterface.getListUser(Authorization)
-        call.enqueue(object : Callback<List<UserListTest>> {
+        call.enqueue(object : Callback<List<UserProfilAPI>> {
             override fun onResponse(
-                    call: Call<List<UserListTest>>,
-                    response: Response<List<UserListTest>>
+                    call: Call<List<UserProfilAPI>>,
+                    response: Response<List<UserProfilAPI>>
             ) {
                 val body = response.body()
                 if (body != null) {
@@ -677,7 +677,41 @@ class RetrofitService(private val retrofitInstance: RetrofitInstanceN) {
 
             }
 
-            override fun onFailure(call: Call<List<UserListTest>>, t: Throwable) {
+            override fun onFailure(call: Call<List<UserProfilAPI>>, t: Throwable) {
+                requestState.postValue(
+                        RequestState(
+                                pending = false,
+                                successful = false,
+                                errorMessage = t.message.toString()
+                        )
+                )
+            }
+        })
+
+    }
+    fun getUserProfil(
+            Authorization:String,
+            userEmail:String,
+            liveData: MutableLiveData<UserProfilAPI?>,
+            requestState: MutableLiveData<RequestState>){
+
+        requestState.postValue(RequestState.pending)
+        val call = retrofitInterface.getUserProfil(Authorization,userEmail)
+        call.enqueue(object : Callback<UserProfilAPI> {
+            override fun onResponse(
+                    call: Call<UserProfilAPI>,
+                    response: Response<UserProfilAPI>
+            ) {
+                val body = response.body()
+                if (body != null) {
+                    liveData.postValue(body)
+                    requestState.postValue(RequestState.success)
+                } else
+                    requestState.postValue(RequestState.failed)
+
+            }
+
+            override fun onFailure(call: Call<UserProfilAPI>, t: Throwable) {
                 requestState.postValue(
                         RequestState(
                                 pending = false,

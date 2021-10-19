@@ -26,7 +26,7 @@ interface RetrofitInterface {
     @POST("Status")
     fun CreateStatus(@Header ("Authorization") Token:String, @Body newStatus:StatusModelAPI):Call<StatusModelAPI>
 
-    @GET("Manufacturer")
+    @GET("api/manufacturers")
     fun getManufacturerList(@Header ("Authorization") Token:String):Call<List<ManufacturerModelAPI>>
 
     @Headers("Content-Type: application/json")
@@ -87,6 +87,9 @@ interface RetrofitInterface {
 
     //@FormUrlEncoded
     @Headers("Content-Type: application/x-www-form-urlencoded")
-    @GET("api/values")
-    fun getListUser(@Header ("Authorization") Token:String /*@Field("Authorization") Authorization:String*/):Call<List<UserListTest>>
+    @GET("api/users")
+    fun getListUser(@Header ("Authorization") Token:String):Call<List<UserProfilAPI>>
+
+   @GET("api/user?")
+    fun getUserProfil(@Header ("Authorization") Token:String, @Query("email") useremail:String):Call<UserProfilAPI>
 }

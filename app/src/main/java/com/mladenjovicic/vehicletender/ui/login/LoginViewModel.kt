@@ -8,7 +8,6 @@ import com.mladenjovicic.vehicletender.data.model.api.*
 import com.mladenjovicic.vehicletender.data.model.db.LocationModelDB
 import com.mladenjovicic.vehicletender.data.model.db.UserModelDB
 import com.mladenjovicic.vehicletender.data.repository.LoginRepository
-import kotlin.math.log
 
 class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel() {
         var userModelDB:LiveData<UserModelDB>?=null
@@ -25,7 +24,8 @@ class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel()
         val carStockLiveData = MutableLiveData<List<StockInfoModelAPI>>()
         val requestState = MutableLiveData<RequestState>()
         lateinit var  getTokenAPI: MutableLiveData<GetTokenAPI?>
-        lateinit var getUserListTest: MutableLiveData<List<UserListTest?>>
+        lateinit var getUserList: MutableLiveData<List<UserProfilAPI?>>
+        lateinit var getUserProfil:MutableLiveData<UserProfilAPI?>
         var Authorization = ""
         init {
             //getLocationsJSON(Authorization)
@@ -39,14 +39,15 @@ class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel()
             getTenderJSON()
             getCarStockJSON()*/
             getTokenAPI = MutableLiveData()
-            getUserListTest = MutableLiveData()
+            getUserList = MutableLiveData()
+            getUserProfil = MutableLiveData()
         }
 
          fun getTokenObserver():MutableLiveData<GetTokenAPI?>{
              return getTokenAPI
         }
-        fun getUserListObserver():MutableLiveData<List<UserListTest?>>{
-            return getUserListTest
+        fun getUserListObserver():MutableLiveData<List<UserProfilAPI?>>{
+            return getUserList
         }
 
          fun getToken(
@@ -55,10 +56,13 @@ class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel()
         ){
             loginRepository.getToken(username, password, getTokenAPI, requestState)
         }
+        fun getUserProfil(token: String, userEmail:String){
+        loginRepository.getUserProfil(token, userEmail, getUserProfil, requestState)
+        }
 
-    fun getUserList(token:String){
-        loginRepository.getUserList(token,getUserListTest, requestState)
-    }
+        fun getUserList(token:String){
+        loginRepository.getUserList(token,getUserList, requestState)
+        }
         fun getCarStockJSON(token:String){
             loginRepository.getCarStockJSON(token, carStockLiveData, requestState)
         }

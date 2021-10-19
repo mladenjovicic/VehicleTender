@@ -10,7 +10,6 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.lifecycle.Observer
-import com.mladenjovicic.vehicletender.data.model.api.GetTokenAPI
 import com.mladenjovicic.vehicletender.ui.login.LoginViewModel
 import java.util.*
 
@@ -50,7 +49,7 @@ class LoginActivity : AppCompatActivity() {
         viewModel.getManufacturerJSON(Token)
         viewModel.manufacturerLiveData.observe(this) {
             if(it.isNotEmpty()) {
-                Log.e("Retrofit fetched list", "update adapter! ${it.toList()}")
+                Log.e("Retrofit fetched list", "update adapter manufacturer! ${it.toList()}")
                 for (i in 0..it.size-1) {
                     viewModel.addCarList(it[i].ID!!,it[i].ManufacturerName!!)
                 }
@@ -263,10 +262,42 @@ class LoginActivity : AppCompatActivity() {
                             addTenderJSON("${it?.token_type} ${it?.access_token}")
                             addCarStockJSON("${it?.token_type} ${it?.access_token}")
 
-                            viewModel.getUserListTest.observe(this, Observer {
+                            viewModel.getUserProfil("${it?.token_type} ${it?.access_token}", editTextEmailUser.text.toString())
+                            viewModel.getUserProfil.observe(this, Observer {
+                                println("test 237" + it.toString())
+                                //val id: Int = Integer.parseInt(it[i]?.Id.toString())
+                                val contact_name: String? = it?.FirstName
+                                val contact_surname: String? = it?.LastName
+                                val email: String? = it?.Email
+                                val status_user: String? = it?.RoleName
+                                val id_location: Int? = it?.LocationId
+                                val phone: String? = it?.PhoneNumber
+                                val company_name: String? = it?.CompanyName
+                                val uuid: String = it?.ID!!
+                                val editor: SharedPreferences.Editor = sharedPreferences.edit()
+                                //editor.putInt("id_user", id)
+                                editor.putString("uuidUser", uuid)
+                                editor.putString("contact_name_user", contact_name)
+                                editor.putString("contact_surname_user", contact_surname)
+                                editor.putString("email_user", email)
+                                when(status_user){
+                                    "admin"->editor.putInt("status_user", 2)
+                                }
+
+                                editor.putString("id_location", id_location.toString())
+                                editor.putString("phone", phone)
+                                editor.putString("company_name", company_name)
+                                editor.apply()
+                                editor.commit()
+                                val intent = Intent(this, MainActivity::class.java)
+                                startActivity(intent)
+
+                            })
+                          /*  viewModel.getUserList.observe(this, Observer {
+                                println("test 237" + it.toString())
                                 for (i in 0..it.size!!-1){
                                     println("test 237" + it[i].toString())
-                                    if(it[i]?.Email == editTextEmailUser.text.toString()){
+                                    *//*if(it[i]?.Email == editTextEmailUser.text.toString()){
                                         //val id: Int = Integer.parseInt(it[i]?.Id.toString())
                                         val contact_name: String? = it[i]?.FirstName
                                         val contact_surname: String? = it[i]?.LastName
@@ -288,12 +319,12 @@ class LoginActivity : AppCompatActivity() {
                                         editor.putString("company_name", company_name)
                                         editor.apply()
                                         editor.commit()
-                                        /*val intent = Intent(this, MainActivity::class.java)
-                                        startActivity(intent)*/
-                                    }
+                                        *//**//*val intent = Intent(this, MainActivity::class.java)
+                                        startActivity(intent)*//**//*
+                                    }*//*
                                 }
 
-                            })
+                            })*/
                         }
 
                     })

@@ -5,6 +5,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.MenuItem
 import android.view.View
 import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -51,6 +52,29 @@ class MainActivity : AppCompatActivity() {
             commit()
         }
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId){
+        R.id.menu_sign_out->{
+            val sharedPreferences: SharedPreferences = this.getSharedPreferences("UserDate", Context.MODE_PRIVATE)
+            //editor.putString("uuidUser", uuid)
+            val editor: SharedPreferences.Editor = sharedPreferences.edit()
+            editor.putString("contact_name_user", "")
+            editor.putString("contact_surname_user", "")
+            editor.putString("email_user", "")
+            editor.putString("status_user", "")
+            editor.putString("id_location", "")
+            editor.putString("phone", "")
+            editor.putString("company_name", "")
+            editor.apply()
+            editor.commit()
+            val intent = Intent(this, LoginActivity::class.java)
+            intent.flags =Intent.FLAG_ACTIVITY_CLEAR_TASK.or(Intent.FLAG_ACTIVITY_NEW_TASK)
+            startActivity(intent)
+
+        }
+        }
+        return super.onOptionsItemSelected(item)
+    }
     fun adminPanel(){
         val fabAdmin = findViewById<FloatingActionButton>(R.id.fabAdmin)
         val sharedPreferences: SharedPreferences = this.getSharedPreferences("UserDate", Context.MODE_PRIVATE)

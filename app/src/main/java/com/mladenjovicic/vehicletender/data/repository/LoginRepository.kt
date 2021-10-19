@@ -163,8 +163,15 @@ class LoginRepository(private val retrofitService: RetrofitService,
 
     fun getUserList(
             Authorization:String,
-            liveData: MutableLiveData<List<UserListTest?>>,
+            liveData: MutableLiveData<List<UserProfilAPI?>>,
             requestState: MutableLiveData<RequestState>) =
             retrofitService.getListUser(Authorization,liveData,requestState)
+
+    fun getUserProfil(
+            Authorization:String,
+            userEmail:String,
+            liveData: MutableLiveData<UserProfilAPI?>,
+            requestState: MutableLiveData<RequestState>
+    )= retrofitService.getUserProfil(Authorization,userEmail,liveData, requestState)
 
 }
