@@ -6,6 +6,7 @@ import com.mladenjovicic.vehicletender.data.API.RetrofitService
 import com.mladenjovicic.vehicletender.data.model.RequestState
 import com.mladenjovicic.vehicletender.data.model.api.*
 import com.mladenjovicic.vehicletender.data.model.db.LocationModelDB
+import com.mladenjovicic.vehicletender.data.model.db.TokenDB
 import com.mladenjovicic.vehicletender.data.model.db.UserModelDB
 import com.mladenjovicic.vehicletender.data.repository.db.LocalRepository
 
@@ -23,6 +24,10 @@ class LoginRepository(private val retrofitService: RetrofitService,
         livedata: MutableLiveData<List<CarModelApi>>,
         requestState: MutableLiveData<RequestState>
     ) = retrofitService.readCarModelJSON(token,livedata, requestState)
+
+    fun deleteTenderServerIDStock(serverId: Int){
+        localRepository.deleteTenderServerIDStock(serverId)
+    }
 
     fun getManufacturerJSON(
         token: String,
@@ -90,8 +95,30 @@ class LoginRepository(private val retrofitService: RetrofitService,
         )
     }
 
-    fun checkTableUser(): LiveData<UserModelDB>? {
-        return localRepository.checkTableUser()
+    fun addUserToken(
+        access_token:String,
+        token_type:String,
+        expires_in:String,
+        userName:String,
+        issued:String,
+        expires:String){
+
+        localRepository.insertUserToken(
+            access_token,
+            token_type,
+            expires_in,
+            userName,
+            issued,
+            expires
+        )
+    }
+
+    fun readUserToken():LiveData<TokenDB>{
+        return localRepository.readUserToken()
+    }
+
+    fun readUserEmail(email: String): LiveData<UserModelDB>? {
+        return localRepository.readUserEmail(email)
     }
 
     fun checkTableLocation(): LiveData<LocationModelDB>? {
@@ -114,16 +141,21 @@ class LoginRepository(private val retrofitService: RetrofitService,
         localRepository.insertStatus(id, statusType)
     }
 
-    fun addTenderUser(serverId:Int, tenderId: String, userId: String){
+    fun addTenderUser(serverId:Int, tenderId: Int, userId: String){
         localRepository.insertTenderUser(serverId, tenderId, userId)
     }
 
-    fun addTenderStock(serverId: Int, stockId: Int, tenderId: String, saleDate: String){
-        localRepository.insertTenderStock(serverId, stockId,tenderId,saleDate)
+    fun addTenderStock(serverId: Int, stockId: Int, tenderId: String, saleDate: String?, isDeleted:Boolean){
+        localRepository.insertTenderStock(serverId, stockId,tenderId,saleDate, isDeleted)
     }
 
-    fun addBid(serverId:Int, userId: String, stockId: Int, price: Double, isWinningPrice: Boolean){
-        localRepository.insertDataBid(serverId,userId, stockId, price, isWinningPrice)
+    fun addBid(serverId:Int, userId: String, stockId: Int, price: Double, isWinningPrice: Boolean, isActive:Boolean){
+        localRepository.insertDataBid(serverId,userId, stockId, price, isWinningPrice, isActive)
+    }
+    fun deleteBid(
+        userID:Int, stockId: Int, isActive:Boolean
+    ){
+        localRepository.deleteBid(userID, stockId, isActive)
     }
 
     fun addTender(
@@ -140,7 +172,7 @@ class LoginRepository(private val retrofitService: RetrofitService,
         serverId: Int,
         year: Int,
         modelLineId: Int,
-        mileage: Double,
+        mileage: Int,
         price: Double,
         comments: String,
         locationId: Int,
@@ -174,4 +206,19 @@ class LoginRepository(private val retrofitService: RetrofitService,
             requestState: MutableLiveData<RequestState>
     )= retrofitService.getUserProfil(Authorization,userEmail,liveData, requestState)
 
+    fun getUserRols(
+        Authorization:String,
+        liveData: MutableLiveData<List<UserRoleAPI>>,
+        requestState: MutableLiveData<RequestState>
+        )=retrofitService.getUserRols(Authorization, liveData, requestState)
+
+    fun insertUserRole(
+        ServerId:String,
+        RoleId:String
+         )=localRepository.insertRols(ServerId, RoleId)
+
+
+    fun autoLogin():LiveData<TokenDB>?{
+        return localRepository.autoLogin()
+    }
 }

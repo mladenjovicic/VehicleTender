@@ -1,22 +1,24 @@
 package com.mladenjovicic.vehicletender.adapter
 
 import android.app.Activity
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import androidx.lifecycle.liveData
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import com.mladenjovicic.vehicletender.R
 import com.mladenjovicic.vehicletender.data.model.db.TenderStockModelDB
-import com.mladenjovicic.vehicletender.data.model.db.stockCarList
 import com.mladenjovicic.vehicletender.data.model.db.stockCarUpdate
-import com.mladenjovicic.vehicletender.ui.tender.TenderUseViewModel
+import com.mladenjovicic.vehicletender.ui.tender.addTenderStock.AddTenderStockViewModel
+import com.mladenjovicic.vehicletender.ui.tender.addTenderStock.TenderUseViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class CarsForSellingAdapter(val activity: Activity,  val viewModel: TenderUseViewModel ): RecyclerView.Adapter<CarsForSellingAdapter.MyViewHolder>()  {
+class CarsForSellingAdapter(val activity: Activity, val viewModel: AddTenderStockViewModel, token:String, lifecycleOwner: LifecycleOwner ): RecyclerView.Adapter<CarsForSellingAdapter.MyViewHolder>()  {
 
     private var carForSellingList:List<stockCarUpdate>?=null
     fun setCarForSellingList(carStock: List<stockCarUpdate>){
@@ -24,6 +26,9 @@ class CarsForSellingAdapter(val activity: Activity,  val viewModel: TenderUseVie
     }
     var saleDate = ""
     var tenderId = ""
+    var token = token
+    var tenderIdServer = 0
+    var lifecycleOwner = lifecycleOwner
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
@@ -34,21 +39,79 @@ class CarsForSellingAdapter(val activity: Activity,  val viewModel: TenderUseVie
 
     override fun onBindViewHolder(holder: CarsForSellingAdapter.MyViewHolder, position: Int) {
         holder.bind(carForSellingList?.get(position)!!, activity)
-        var click = 0
-        holder.imageButtonAdd.setOnClickListener {
 
+        println("dev3" + carForSellingList!![position].tenderStockServerId+ " " + carForSellingList!![position].tenderStockServerId)
+
+        holder.imageButtonAdd.setOnClickListener {
+            println("dev4" + carForSellingList!![position].tenderStockServerId+ " " + carForSellingList!![position].tenderStockServerId)
+            if(carForSellingList!![position].tenderId ==null){
+            viewModel.addTenderStock(token, null, carForSellingList!![position].serverId, tenderIdServer, saleDate, false)
             var tenderStock:TenderStockModelDB?=null
-            CoroutineScope(Dispatchers.IO).launch {
-                viewModel.insertTenderStock(carForSellingList!![position].serverId!!,carForSellingList!![position].serverId, tenderId,saleDate)
+            var lifecycleOwner = holder.itemView.context as LifecycleOwner
+            viewModel.requestState.observe(lifecycleOwner) {
+                if(it.pending)
+                    Log.e("Loading", "retrofit request is in progress, show loading spinner")
+                if(it.successful){
+                    Log.e("Success", "retrofit request is successful tender " )
+                    viewModel.getNewLocationObserver().observe(lifecycleOwner, Observer{
+                        if(it!=null){
+                            Toast.makeText(holder.itemView.context, "Request is successful", Toast.LENGTH_SHORT).show()
+                            viewModel.insertTenderStock(it.id!!, it.stockId!!, it.tenderId.toString(), it.saleDate!!, it.isDeleted!!)
+                            viewModel.createNewTenderStock.postValue(null)
+                        }
+                    })
+                }
             }
-            Toast.makeText(holder.itemView.context,"Add car in Tender stock", Toast.LENGTH_SHORT).show()
+            Toast.makeText(holder.itemView.context,"Add car in Tender stock", Toast.LENGTH_SHORT).show()}
+           /*if(carForSellingList!![position].isDeleted == true){
+                viewModel.addTenderStock(token, carForSellingList!![position].tenderStockServerId, carForSellingList!![position].serverId, tenderIdServer, saleDate, false)
+                var tenderStock:TenderStockModelDB?=null
+                var lifecycleOwner = holder.itemView.context as LifecycleOwner
+                viewModel.requestState.observe(lifecycleOwner) {
+                    if(it.pending)
+                        Log.e("Loading", "retrofit request is in progress, show loading spinner")
+                    if(it.successful){
+                        Log.e("Success", "retrofit request is successful tender " )
+                        viewModel.getNewLocationObserver().observe(lifecycleOwner, Observer{
+
+                            if(it!=null){
+                                Toast.makeText(holder.itemView.context, "Request is successful", Toast.LENGTH_SHORT).show()
+                                viewModel.insertTenderStock(it.id!!, it.stockId!!, it.tenderId.toString(), it.saleDate!!, it.isDeleted!!)
+
+                                viewModel.createNewTenderStock.postValue(null)
+                            }
+                        })
+                    }
+                }
+                Toast.makeText(holder.itemView.context,"Add car in Tender stock", Toast.LENGTH_SHORT).show()}*/
 
         }
 
         holder.imageButtonRemove.setOnClickListener {
-            CoroutineScope(Dispatchers.IO).launch {
-            viewModel.deleteTenderStock(carForSellingList!![position].serverId!!,tenderId,saleDate)}
-            Toast.makeText(holder.itemView.context,"Remove car in Tender stock", Toast.LENGTH_SHORT).show()
+            println("dev1 " + carForSellingList!![position].isDeleted + " " + carForSellingList!![position].tenderStockServerId)
+            if(carForSellingList!![position].tenderId !=null){
+                println("dev2" + carForSellingList!![position].tenderStockServerId+ " " + carForSellingList!![position].tenderStockServerId)
+                viewModel.updateTenderStockJSON(token, carForSellingList!![position].tenderStockServerId, carForSellingList!![position].serverId, tenderIdServer, saleDate, true)
+                var tenderStock:TenderStockModelDB?=null
+                var lifecycleOwner = holder.itemView.context as LifecycleOwner
+                viewModel.requestState.observe(lifecycleOwner) {
+                    if(it.pending)
+                        Log.e("Loading", "retrofit request is in progress, show loading spinner")
+                    if(it.successful){
+                        Log.e("Success", "retrofit request is successful tender " )
+                        viewModel.getNewLocationObserver().observe(lifecycleOwner, Observer{
+
+                            if(it!=null){
+                                Toast.makeText(holder.itemView.context, "Request is successful", Toast.LENGTH_SHORT).show()
+                                viewModel.insertTenderStock(it.id!!, it.stockId!!, null, it.saleDate!!, it.isDeleted!!)
+                                //viewModel.deleteTenderStock(it.id!!, it.tenderId!!.toString(), it.saleDate!!)
+
+                                viewModel.createNewTenderStock.postValue(null)
+                            }
+                        })
+                    }
+                }
+                Toast.makeText(holder.itemView.context,"Remove car in Tender stock", Toast.LENGTH_SHORT).show()}
         }
     }
 
@@ -86,10 +149,14 @@ class CarsForSellingAdapter(val activity: Activity,  val viewModel: TenderUseVie
             textViewCarCityShow.text = "Car location: \n"+date.city
             textViewCarRegShow.text = "Car registration: \n" +date.regNo
             textViewCarComementShow.text = "Car comment: \n"+ date.comments
-            if(date.tenderId == null){
+
+            println("dev789 ${date.isDeleted}, ${date.tenderId}, ${date.serverId}")
+
+            if(date.tenderId ==null ){
                 imageButtonAdd.visibility = View.VISIBLE
                 imageButtonRemove.visibility = View.GONE
-            }else{
+            }
+            if(date.tenderId !=null){
                 imageButtonAdd.visibility = View.GONE
                 imageButtonRemove.visibility = View.VISIBLE
             }

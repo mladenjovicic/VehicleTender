@@ -1,5 +1,6 @@
 package com.mladenjovicic.vehicletender.ui.admAct.addCars
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -32,17 +33,20 @@ class AddManafacturaAndCarFragment : Fragment(), AdapterView.OnItemSelectedListe
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelsProviderUtils.AddManafacturaAndCar(this)
 
+
+
         addNewMan()
         addNewCar()
     }
     fun addNewMan(){
+        val sharedPreferences = requireActivity().getSharedPreferences("UserDate", Context.MODE_PRIVATE)
+        var token =sharedPreferences.getString("token", "null")
         val btnAddNewManufacturer = view?.findViewById<Button>(R.id.btnAddNewManufacturer)
         val editTextAddNewManufacturer = view?.findViewById<EditText>(R.id.editTextAddNewManufacturer)
         val spinnerAddManufacturer = view?.findViewById<Spinner>(R.id.spinnerAddManufacturer)
         btnAddNewManufacturer?.setOnClickListener {
            if(editTextAddNewManufacturer?.text!!.isNotEmpty()){
-               val rnds = (0..9999).random()
-               viewModel.addManufacturerJSON("",null, editTextAddNewManufacturer.text.toString())
+               viewModel.addManufacturerJSON(token!!,null, editTextAddNewManufacturer.text.toString())
            }else{
                Toast.makeText(requireContext(), "Sva polja moraju bit popunjena", Toast.LENGTH_SHORT).show()
            }
@@ -71,6 +75,9 @@ class AddManafacturaAndCarFragment : Fragment(), AdapterView.OnItemSelectedListe
 
     fun addNewCar(){
 
+        val sharedPreferences = requireActivity().getSharedPreferences("UserDate", Context.MODE_PRIVATE)
+        var token =sharedPreferences.getString("token", "null")
+
         val spinnerAddManufacturer = view?.findViewById<Spinner>(R.id.spinnerAddManufacturer)
         val btnAddCar = view?.findViewById<Button>(R.id.btnAddCar)
         val editTextAddModelName = view?.findViewById<EditText>(R.id.editTextAddModelName)
@@ -93,8 +100,7 @@ class AddManafacturaAndCarFragment : Fragment(), AdapterView.OnItemSelectedListe
         btnAddCar?.setOnClickListener {
 
             if(editTextAddModelName?.text!!.isNotEmpty()&&editTextModelNumber?.text!!.isNotEmpty()&&idMan>=0){
-                val rnds = (0..9999).random()
-                viewModel.addCarModelJSON("",null, editTextAddModelName.text.toString(), editTextModelNumber.text.toString(), idMan)
+                viewModel.addCarModelJSON(token!!,null, editTextAddModelName.text.toString(), editTextModelNumber.text.toString(), idMan)
 
                 viewModel.requestState.observe(requireActivity()) {
                     if(it.pending)
@@ -106,7 +112,7 @@ class AddManafacturaAndCarFragment : Fragment(), AdapterView.OnItemSelectedListe
                         viewModel.getNewCarModelObserver().observe(requireActivity(), Observer<CarModelApi?>{
                             if(it != null){
                                 Toast.makeText(requireContext(), "Request is successful", Toast.LENGTH_SHORT).show()
-                                viewModel.addCarModel(it.ID!!,it.ModelName!!,it.ModelName!!, it.ManufacturerId!!)
+                                viewModel.addCarModel(it.ID!!,it.ModelName!!,it.ModelNO!!, it.ManufacturerId!!)
                                 editTextAddModelName?.text?.clear()
                                 editTextModelNumber?.text?.clear()
                                 viewModel.createNewCarModele.postValue(null)
@@ -116,7 +122,6 @@ class AddManafacturaAndCarFragment : Fragment(), AdapterView.OnItemSelectedListe
                     else{
                         Toast.makeText(requireContext(), it.errorMessage.toString(), Toast.LENGTH_SHORT).show()
                     }
-
                 }
             }else{
                 Toast.makeText(requireContext(),"Sva polja moraju biti popunjena", Toast.LENGTH_SHORT).show()
@@ -126,7 +131,6 @@ class AddManafacturaAndCarFragment : Fragment(), AdapterView.OnItemSelectedListe
     fun getIDLocation(pos:Int){
         viewModel.getListManafactura()?.observe(viewLifecycleOwner,{ location->
             location?.forEach {
-                println("dev66" + location[pos].IdServer)
                 idMan = location[pos].IdServer!!
             }
         })

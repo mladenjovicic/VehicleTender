@@ -10,7 +10,7 @@ data class stockCarList(
                         @ColumnInfo(name ="year")
                         var year:Int,
                         @ColumnInfo(name ="mileage")
-                        var mileage:Double,
+                        var mileage:Int,
                         @ColumnInfo(name ="price")
                         var price:Double,
                         @ColumnInfo(name ="comments")

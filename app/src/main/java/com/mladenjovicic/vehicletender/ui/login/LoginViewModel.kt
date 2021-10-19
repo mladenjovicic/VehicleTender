@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import com.mladenjovicic.vehicletender.data.model.RequestState
 import com.mladenjovicic.vehicletender.data.model.api.*
 import com.mladenjovicic.vehicletender.data.model.db.LocationModelDB
+import com.mladenjovicic.vehicletender.data.model.db.TokenDB
 import com.mladenjovicic.vehicletender.data.model.db.UserModelDB
 import com.mladenjovicic.vehicletender.data.repository.LoginRepository
 
@@ -22,33 +23,35 @@ class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel()
         val bidLiveData = MutableLiveData<List<BidModelAPI>>()
         val tenderLiveData = MutableLiveData<List<TenderModelAPI>>()
         val carStockLiveData = MutableLiveData<List<StockInfoModelAPI>>()
+        val userRoleLiveData = MutableLiveData<List<UserRoleAPI>>()
+        var tokenLiveData :LiveData<TokenDB>?=null
         val requestState = MutableLiveData<RequestState>()
         lateinit var  getTokenAPI: MutableLiveData<GetTokenAPI?>
         lateinit var getUserList: MutableLiveData<List<UserProfilAPI?>>
         lateinit var getUserProfil:MutableLiveData<UserProfilAPI?>
-        var Authorization = ""
+        lateinit var getRolelist:MutableLiveData<List<UserRoleAPI?>>
         init {
-            //getLocationsJSON(Authorization)
-            /*getStatusJSON()
-            getCarModelsJSON()
-            getManufacturerJSON()
-
-            getTenderUserJSON()
-            getTenderStockJSON()
-            getBidJSON()
-            getTenderJSON()
-            getCarStockJSON()*/
             getTokenAPI = MutableLiveData()
             getUserList = MutableLiveData()
             getUserProfil = MutableLiveData()
+            getRolelist = MutableLiveData()
+        }
+
+        fun autoLogin():LiveData<TokenDB>?{
+            tokenLiveData = loginRepository.autoLogin()
+            return tokenLiveData
         }
 
          fun getTokenObserver():MutableLiveData<GetTokenAPI?>{
              return getTokenAPI
         }
+        fun deleteTenderStock(serverId:Int){
+        loginRepository.deleteTenderServerIDStock(serverId)
+        }
         fun getUserListObserver():MutableLiveData<List<UserProfilAPI?>>{
             return getUserList
         }
+
 
          fun getToken(
             username:String,
@@ -58,6 +61,15 @@ class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel()
         }
         fun getUserProfil(token: String, userEmail:String){
         loginRepository.getUserProfil(token, userEmail, getUserProfil, requestState)
+        }
+
+        fun deleteBid(userID:Int, stockId: Int, isActive:Boolean){
+            loginRepository.deleteBid(userID, stockId, isActive)
+        }
+
+        fun getUserRols(Authorization:String,
+                        ){
+            loginRepository.getUserRols(Authorization,userRoleLiveData, requestState)
         }
 
         fun getUserList(token:String){
@@ -118,9 +130,14 @@ class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel()
             company_name
         )
     }
+    fun insertUserRole(
+        serverId:String,
+        RoleId:String){
+        loginRepository.insertUserRole(serverId,RoleId)
+    }
 
-        fun checkTableUser(): LiveData<UserModelDB>? {
-        userModelDB = loginRepository.checkTableUser()
+        fun readUserEmail(email: String): LiveData<UserModelDB>? {
+        userModelDB = loginRepository.readUserEmail(email)
         return userModelDB
         }
 
@@ -141,14 +158,14 @@ class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel()
         loginRepository.addCarList(id, car)
         }
 
-        fun addTenderUser(serverID: Int, tenderId: String, userId: String){
+        fun addTenderUser(serverID: Int, tenderId: Int, userId: String){
             loginRepository.addTenderUser(serverID, tenderId, userId)
         }
-        fun addTenderStock(serverID: Int,stockId: Int, tenderId: String, saleDate: String){
-            loginRepository.addTenderStock(serverID,stockId,tenderId,saleDate)
+        fun addTenderStock(serverID: Int,stockId: Int, tenderId: String, saleDate: String?, isDeleted:Boolean){
+            loginRepository.addTenderStock(serverID,stockId,tenderId,saleDate, isDeleted)
         }
-        fun addBid(serverID:Int, userId: String, stockId: Int, price: Double, isWinningPrice: Boolean){
-        loginRepository.addBid(serverID, userId, stockId, price, isWinningPrice)
+        fun addBid(serverID:Int, userId: String, stockId: Int, price: Double, isWinningPrice: Boolean, isActive:Boolean){
+        loginRepository.addBid(serverID, userId, stockId, price, isWinningPrice, isActive)
         }
         fun addTender(
             id:Int,
@@ -165,7 +182,7 @@ class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel()
             serverID: Int,
             year: Int,
             modelLineId: Int,
-            mileage: Double,
+            mileage: Int,
             price: Double,
             comments: String,
             locationId: Int,
@@ -182,6 +199,28 @@ class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel()
          fun checkUser(email: String, password: String): LiveData<UserModelDB>? {
              userModelDB = loginRepository.checkUser(email, password)
              return userModelDB
+        }
+
+        fun addUserToken(
+            access_token:String,
+            token_type:String,
+            expires_in:String,
+            userName:String,
+            issued:String,
+            expires:String
+        ){
+            loginRepository.addUserToken(
+                access_token,
+                token_type,
+                expires_in,
+                userName,
+                issued,
+                expires)
+        }
+
+        fun readUserToken():LiveData<TokenDB>?{
+            tokenLiveData = loginRepository.readUserToken()
+            return  tokenLiveData
         }
 
 }

@@ -27,7 +27,7 @@ class UserHomeFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelsProviderUtils.mainUser(this)
-        viewModel.getActivesTenderList(0)
+        viewModel.getActivesTenderList(1)
         initRecyclerVTenderActivList()
 
         viewModel.tenderModel?.observe(requireActivity()){

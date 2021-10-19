@@ -33,13 +33,16 @@ class TenderActivAdapter(val activity: Fragment): RecyclerView.Adapter<TenderAct
                 val intent = Intent(holder.rowTenders.context, TenderUseActivity2::class.java)
                 intent.putExtra("tenderNo", TenderActivList!![position].tenderNo)
                 intent.putExtra("statusId", TenderActivList!![position].statusId)
+                intent.putExtra("tenderId", TenderActivList!![position].idServer)
+                intent.putExtra("saleDate", TenderActivList!![position].closeDate)
                 holder.rowTenders.context.startActivity(intent)
             }else{
                 val intent = Intent(holder.textViewTenderId?.context, TenderUseActivity2::class.java)
                 intent.putExtra("tenderNo", TenderActivList!![position].tenderNo)
+                intent.putExtra("tenderId", TenderActivList!![position].idServer)
+                intent.putExtra("saleDate", TenderActivList!![position].closeDate)
                 holder.textViewTenderId?.context!!.startActivity(intent)
             }
-
         }
     }
 

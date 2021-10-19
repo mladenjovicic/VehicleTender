@@ -9,11 +9,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import android.widget.Toast.LENGTH_SHORT
 import androidx.lifecycle.Observer
 import com.mladenjovicic.vehicletender.R
 import com.mladenjovicic.vehicletender.ViewModelsProviderUtils
 import com.mladenjovicic.vehicletender.data.model.api.TenderModelAPI
 import java.text.SimpleDateFormat
+import java.time.Instant
+import java.time.ZoneId
 import java.util.*
 
 class addTenderFragment : Fragment(), AdapterView.OnItemSelectedListener {
@@ -84,9 +87,17 @@ class addTenderFragment : Fragment(), AdapterView.OnItemSelectedListener {
         spinnerTenderStatus?.onItemSelectedListener = this
         btnAddNewTender?.setOnClickListener {
             if (editTextDateOpenDate?.text!!.isNotEmpty()&&editTextDateCloseDate?.text!!.isNotEmpty()){
-                val rnds = (0..9999).random()
-                viewModel.addTenderJSON("",null,System.currentTimeMillis().toString(),sharedPreferences.getString("uuidUser", "null").toString(),UUID.randomUUID().toString(), editTextDateOpenDate.text.toString(), editTextDateCloseDate.text.toString(), tenderStatus )
+                val sharedPreferences = requireActivity().getSharedPreferences("UserDate", Context.MODE_PRIVATE)
+                var token =sharedPreferences.getString("token", "null")
 
+                System.currentTimeMillis().toString()
+                val dt = if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                    Instant.ofEpochMilli(System.currentTimeMillis()).atZone(ZoneId.systemDefault()).toLocalDateTime()
+                } else {
+
+                }
+                viewModel.addTenderJSON(token!!,null,dt.toString(), sharedPreferences.getString("uuidUser", "null").toString(),UUID.randomUUID().toString(), editTextDateOpenDate.text.toString(), editTextDateCloseDate.text.toString(), tenderStatus )
+                viewModel.getUsersList()
 
                 viewModel.requestState.observe(requireActivity()) {
                     if(it.pending)
@@ -98,7 +109,29 @@ class addTenderFragment : Fragment(), AdapterView.OnItemSelectedListener {
                         viewModel.getNewTenderObserver().observe(requireActivity(), Observer<TenderModelAPI?>{
                             if (it !=null){
                                 Toast.makeText(requireContext(), "Request is successful", Toast.LENGTH_SHORT).show()
-                                viewModel.addTender(it.id!!, it.createdDate!!, it.createdBy!!, it.tenderNo!!, it.openDate!!, it.closeDate!!, it.statusId!!)
+                                viewModel.addTender(it.id!!, it.createdDate!!, it.createdBy!!, it.tenderNo!!, it.openDate!!.take(10), it.closeDate!!.take(10), it.statusId!!)
+                                var id = it.id!!
+                                viewModel.listAllUser?.observe(requireActivity(), Observer {
+                                    for (i in 0..it.size!!-1){
+                                        viewModel.insertUserTender(token, null, id, it[i].uuId)
+                                        viewModel.requestState.observe(requireActivity()){
+                                            if(it.pending)
+                                                Log.e("Loading", "retrofit request is in progress, show loading spinner")
+                                            if(it.successful){
+                                                Log.e("Success", "retrofit request is successful")
+                                                viewModel.getNewTenderUserObserver().observe(requireActivity(), Observer {
+
+                                                    if(it!=null){
+                                                        viewModel.addTenderUser(it.id!!, it.tenderId!!, it.userId!!)
+                                                    }
+                                                })
+                                            }
+                                            else{
+                                                println(it.errorMessage)
+                                            }
+                                        }
+                                    }
+                                })
                                 editTextDateOpenDate.text.clear()
                                 editTextDateCloseDate.text.clear()
                                 viewModel.createNewTender.postValue(null)

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/tenderStock"
+        android:title="Tender Stock"
+        android:icon="@drawable/home"
+        />
+    <item
+        android:id="@+id/userTender"
+        android:title="User Tender"
+        android:icon="@drawable/report"
+        />
+</menu>

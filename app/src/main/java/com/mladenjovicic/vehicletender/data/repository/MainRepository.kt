@@ -13,4 +13,12 @@ class MainRepository(private val retrofitService: RetrofitService,
         return localRepository.getTenderList(statusId)
 
     }
+
+    fun deteleToken(){
+        localRepository.deleteUserToken()
+    }
+
+    fun deleteAll(){
+        localRepository.deleteAll()
+    }
 }

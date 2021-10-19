@@ -1,5 +1,6 @@
 package com.mladenjovicic.vehicletender.ui.winBid
 
+import android.content.Context
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -32,17 +33,23 @@ class WinBidFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelsProviderUtils.getBidWinViewModel(this)
         var userLocationId= requireActivity()?.intent!!.extras?.get("stockId") as Int
+        var carId = requireActivity()?.intent!!.extras?.get("carId") as Int
+        val sharedPreferences = requireActivity().getSharedPreferences("UserDate", Context.MODE_PRIVATE)
+        var token =sharedPreferences.getString("token", "null").toString()
+
         viewModel.getBidListStockId(userLocationId.toInt())
         initRecyclerBidWinList()
         viewModel.bidModelDB?.observe(requireActivity()){
             recyclerViewBidWinList.setBidActiveList(it)
             recyclerViewBidWinList.notifyDataSetChanged()
+            recyclerViewBidWinList.token = token
+            recyclerViewBidWinList.carId = carId
         }
     }
 
     private fun initRecyclerBidWinList(){
         val recyclerViewListUsers = view?.findViewById<RecyclerView>(R.id.recyclerVIewWinBid)
-        recyclerViewBidWinList = BidWinAdapter(this)
+        recyclerViewBidWinList = BidWinAdapter(this, viewModel, this)
         recyclerViewListUsers?.adapter = recyclerViewBidWinList
     }
 }

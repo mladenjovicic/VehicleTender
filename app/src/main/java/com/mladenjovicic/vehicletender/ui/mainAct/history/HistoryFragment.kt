@@ -28,7 +28,7 @@ class HistoryFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelsProviderUtils.historyUser(this)
-        viewModel.getActivesTenderList(1)
+        viewModel.getActivesTenderList(2)
         initRecyclerVTenderActivList()
 
         viewModel.tenderModel?.observe(requireActivity()){
@@ -38,7 +38,6 @@ class HistoryFragment : Fragment() {
 
     }
     private fun initRecyclerVTenderActivList(){
-
         val recyclerViewListActivesTender= view?.findViewById<RecyclerView>(R.id.recyclerViewUserHistory)
         recyclerViewTenderActivList = UserTenderAdapter(this)
         recyclerViewListActivesTender?.adapter = recyclerViewTenderActivList

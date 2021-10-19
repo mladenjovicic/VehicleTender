@@ -14,7 +14,7 @@ data class StockInfoModelDB(
                             @ColumnInfo(name ="modelLineId")
                      var modedLineId:Int,
                             @ColumnInfo(name ="mileage")
-                     var mileage:Double,
+                     var mileage:Int,
                             @ColumnInfo(name ="price")
                      var price:Double,
                             @ColumnInfo(name ="comments")

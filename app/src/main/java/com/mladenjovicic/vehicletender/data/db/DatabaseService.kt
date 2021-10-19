@@ -45,6 +45,12 @@ class DatabaseService private constructor(private val applicationContext: Contex
     val tenderUserDAO: DAOAcessTenderUser
         get() = database.tenderUserDAO()
 
+    val tokenUserDAO: DAOAcessUserToken
+        get() = database.tokenUserDAO()
+
+    val roleDAO:DAOAcessRole
+    get() = database.roleDAO()
+
     companion object {
         @Volatile
         private var instance: DatabaseService? = null

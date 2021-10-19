@@ -4,7 +4,8 @@ import com.mladenjovicic.vehicletender.ui.login.LoginViewModel
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.mladenjovicic.vehicletender.adapter.BidWinAdapter
+import com.mladenjovicic.vehicletender.ui.ShowWinUsre.ShowWinUserFragment
+import com.mladenjovicic.vehicletender.ui.ShowWinUsre.ShowWinUserViewModel
 import com.mladenjovicic.vehicletender.ui.admAct.ListCarStock.ListCarStockFragment
 import com.mladenjovicic.vehicletender.ui.admAct.ListCarStock.ListCarStockViewModel
 import com.mladenjovicic.vehicletender.ui.admAct.ListUser.ListUserFragment
@@ -27,9 +28,14 @@ import com.mladenjovicic.vehicletender.ui.mainAct.history.HistoryFragment
 import com.mladenjovicic.vehicletender.ui.mainAct.history.SecViewModel
 import com.mladenjovicic.vehicletender.ui.mainAct.main.UserHomeFragment
 import com.mladenjovicic.vehicletender.ui.mainAct.main.UserHomeViewModel
+import com.mladenjovicic.vehicletender.ui.mainAct.mainAct.MainActivityViewModel
 import com.mladenjovicic.vehicletender.ui.mainAct.reports.ReportsFragment
 import com.mladenjovicic.vehicletender.ui.mainAct.reports.ReportsViewModel
-import com.mladenjovicic.vehicletender.ui.tender.TenderUseViewModel
+import com.mladenjovicic.vehicletender.ui.tender.AddTenderUser.AddTenderUserFragment
+import com.mladenjovicic.vehicletender.ui.tender.AddTenderUser.AddTenderUserViewModel
+import com.mladenjovicic.vehicletender.ui.tender.addTenderStock.AddTenderStockFragment
+import com.mladenjovicic.vehicletender.ui.tender.addTenderStock.AddTenderStockViewModel
+import com.mladenjovicic.vehicletender.ui.tender.addTenderStock.TenderUseViewModel
 import com.mladenjovicic.vehicletender.ui.updateUser.UserUpdateViewModel
 import com.mladenjovicic.vehicletender.ui.winBid.WinBidFragment
 import com.mladenjovicic.vehicletender.ui.winBid.WinBidViewModel
@@ -40,6 +46,13 @@ object ViewModelsProviderUtils {
 
     class LoginViewModelFactory : ViewModelProvider.Factory {
         override fun <T : ViewModel> create(modelClass: Class<T>): T { return InjectorUtils.getLoginViewModel() as T }
+    }
+
+    fun getMainAcitvityViewModel(activity: FragmentActivity) =
+        ViewModelProvider(activity, MainActivityViewModelFactory()).get(MainActivityViewModel::class.java)
+
+    class MainActivityViewModelFactory : ViewModelProvider.Factory {
+        override fun <T : ViewModel> create(modelClass: Class<T>): T { return InjectorUtils.getMainActivityViewModel() as T }
     }
     fun getUserBidViewModel(activity: fragmentUserBidTender) =
         ViewModelProvider(activity, UserBidViewModelFactory()).get(UserBidTenderViewModel::class.java)
@@ -54,7 +67,6 @@ object ViewModelsProviderUtils {
     class WinBidViewModelFactory : ViewModelProvider.Factory {
         override fun <T : ViewModel> create(modelClass: Class<T>): T { return InjectorUtils.getWinBidViewModel() as T }
     }
-
 
     fun getTenderViewModel(activity: FragmentActivity)=
         ViewModelProvider(activity, TenderUseViewModelFactory()).get(TenderUseViewModel::class.java)
@@ -90,6 +102,7 @@ object ViewModelsProviderUtils {
     class AddTenderViewModelFactory:ViewModelProvider.Factory{
         override fun <T : ViewModel> create(modelClass: Class<T>): T { return InjectorUtils.addTenderViewMOdel() as T }
     }
+
     fun addCarStock(activity: AddCarStockFragment)=
         ViewModelProvider(activity, AddCarStockViewModelFactory()).get(AddCarStockViewModel::class.java)
 
@@ -103,12 +116,14 @@ object ViewModelsProviderUtils {
     class ListCarStockViewModelFactory:ViewModelProvider.Factory{
         override fun <T : ViewModel> create(modelClass: Class<T>): T { return InjectorUtils.getListCarStock() as T }
     }
+
     fun addLocation(activity: AddLocationFragment)=
         ViewModelProvider(activity, addLocationViewModelFactory()).get(AddLocationViewModel::class.java)
 
     class addLocationViewModelFactory:ViewModelProvider.Factory{
         override fun <T : ViewModel> create(modelClass: Class<T>): T { return InjectorUtils.addLocation() as T }
     }
+
     fun AddManafacturaAndCar(activity: AddManafacturaAndCarFragment)=
         ViewModelProvider(activity, AddManafacturaAndCarViewModelFactory()).get(AddManafacturaAndCarViewModel::class.java)
 
@@ -129,17 +144,40 @@ object ViewModelsProviderUtils {
     class ReportsViewModelFactory:ViewModelProvider.Factory{
         override fun <T : ViewModel> create(modelClass: Class<T>): T { return InjectorUtils.getReportsViewModel() as T }
     }
+
     fun mainUser(activity: UserHomeFragment)=
         ViewModelProvider(activity, mainViewModelFactory()).get(UserHomeViewModel::class.java)
 
     class mainViewModelFactory:ViewModelProvider.Factory{
         override fun <T : ViewModel> create(modelClass: Class<T>): T { return InjectorUtils.getMainViewModel() as T }
     }
+
     fun historyUser(activity: HistoryFragment)=
         ViewModelProvider(activity, HistoryViewModelFactory()).get(SecViewModel::class.java)
 
     class HistoryViewModelFactory:ViewModelProvider.Factory{
         override fun <T : ViewModel> create(modelClass: Class<T>): T { return InjectorUtils.getHistoryViewModel() as T }
+    }
+
+    fun addTenderStock(activity: AddTenderStockFragment)=
+        ViewModelProvider(activity, AddTenderStockViewModelFactory()).get(AddTenderStockViewModel::class.java)
+
+    class AddTenderStockViewModelFactory:ViewModelProvider.Factory{
+        override fun <T : ViewModel> create(modelClass: Class<T>): T { return InjectorUtils.getAddTenderStockViewModel() as T }
+    }
+
+    fun addTenderUser(activity: AddTenderUserFragment)=
+        ViewModelProvider(activity, AddTenderUserViewModelFactory()).get(AddTenderUserViewModel::class.java)
+
+    class AddTenderUserViewModelFactory:ViewModelProvider.Factory{
+        override fun <T : ViewModel> create(modelClass: Class<T>): T { return InjectorUtils.getAddTenderUserViewModel() as T }
+    }
+
+    fun showWinUser(activity: ShowWinUserFragment) =
+        ViewModelProvider(activity, ShowWinUserViewModelFactory()).get(ShowWinUserViewModel::class.java)
+
+    class  ShowWinUserViewModelFactory:ViewModelProvider.Factory{
+        override fun <T : ViewModel?> create(modelClass: Class<T>): T {return  InjectorUtils.showWinUserViewModel() as T }
     }
 
 

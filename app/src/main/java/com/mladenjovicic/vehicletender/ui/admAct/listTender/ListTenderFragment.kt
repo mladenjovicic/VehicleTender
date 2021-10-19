@@ -38,7 +38,7 @@ class ListTenderFragment : Fragment() {
 
         recyclerViewListActivesTender?.visibility = View.VISIBLE
         recyclerViewListCloseTender?.visibility = View.GONE
-        viewModel.getActivesTenderList( 0)
+        viewModel.getActivesTenderList( 1)
         initRecyclerVTenderActivList()
 
         viewModel.tenderModel?.observe(requireActivity()){
@@ -54,7 +54,7 @@ class ListTenderFragment : Fragment() {
         buttonShowActivTender?.setOnClickListener {
             recyclerViewListActivesTender?.visibility = View.VISIBLE
             recyclerViewListCloseTender?.visibility = View.GONE
-            viewModel.getActivesTenderList( 0)
+            viewModel.getActivesTenderList( 1)
             initRecyclerVTenderActivList()
 
             viewModel.tenderModel?.observe(requireActivity()){
@@ -70,7 +70,7 @@ class ListTenderFragment : Fragment() {
             recyclerViewListActivesTender?.visibility = View.GONE
             recyclerViewListCloseTender?.visibility = View.VISIBLE
 
-            viewModel.getActivesTenderList(1)
+            viewModel.getActivesTenderList(2)
             initRecyclerVTenderCloseList()
             viewModel.tenderModel?.observe(requireActivity()){
                 if (it==null){

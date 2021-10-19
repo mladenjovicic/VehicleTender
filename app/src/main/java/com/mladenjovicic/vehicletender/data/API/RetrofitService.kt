@@ -1,5 +1,6 @@
 package com.mladenjovicic.vehicletender.data.API
 
+import android.text.BoringLayout
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.mladenjovicic.vehicletender.data.model.RequestState
@@ -24,20 +25,13 @@ class RetrofitService(private val retrofitInstance: RetrofitInstanceN) {
         service.createLocation(token, LocationModelAPI(id,city, zipCode)).enqueue(object : retrofit2.Callback<LocationModelAPI> {
             override fun onResponse(call: retrofit2.Call<LocationModelAPI>, response: Response<LocationModelAPI>) {
                 var newlyCreatedDestination = response.body()
+                if(response.body()!=null){
                 println("Successfully Added"+newlyCreatedDestination.toString()+ " "+ response.code())
                 requestState.postValue(RequestState.success)
                 liveData.postValue(LocationModelAPI(response.body()!!.Id, response.body()!!.City, response.body()!!.ZipCode))
-
-                /*if(response.code() == 201){
-                    println("Successfully Added"+newlyCreatedDestination.toString()+ " "+ response.code())
-                    requestState.postValue(RequestState.success)
-                    liveData.postValue(LocationModelAPI(response.body()!!.Id, response.body()!!.City, response.body()!!.ZipCode))
-
-                }else {
-                    liveData.postValue(null)
+                }else{
                     Log.d("error post json", "error create locatio ${response.code()}")
-                    requestState.postValue(RequestState.failed)
-                }*/
+                }
             }
             override fun onFailure(call: retrofit2.Call<LocationModelAPI>, t: Throwable) {
                 requestState.postValue(
@@ -62,16 +56,16 @@ class RetrofitService(private val retrofitInstance: RetrofitInstanceN) {
         service.CreateManufacturer(token, ManufacturerModelAPI(id,ManufacturerName)).enqueue(object : retrofit2.Callback<ManufacturerModelAPI> {
             override fun onResponse(call: retrofit2.Call<ManufacturerModelAPI>, response: Response<ManufacturerModelAPI>) {
                 var newlyCreatedDestination = response.body()
-                if(response.code() == 201){
-                    println("Successfully Added"+newlyCreatedDestination.toString()+ " "+ response.code())
+                if(response.body()!=null){
+                    println("Successfully Added Manufacturer"+newlyCreatedDestination.toString()+ " "+ response.code())
                     requestState.postValue(RequestState.success)
                     liveData.postValue(ManufacturerModelAPI(response.body()!!.ID, response.body()!!.ManufacturerName))
-
-                }else {
+                }else{
                     liveData.postValue(null)
-                    Log.d("error post json", "error create locatio ${response.code()}")
+                    Log.d("error post json", "error create Manufacturer ${response.code()}")
                     requestState.postValue(RequestState.failed)
                 }
+
             }
             override fun onFailure(call: retrofit2.Call<ManufacturerModelAPI>, t: Throwable) {
                 requestState.postValue(
@@ -98,14 +92,13 @@ class RetrofitService(private val retrofitInstance: RetrofitInstanceN) {
         service.CreateCarModel(token, CarModelApi(id,ModelName, ModelNO, ManufacturerId)).enqueue(object : retrofit2.Callback<CarModelApi> {
             override fun onResponse(call: retrofit2.Call<CarModelApi>, response: Response<CarModelApi>) {
                 var newlyCreatedDestination = response.body()
-                if(response.code() == 201){
-                    println("Successfully Added"+newlyCreatedDestination.toString()+ " "+ response.code())
+                if(response.body() != null){
+                    println("Successfully Added CarModel "+newlyCreatedDestination.toString()+ " "+ response.code())
                     requestState.postValue(RequestState.success)
                     liveData.postValue(CarModelApi(response.body()!!.ID, response.body()!!.ModelName, response.body()!!.ModelNO, response.body()!!.ManufacturerId))
-
                 }else {
                     liveData.postValue(null)
-                    Log.d("error post json", "error create locatio ${response.code()}")
+                    Log.d("error post json", "error create CarModel ${response.code()}")
                     requestState.postValue(RequestState.failed)
                 }
             }
@@ -137,14 +130,14 @@ class RetrofitService(private val retrofitInstance: RetrofitInstanceN) {
         service.CreateTender(token, TenderModelAPI(id, createdDate, createdBy, tenderNo, openDate, closeDate, statusId)).enqueue(object : retrofit2.Callback<TenderModelAPI> {
             override fun onResponse(call: retrofit2.Call<TenderModelAPI>, response: Response<TenderModelAPI>) {
                 var newlyCreatedDestination = response.body()
-                if(response.code() == 201){
-                    println("Successfully Added"+newlyCreatedDestination.toString()+ " "+ response.code())
+                if(response.body() != null){
+                    println("Successfully Added Tender" +newlyCreatedDestination.toString()+ " "+ response.code())
                     requestState.postValue(RequestState.success)
                     liveData.postValue(TenderModelAPI(response.body()!!.id, response.body()!!.createdDate,response.body()!!.createdBy, response.body()!!.tenderNo, response.body()!!.openDate, response.body()!!.closeDate, response.body()!!.statusId))
                 }else {
 
                     liveData.postValue(null)
-                    Log.d("error post json", "error create locatio ${response.code()}")
+                    Log.d("error post json", "error create Tender ${response.code()}")
                     requestState.postValue(RequestState.failed)
                 }
             }
@@ -161,12 +154,50 @@ class RetrofitService(private val retrofitInstance: RetrofitInstanceN) {
         })
     }
 
+    fun  updateTenderJSON(
+            token: String,
+            id: Int?,
+            createdDate:String,
+            createdBy:String,
+            tenderNo:String,
+            openDate:String,
+            closeDate:String,
+            statusId:Int,
+            liveData: MutableLiveData<TenderModelAPI?>,
+            requestState: MutableLiveData<RequestState>){
+        val call = retrofitInterface.updateTender(token, TenderModelAPI(id, createdDate, createdBy, tenderNo, openDate, closeDate, statusId))
+        call.enqueue(object : retrofit2.Callback<TenderModelAPI> {
+            override fun onResponse(call: retrofit2.Call<TenderModelAPI>, response: Response<TenderModelAPI>) {
+                var newlyCreatedDestination = response.body()
+                if(response.body() != null){
+                    println("Successfully update tender "+newlyCreatedDestination.toString()+ " "+ response.code())
+                    requestState.postValue(RequestState.success)
+                    liveData.postValue(TenderModelAPI(response.body()!!.id, response.body()!!.createdDate,response.body()!!.createdBy, response.body()!!.tenderNo, response.body()!!.openDate, response.body()!!.closeDate, response.body()!!.statusId))
+                }else {
+                    liveData.postValue(null)
+                    Log.d("error put json", "error update tender  ${response.code()}")
+                    requestState.postValue(RequestState.failed)
+                }
+            }
+
+            override fun onFailure(call: retrofit2.Call<TenderModelAPI>, t: Throwable) {
+                requestState.postValue(
+                        RequestState(
+                                pending = false,
+                                successful = false,
+                                errorMessage = t.message.toString()
+                        )
+                )
+            }
+        })
+    }
+
     fun addCarStockJSON(
         token: String,
         id: Int?,
         year:Int,
         modelLineId:Int,
-        mileage:Double,
+        mileage:Int,
         price:Double,
         comments:String,
         locationId:Int,
@@ -180,19 +211,18 @@ class RetrofitService(private val retrofitInstance: RetrofitInstanceN) {
         service.CreateCarStock(token, StockInfoModelAPI(id, year, modelLineId, mileage, price, comments, locationId, regNo, isSold)).enqueue(object : retrofit2.Callback<StockInfoModelAPI> {
             override fun onResponse(call: retrofit2.Call<StockInfoModelAPI>, response: Response<StockInfoModelAPI>) {
                 var newlyCreatedDestination = response.body()
-                if(response.code() == 201){
-                    println("Successfully Added"+newlyCreatedDestination.toString()+ " "+ response.code())
+                if(response.body() != null){
+                    println("Successfully Added Car Stock"+newlyCreatedDestination.toString()+ " "+ response.code())
                     requestState.postValue(RequestState.success)
                     liveData.postValue(StockInfoModelAPI(response.body()!!.id, response.body()!!.year,response.body()!!.modelLineId, response.body()!!.mileage, response.body()!!.price, response.body()!!.comments,
                         response.body()!!.locationId,response.body()!!.regNo,response.body()!!.isSold))
                 }else {
 
                     liveData.postValue(null)
-                    Log.d("error post json", "error create locatio ${response.code()}")
+                    Log.d("error post json", "error create Car Stock ${response.code()}")
                     requestState.postValue(RequestState.failed)
                 }
             }
-
             override fun onFailure(call: retrofit2.Call<StockInfoModelAPI>, t: Throwable) {
                 requestState.postValue(
                     RequestState(
@@ -204,28 +234,62 @@ class RetrofitService(private val retrofitInstance: RetrofitInstanceN) {
             }
         })
     }
+    fun updateCarStockJSON(
+        token: String,
+        id: Int,
+        isSold:Boolean,
+        liveData: MutableLiveData<StockInfoModelAPI?>,
+        requestState: MutableLiveData<RequestState>
+    ){
+        val service = RetrofitInstance.getRetrofit().create(RetrofitInterface::class.java)
+        service.updateCarStock(token, StockIDModelAPI(id,isSold)).enqueue(object : retrofit2.Callback<StockInfoModelAPI> {
+            override fun onResponse(call: retrofit2.Call<StockInfoModelAPI>, response: Response<StockInfoModelAPI>) {
+                var newlyCreatedDestination = response.body()
+                if(response.body() != null){
+                    println("Successfully update carStock"+newlyCreatedDestination.toString()+ " "+ response.code())
+                    requestState.postValue(RequestState.success)
+                    liveData.postValue(StockInfoModelAPI(response.body()!!.id, response.body()!!.year,response.body()!!.modelLineId, response.body()!!.mileage, response.body()!!.price, response.body()!!.comments,
+                        response.body()!!.locationId,response.body()!!.regNo,response.body()!!.isSold))
+                }else {
 
+                    liveData.postValue(null)
+                    Log.d("error put json", "error update carStock ${response.code()}")
+                    requestState.postValue(RequestState.failed)
+                }
+            }
+            override fun onFailure(call: retrofit2.Call<StockInfoModelAPI>, t: Throwable) {
+                requestState.postValue(
+                    RequestState(
+                        pending = false,
+                        successful = false,
+                        errorMessage = t.message.toString()
+                    )
+                )
+            }
+        })
+    }
     fun addTenderStockJSON(
         token: String,
         id: Int?,
         stockId:Int,
-        tenderId:String,
+        tenderId:Int,
         saleDate:String,
+        isDeleted:Boolean,
         liveData: MutableLiveData<TenderStockModelAPI?>,
         requestState: MutableLiveData<RequestState>){
         val service = RetrofitInstance.getRetrofit().create(RetrofitInterface::class.java)
 
-        service.CreateTenderStock(token, TenderStockModelAPI(id, stockId,tenderId,saleDate)).enqueue(object : retrofit2.Callback<TenderStockModelAPI> {
+        service.CreateTenderStock(token, TenderStockModelAPI(id, stockId,tenderId,saleDate, isDeleted)).enqueue(object : retrofit2.Callback<TenderStockModelAPI> {
             override fun onResponse(call: retrofit2.Call<TenderStockModelAPI>, response: Response<TenderStockModelAPI>) {
                 var newlyCreatedDestination = response.body()
-                if(response.code() == 201){
-                    println("Successfully Added"+newlyCreatedDestination.toString()+ " "+ response.code())
+                if(response.body() != null){
+                    println("Successfully Added Tender Stock"+newlyCreatedDestination.toString()+ " "+ response.code())
                     requestState.postValue(RequestState.success)
-                    liveData.postValue(TenderStockModelAPI(response.body()!!.id, response.body()!!.stockId,response.body()!!.tenderId, response.body()!!.saleDate))
+                    liveData.postValue(TenderStockModelAPI(response.body()!!.id, response.body()!!.stockId,response.body()!!.tenderId, response.body()!!.saleDate, response.body()!!.isDeleted))
                 }else {
 
                     liveData.postValue(null)
-                    Log.d("error post json", "error create locatio ${response.code()}")
+                    Log.d("error post json", "error create Tender Stock ${response.code()}")
                     requestState.postValue(RequestState.failed)
                 }
             }
@@ -242,29 +306,112 @@ class RetrofitService(private val retrofitInstance: RetrofitInstanceN) {
         })
     }
 
+    fun updateTenderStockJSON(
+            token: String,
+            id: Int?,
+            stockId:Int,
+            tenderId:Int,
+            saleDate:String,
+            isDeleted:Boolean,
+            liveData: MutableLiveData<TenderStockModelAPI?>,
+            requestState: MutableLiveData<RequestState>){
+
+
+        val call = retrofitInterface.updateTenderStock(token, TenderStockModelAPI(id, stockId,tenderId,saleDate, isDeleted))
+
+
+        call.enqueue(object : retrofit2.Callback<TenderStockModelAPI> {
+            override fun onResponse(call: retrofit2.Call<TenderStockModelAPI>, response: Response<TenderStockModelAPI>) {
+                var newlyCreatedDestination = response.body()
+                if(response.body() != null){
+                    println("Successfully update tender stock "+newlyCreatedDestination.toString()+ " "+ response.code())
+                    requestState.postValue(RequestState.success)
+                    liveData.postValue(TenderStockModelAPI(response.body()!!.id, response.body()!!.stockId,response.body()!!.tenderId, response.body()!!.saleDate, response.body()!!.isDeleted))
+                }else {
+
+                    liveData.postValue(null)
+                    Log.d("error put json", "error update tender stock ${response.code()}")
+                    requestState.postValue(RequestState.failed)
+                }
+            }
+
+            override fun onFailure(call: retrofit2.Call<TenderStockModelAPI>, t: Throwable) {
+                requestState.postValue(
+                        RequestState(
+                                pending = false,
+                                successful = false,
+                                errorMessage = t.message.toString()
+                        )
+                )
+            }
+        })
+    }
+
     fun addBidJSON(
         token:String,
         id: Int?,
-        TUserId:String,
+        TUserId:Int,
         TStockId:Int,
         Price:Double,
-        IsWinningPrice:Boolean,
+        IsWinningPrice:Boolean?,
+        isActive:Boolean?,
         liveData: MutableLiveData<BidModelAPI?>,
         requestState: MutableLiveData<RequestState>){
 
         val service = RetrofitInstance.getRetrofit().create(RetrofitInterface::class.java)
 
-        service.CreateBid(token, BidModelAPI(id, TUserId,TStockId,Price, IsWinningPrice)).enqueue(object : retrofit2.Callback<BidModelAPI> {
+        service.CreateBid(token, BidModelAPI(id, TUserId,TStockId,Price, IsWinningPrice, isActive)).enqueue(object : retrofit2.Callback<BidModelAPI> {
             override fun onResponse(call: retrofit2.Call<BidModelAPI>, response: Response<BidModelAPI>) {
                 var newlyCreatedDestination = response.body()
-                if(response.code() == 201){
-                    println("Successfully Added"+newlyCreatedDestination.toString()+ " "+ response.code())
+                if(response.body() != null){
+                    println("Successfully Added bid "+newlyCreatedDestination.toString()+ " "+ response.code())
                     requestState.postValue(RequestState.success)
-                    liveData.postValue(BidModelAPI(response.body()!!.ID, response.body()!!.TUserId,response.body()!!.TStockId, response.body()!!.Price, response.body()!!.IsWinningPrice))
+                    liveData.postValue(BidModelAPI(response.body()!!.ID, response.body()!!.TUserId,response.body()!!.TStockId, response.body()!!.Price, response.body()!!.IsWinningPrice, response.body()!!.isActive))
                 }else {
 
                     liveData.postValue(null)
-                    Log.d("error post json", "error create locatio ${response.code()}")
+                    Log.d("error post json", "error create bid ${response.code()}")
+                    requestState.postValue(RequestState.failed)
+                }
+            }
+
+            override fun onFailure(call: retrofit2.Call<BidModelAPI>, t: Throwable) {
+                requestState.postValue(
+                    RequestState(
+                        pending = false,
+                        successful = false,
+                        errorMessage = t.message.toString()
+                    )
+                )
+            }
+        })
+
+    }
+
+    fun UpdateBidJSON(
+        token:String,
+        id: Int?,
+        TUserId:Int,
+        TStockId:Int,
+        Price:Double,
+        IsWinningPrice:Boolean?,
+        isActive:Boolean?,
+        liveData: MutableLiveData<BidModelAPI?>,
+        requestState: MutableLiveData<RequestState>){
+
+        val service = RetrofitInstance.getRetrofit().create(RetrofitInterface::class.java)
+
+        service.UpdateBidWin(token, BidModelAPI(id, TUserId,TStockId,Price, IsWinningPrice, isActive)).enqueue(object : retrofit2.Callback<BidModelAPI> {
+            override fun onResponse(call: retrofit2.Call<BidModelAPI>, response: Response<BidModelAPI>) {
+                var newlyCreatedDestination = response.body()
+                if(response.body() != null){
+                    println("Successfully Added update bid win "+newlyCreatedDestination.toString()+ " "+ response.code())
+                    requestState.postValue(RequestState.success)
+                    liveData.postValue(BidModelAPI(response.body()!!.ID, response.body()!!.TUserId,response.body()!!.TStockId, response.body()!!.Price, response.body()!!.IsWinningPrice, response.body()!!.isActive))
+                }else {
+
+                    liveData.postValue(null)
+                    Log.d("error put json", "error update bid win ${response.code()}")
                     requestState.postValue(RequestState.failed)
                 }
             }
@@ -285,7 +432,7 @@ class RetrofitService(private val retrofitInstance: RetrofitInstanceN) {
     fun addTenderUserJSON(
         token: String,
         id: Int?,
-        tenderId:String,
+        tenderId:Int,
         userId:String,
         liveData: MutableLiveData<TenderUserModelAPI?>,
         requestState: MutableLiveData<RequestState>){
@@ -293,14 +440,13 @@ class RetrofitService(private val retrofitInstance: RetrofitInstanceN) {
         service.CreateTenderUser(token,TenderUserModelAPI(id, tenderId,userId)).enqueue(object : retrofit2.Callback<TenderUserModelAPI> {
             override fun onResponse(call: retrofit2.Call<TenderUserModelAPI>, response: Response<TenderUserModelAPI>) {
                 var newlyCreatedDestination = response.body()
-                if(response.code() == 201){
-                    println("Successfully Added"+newlyCreatedDestination.toString()+ " "+ response.code())
+                if(response.body() != null){
+                    println("Successfully Added tender user"+newlyCreatedDestination.toString()+ " "+ response.code())
                     requestState.postValue(RequestState.success)
                     liveData.postValue(TenderUserModelAPI(response.body()!!.id, response.body()!!.tenderId,response.body()!!.userId))
                 }else {
-
                     liveData.postValue(null)
-                    Log.d("error post json", "error create locatio ${response.code()}")
+                    Log.d("error post json", "error create tender user ${response.code()}")
                     requestState.postValue(RequestState.failed)
                 }
             }
@@ -552,7 +698,6 @@ class RetrofitService(private val retrofitInstance: RetrofitInstanceN) {
                 )
             }
         })
-
     }
 
     fun readTenderStockJSON(
@@ -723,6 +868,137 @@ class RetrofitService(private val retrofitInstance: RetrofitInstanceN) {
         })
 
     }
+
+    fun createNewUser(
+        token:String,
+        Id:String?,
+        Email:String,
+        UserName : String?,
+        LocationId:Int,
+        isActive : Boolean,
+        FirstName:String,
+        LastName : String,
+        PhoneNumber:String,
+        RoleName : String,
+        RoleId:String,
+        CompanyName : String,
+        password: String,
+        liveData: MutableLiveData<CreateNewUserAPI?>,
+        requestState: MutableLiveData<RequestState>
+    ){
+        val service = RetrofitInstance.getRetrofit().create(RetrofitInterface::class.java)
+
+        service.createNewUser(token, CreateNewUserAPI(Id, Email,UserName, LocationId, isActive, FirstName, LastName, PhoneNumber, RoleName, RoleId, CompanyName, password)).enqueue(object : retrofit2.Callback<CreateNewUserAPI> {
+            override fun onResponse(call: retrofit2.Call<CreateNewUserAPI>, response: Response<CreateNewUserAPI>) {
+                var newlyCreatedDestination = response.body()
+                if(response.body() != null){
+                    println("Successfully Added new user"+newlyCreatedDestination.toString()+ " "+ response.code())
+                    requestState.postValue(RequestState.success)
+                    liveData.postValue(CreateNewUserAPI(response.body()?.ID!!, response.body()!!.Email, response.body()?.UserName, response.body()!!.LocationId, response.body()!!.isActive, response.body()!!.FirstName,
+                        response.body()!!.LastName, response.body()?.PhoneNumber, response.body()?.RoleName, response.body()?.RoleId, response.body()!!.DealerName, response.body()?.Password))
+                }else {
+
+                    liveData.postValue(null)
+                    Log.d("error post json", "error create new user ${response.code()}")
+                    requestState.postValue(RequestState.failed)
+                }
+            }
+
+            override fun onFailure(call: retrofit2.Call<CreateNewUserAPI>, t: Throwable) {
+                requestState.postValue(
+                    RequestState(
+                        pending = false,
+                        successful = false,
+                        errorMessage = t.message.toString()
+                    )
+                )
+            }
+        })
+    }
+
+    fun updateUser(token:String,
+                   Id:String?,
+                   Email:String,
+                   UserName : String?,
+                   LocationId:Int,
+                   isActive : Boolean,
+                   FirstName:String,
+                   LastName : String,
+                   PhoneNumber:String,
+                   RoleName : String,
+                   RoleId:String,
+                   CompanyName : String,
+                   password: String,
+                   liveData: MutableLiveData<UserProfilAPI?>,
+                   requestState: MutableLiveData<RequestState>){
+        val service = RetrofitInstance.getRetrofit().create(RetrofitInterface::class.java)
+
+        /*service.updateUser(token, CreateNewUserAPI(Id, Email, UserName,LocationId, isActive,FirstName,LastName,PhoneNumber, RoleName,RoleId,CompanyName, password)).enqueue(object : retrofit2.Callback<CreateNewUserAPI>{*/
+        val call = retrofitInterface.updateUser(token, UserProfilAPI(Id, Email, UserName,LocationId, isActive,FirstName,LastName,PhoneNumber, RoleName,RoleId,CompanyName)).enqueue(object : retrofit2.Callback<UserProfilAPI>{
+            override fun onResponse(call: retrofit2.Call<UserProfilAPI>, response: Response<UserProfilAPI>) {
+                var newlyCreatedDestination = response.body()
+                if(response.body() != null){
+                    println("Successfully update user"+newlyCreatedDestination.toString()+ " "+ response.code())
+                    requestState.postValue(RequestState.success)
+                    liveData.postValue(UserProfilAPI(response.body()?.ID!!, response.body()!!.Email, response.body()?.UserName, response.body()!!.LocationId, response.body()!!.isActive, response.body()!!.FirstName,
+                            response.body()!!.LastName, response.body()?.PhoneNumber, response.body()?.RoleName, response.body()?.RoleId, response.body()!!.CompanyName))
+                }else {
+
+                    liveData.postValue(null)
+                    Log.d("error put json", "error update user ${response.code()}")
+                    requestState.postValue(RequestState.failed)
+                }
+            }
+
+            override fun onFailure(call: Call<UserProfilAPI>, t: Throwable) {
+                requestState.postValue(
+                        RequestState(
+                                pending = false,
+                                successful = false,
+                                errorMessage = t.message.toString()
+                        )
+                )
+            }
+
+        })
+
+
+
+
+    }
+
+    fun getUserRols(
+        token: String,
+        liveData: MutableLiveData<List<UserRoleAPI>>,
+        requestState: MutableLiveData<RequestState>){
+
+        requestState.postValue(RequestState.pending)
+        val call = retrofitInterface.getUserRols(token)
+        call.enqueue(object : Callback<List<UserRoleAPI>> {
+            override fun onResponse(
+                call: Call<List<UserRoleAPI>>,
+                response: Response<List<UserRoleAPI>>
+            ) {
+                val body = response.body()
+                if (body != null) {
+                    liveData.postValue(body)
+                    requestState.postValue(RequestState.success)
+                } else
+                    requestState.postValue(RequestState.failed)
+
+            }
+
+            override fun onFailure(call: Call<List<UserRoleAPI>>, t: Throwable) {
+                requestState.postValue(
+                    RequestState(
+                        pending = false,
+                        successful = false,
+                        errorMessage = t.message.toString()
+                    )
+                )
+            }
+        })
+    }
     fun getToken1(
         username:String,
         password:String,
@@ -732,22 +1008,22 @@ class RetrofitService(private val retrofitInstance: RetrofitInstanceN) {
         val service = RetrofitInstance.getRetrofit().create(RetrofitInterface::class.java)
 
 
-        service.getToken("password", username,password).enqueue(object : retrofit2.Callback<GetTokenAPI> {
-            override fun onResponse(call: retrofit2.Call<GetTokenAPI>, response: Response<GetTokenAPI>) {
-                var newlyCreatedDestination = response.body()
+        service.getToken("password", username,password).enqueue(object : Callback<GetTokenAPI> {
+            override fun onResponse(call: Call<GetTokenAPI>, response: Response<GetTokenAPI>) {
+                val newlyCreatedDestination = response.body()
                 if(response.code() == 201){
-                    println("Successfully Added"+newlyCreatedDestination.toString()+ " "+ response.code())
+                    println("Successfully Added token"+newlyCreatedDestination.toString()+ " "+ response.code())
                     requestState.postValue(RequestState.success)
-                    liveData.postValue(GetTokenAPI(response.body()!!.access_token, response.body()!!.token_type,response.body()!!.expires_in,response.body()!!.issued,response.body()!!.expires))
+                    liveData.postValue(GetTokenAPI(response.body()!!.access_token, response.body()!!.token_type,response.body()!!.expires_in,response.body()!!.issued,response.body()!!.expires, response.body()!!.userName))
                 }else {
 
                     liveData.postValue(null)
-                    Log.d("error post json", "error create locatio ${response.code()}")
+                    Log.d("error post json", "error create token ${response.code()}")
                     requestState.postValue(RequestState.failed)
                 }
             }
 
-            override fun onFailure(call: retrofit2.Call<GetTokenAPI>, t: Throwable) {
+            override fun onFailure(call: Call<GetTokenAPI>, t: Throwable) {
                 requestState.postValue(
                     RequestState(
                         pending = false,

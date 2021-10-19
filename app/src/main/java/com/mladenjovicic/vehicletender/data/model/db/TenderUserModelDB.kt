@@ -9,7 +9,7 @@ data class TenderUserModelDB(
                       @ColumnInfo(name = "serverId")
                       var serverId:Int,
                       @ColumnInfo(name ="tenderId")
-                      var tenderId:String,
+                      var tenderId:Int,
                       @ColumnInfo(name ="userId")
                       var userId:String){
 

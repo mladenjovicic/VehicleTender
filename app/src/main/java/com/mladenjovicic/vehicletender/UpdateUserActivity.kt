@@ -1,15 +1,20 @@
 package com.mladenjovicic.vehicletender
 
+import android.content.Context
+import android.content.Intent
+import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.lifecycle.Observer
 import com.mladenjovicic.vehicletender.ui.updateUser.UserUpdateViewModel
 
 class UpdateUserActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
-    var statusUser = 0
+    var statusUser = ""
     var userLoc = 0
+    var rolaName =""
     private lateinit var viewModel: UserUpdateViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,12 +33,18 @@ class UpdateUserActivity : AppCompatActivity(), AdapterView.OnItemSelectedListen
         val spinnerUserStatusUpdate = findViewById<Spinner>(R.id.spinnerUserStatusUpdate)
         val btnUpdateUser = findViewById<Button>(R.id.btnUpdateUser)
 
-        val adapterUserStatus = ArrayAdapter.createFromResource(this, R.array.user_staus, R.layout.spinner_item)
-        adapterUserStatus.setDropDownViewResource(R.layout.spinner_dropdown_item)
-        spinnerUserStatusUpdate?.adapter = adapterUserStatus
-        spinnerUserStatusUpdate?.onItemSelectedListener = this
+        val sharedPreferences: SharedPreferences = this.getSharedPreferences("UserDate", Context.MODE_PRIVATE)
+        var token = sharedPreferences.getString("token", "null").toString()
+        if(sharedPreferences.getString("uuidUser", "null").toString()==""){
+            val intent = Intent(this, LoginActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK.or(Intent.FLAG_ACTIVITY_NEW_TASK)
+            startActivity(intent)
+        }
 
         val listLocation = this.let {
+            ArrayAdapter<Any>(it, R.layout.spinner_item)
+        }
+        val listRole =this?.let {
             ArrayAdapter<Any>(it, R.layout.spinner_item)
         }
 
@@ -50,9 +61,19 @@ class UpdateUserActivity : AppCompatActivity(), AdapterView.OnItemSelectedListen
             }
         })
 
+        viewModel.getListUserRole()?.observe(this,{role->
+            role?.forEach {
+                listRole?.add(it.RoleId)
+            }
+        })
+
         listLocation.setDropDownViewResource(R.layout.spinner_dropdown_item)
         spinnerUserLocationUpdate?.adapter = listLocation
         spinnerUserLocationUpdate?.onItemSelectedListener = this
+
+        listRole?.setDropDownViewResource(R.layout.spinner_dropdown_item)
+        spinnerUserStatusUpdate?.adapter = listRole
+        spinnerUserStatusUpdate?.onItemSelectedListener = this
 
 
         userId= intent!!.extras?.get("uuid") as String
@@ -67,18 +88,48 @@ class UpdateUserActivity : AppCompatActivity(), AdapterView.OnItemSelectedListen
                 editTextPasswordUpdate.setText(it.password)
                 editTextPhoneUpdate.setText(it.phone)
                 editTextCompanyUserUpdate.setText(it.company_name)
-                spinnerUserStatusUpdate.setSelection(it.status_user)
+                var statusLine = -1
+                when(it.status_user){
+                    0->{statusLine = 1}
+                    2->{statusLine = 0}
+                }
+                spinnerUserStatusUpdate.setSelection(statusLine)
             }
         })
 
         btnUpdateUser.setOnClickListener {
-            viewModel.updateUser(userId, editTextUserNameUpdate.text.toString(),editTextSurnameUserUpdate.text.toString(), editTextEmailUserUpdate.text.toString(),editTextPasswordUpdate.text.toString(),statusUser, userLoc.toString(), editTextPhoneUpdate.text.toString(),editTextCompanyUserUpdate.text.toString()   )
+            if(editTextCompanyUserUpdate.text.isNotEmpty()&& editTextEmailUserUpdate.text.isNotEmpty()&&editTextSurnameUserUpdate.text.isNotEmpty()&&editTextUserNameUpdate.text.isNotEmpty()){
+                viewModel.updateUserJSON(token,userId,editTextEmailUserUpdate.text.toString(),"",userLoc,true, editTextUserNameUpdate.text.toString(), editTextSurnameUserUpdate.text.toString(),
+                        editTextPhoneUpdate.text.toString(),rolaName, statusUser, editTextCompanyUserUpdate.text.toString(),editTextPasswordUpdate.text.toString())
+
+                viewModel.requestState.observe(this){
+                    if(it.pending)
+                        Log.e("Loading update user", "retrofit request is in progress, show loading spinner")
+                    if(it.successful){
+                        Log.e("Success update user", "retrofit request is successful update user")
+                        viewModel.getUpdateUserObserver().observe(this, Observer {
+                            if(it!= null){
+                                Toast.makeText(this,"Update user is successful", Toast.LENGTH_SHORT).show()
+                                var  status_user = -1
+                                when(it?.RoleName){
+                                    "admin"->status_user = 2
+                                    "user"->status_user = 0
+                                }
+                                viewModel.updateUser(it.ID!!, it.FirstName!!, it.LastName!!, it.Email!!,"", status_user, it.LocationId.toString(),"it.PhoneNumber", it.CompanyName!!)
+                            }
+                        })
+                    }
+                    else{
+                        Toast.makeText(this, it.errorMessage, Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
         }
     }
 
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, pos: Int, id: Long) {
         when(parent?.id){
-            R.id.spinnerUserStatusUpdate -> statusUser = pos
+            R.id.spinnerUserStatusUpdate -> {getRoleID(pos)}
             R.id.spinnerUserLocationUpdate-> {getLocationID(pos)}
         }
     }
@@ -87,6 +138,18 @@ class UpdateUserActivity : AppCompatActivity(), AdapterView.OnItemSelectedListen
         viewModel.getListLocation()?.observe(this, Observer { location->
             location.forEach {
                 userLoc = location[pos].idServer!!}
+        })
+    }
+
+    fun getRoleID(pos: Int){
+        viewModel.getListUserRole()?.observe(this, {role->
+            role?.forEach {
+                statusUser = role[pos].ServerId
+                rolaName = role[pos].RoleId
+                println("dev0021" + statusUser + " " + role[pos].RoleId)
+
+            }
+
         })
     }
 

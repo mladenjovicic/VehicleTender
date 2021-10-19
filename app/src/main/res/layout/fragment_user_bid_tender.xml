@@ -7,9 +7,26 @@
     android:layout_height="match_parent"
     tools:context=".ui.userBid.fragmentUserBidTender">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerViewUserBId"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+        android:orientation="vertical">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewUserBId"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager">
+
+        </androidx.recyclerview.widget.RecyclerView>
+
+        <Button
+            android:id="@+id/btnCloseTender"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Close tender"
+            android:visibility="gone" />
+    </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

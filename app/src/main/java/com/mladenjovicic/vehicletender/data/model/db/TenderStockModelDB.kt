@@ -12,9 +12,11 @@ data class TenderStockModelDB(
         @ColumnInfo(name ="stockId")
         var stockId:Int,
         @ColumnInfo(name ="tenderId")
-        var tenderId:String,
+        var tenderId:String?,
         @ColumnInfo(name ="saleDate")
-        var saleDate:String
+        var saleDate:String?,
+        @ColumnInfo(name = "isDeleted")
+        var isDeleted:Boolean
 ) {
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")

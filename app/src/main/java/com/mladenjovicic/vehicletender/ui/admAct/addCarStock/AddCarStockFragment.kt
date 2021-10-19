@@ -1,5 +1,6 @@
 package com.mladenjovicic.vehicletender.ui.admAct.addCarStock
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -49,6 +50,9 @@ class AddCarStockFragment : Fragment(), AdapterView.OnItemSelectedListener {
         val editTextCarComment =view?.findViewById<EditText>(R.id.editTextCarComment)
         val btnAddStockCar = view?.findViewById<Button>(R.id.btnAddStockCar)
 
+        val sharedPreferences = requireActivity().getSharedPreferences("UserDate", Context.MODE_PRIVATE)
+        var token =sharedPreferences.getString("token", "null")
+
         val listLocation = context?.let {
             ArrayAdapter<Any>(it, R.layout.spinner_item)
         }
@@ -89,9 +93,12 @@ class AddCarStockFragment : Fragment(), AdapterView.OnItemSelectedListener {
         spinnerCarModel?.onItemSelectedListener = this
 
         btnAddStockCar?.setOnClickListener {
-            val rnds = (0..9999).random()
+            var test = editTextCarMileage?.text.toString().toInt()
+            println("dev 008" + test)
             if(editTextCarYear?.text!!.isNotEmpty() && editTextCarMileage?.text!!.isNotEmpty() && editTextCarPrice?.text!!.isNotEmpty()&&editTextCarReg?.text!!.isNotEmpty()&&editTextCarComment?.text!!.isNotEmpty()){
-                viewModel.addCarStockJSON("", null, editTextCarYear?.text.toString().toInt(),carBrand,editTextCarMileage.text.toString().toDouble(),
+
+                var mile = editTextCarMileage?.text.toString().toDouble()
+                viewModel.addCarStockJSON(token!!, null, editTextCarYear?.text.toString().toInt(),carBrand,mile.toInt(),
                     editTextCarPrice.text.toString().toDouble(),editTextCarComment.text.toString(), carLocation,editTextCarReg.text.toString(),false)
 
 
@@ -103,7 +110,13 @@ class AddCarStockFragment : Fragment(), AdapterView.OnItemSelectedListener {
                         viewModel.getNewCarStockObserver().observe(requireActivity(), Observer<StockInfoModelAPI?> {
                             if(it!=null){
                                 Toast.makeText(requireContext(), "Request is successful", Toast.LENGTH_SHORT).show()
-                                viewModel.addCarStock(it.id!!, it.year!!,it.modelLineId!!, it.mileage!!,it.price!!,it.comments!!,it.locationId!!,it.regNo!!, it.isSold!!)
+                                var year = 0
+                                if(it.year == null){
+                                    year = 9999
+                                }else{
+                                    year = it.year!!
+                                }
+                                viewModel.addCarStock(it.id!!, year,it.modelLineId!!, it.mileage!!,it.price!!,it.comments!!,it.locationId!!,it.regNo!!, it.isSold!!)
                                 editTextCarYear.text.clear()
                                 editTextCarMileage.text.clear()
                                 editTextCarPrice.text.clear()

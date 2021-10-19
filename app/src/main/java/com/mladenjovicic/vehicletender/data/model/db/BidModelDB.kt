@@ -16,7 +16,9 @@ data class BidModelDB(
         @ColumnInfo(name ="price")
         var price:Double,
         @ColumnInfo(name ="isWinningPrice")
-        var isWinningPrice:Boolean
+        var isWinningPrice:Boolean,
+        @ColumnInfo(name = "isActive")
+        var isActive:Boolean
 ) {
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")

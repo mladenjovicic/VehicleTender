@@ -5,7 +5,7 @@ import androidx.room.RoomDatabase
 import com.mladenjovicic.vehicletender.data.model.db.*
 
 @Database(
-    entities = [UserModelDB::class, LocationModelDB::class, ManufacturerModelDB::class, CarModelDB::class, BidModelDB::class, StatusModelDB::class, StockInfoModelDB::class, TenderModelDB::class, TenderStockModelDB::class, TenderUserModelDB::class],
+    entities = [UserModelDB::class, LocationModelDB::class, ManufacturerModelDB::class, CarModelDB::class, BidModelDB::class, StatusModelDB::class, StockInfoModelDB::class, TenderModelDB::class, TenderStockModelDB::class, TenderUserModelDB::class, TokenDB::class, RoleDB::class ],
     version = 2,
     exportSchema = false
 )
@@ -20,5 +20,7 @@ abstract class VTDatabase: RoomDatabase() {
     abstract fun tenderDAO(): DAOAcessTender
     abstract fun tenderStockDAO(): DAOAcessTenderStock
     abstract fun tenderUserDAO(): DAOAcessTenderUser
+    abstract fun tokenUserDAO():DAOAcessUserToken
+    abstract fun roleDAO():DAOAcessRole
 
 }

@@ -13,6 +13,7 @@ import com.mladenjovicic.vehicletender.R
 import com.mladenjovicic.vehicletender.TenderUseActivity2
 import com.mladenjovicic.vehicletender.UserBidTender
 import com.mladenjovicic.vehicletender.data.model.db.TenderModelDB
+import com.mladenjovicic.vehicletender.showWinUserActivity
 import com.mladenjovicic.vehicletender.ui.mainAct.main.UserHomeViewModel
 
 
@@ -33,18 +34,42 @@ class UserTenderAdapter(val activity: Fragment): RecyclerView.Adapter<TenderActi
     override fun onBindViewHolder(holder: TenderActivAdapter.MyViewHolder, position: Int) {
         holder.bind(TenderActivList?.get(position)!!, activity)
         holder.itemView.setOnClickListener {
-
+            println("dev111" + TenderActivList!![position].statusId)
             if(holder.rowTenders != null){
+                if(TenderActivList!![position].statusId==1){
                 val intent = Intent(holder.rowTenders.context, UserBidTender::class.java)
                 intent.putExtra("tenderNo", TenderActivList!![position].tenderNo)
                 intent.putExtra("statusId", TenderActivList!![position].statusId)
+                intent.putExtra("tenderId", TenderActivList!![position].idServer)
                 holder.rowTenders.context.startActivity(intent)
+                }
+                if(TenderActivList!![position].statusId==2){
+                    val intent = Intent(holder.rowTenders.context, showWinUserActivity::class.java)
+                    intent.putExtra("tenderNo", TenderActivList!![position].tenderNo)
+                    intent.putExtra("statusId", TenderActivList!![position].statusId)
+                    intent.putExtra("tenderId", TenderActivList!![position].idServer)
+                }
             }else{
-                val intent = Intent(holder.textViewTenderId?.context, UserBidTender::class.java)
+                val intent = Intent(holder.textViewTenderId?.context, showWinUserActivity::class.java)
                 intent.putExtra("tenderNo", TenderActivList!![position].tenderNo)
+                intent.putExtra("tenderId", TenderActivList!![position].idServer)
                 holder.textViewTenderId?.context!!.startActivity(intent)
             }
-
+            if(holder.rowTenders != null){
+                if(TenderActivList!![position].statusId==2){
+                    val intent = Intent(holder.rowTenders.context, showWinUserActivity::class.java)
+                    intent.putExtra("tenderNo", TenderActivList!![position].tenderNo)
+                    intent.putExtra("statusId", TenderActivList!![position].statusId)
+                    intent.putExtra("tenderId", TenderActivList!![position].idServer)
+                    holder.rowTenders.context.startActivity(intent)
+                }
+                }else{
+                val intent = Intent(holder.textViewTenderId?.context, showWinUserActivity::class.java)
+                intent.putExtra("tenderNo", TenderActivList!![position].tenderNo)
+                intent.putExtra("statusId", TenderActivList!![position].statusId)
+                intent.putExtra("tenderId", TenderActivList!![position].idServer)
+                holder.textViewTenderId?.context!!.startActivity(intent)
+                }
         }
     }
 

@@ -1,6 +1,9 @@
 package com.mladenjovicic.vehicletender.ui.admAct.addUser
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -12,6 +15,7 @@ import java.util.*
 
 class AddUserFragment : Fragment(), AdapterView.OnItemSelectedListener  {
     var statusUser = 0
+    var statusUserServer = ""
     var locationUser = "0"
 
     companion object {
@@ -38,15 +42,9 @@ class AddUserFragment : Fragment(), AdapterView.OnItemSelectedListener  {
         val spinnerUserLocation = view?.findViewById<Spinner>(R.id.spinnerUserLocation)
         val btnAddNewUser = view?.findViewById<Button>(R.id.btnAddNewUser)
         val spinnerUserStatus = view?.findViewById<Spinner>(R.id.spinnerUserStatus)
-        //satusID
-        val adapterUserStatus = ArrayAdapter.createFromResource(requireContext(), R.array.user_staus, R.layout.spinner_item)
-        adapterUserStatus.setDropDownViewResource(R.layout.spinner_dropdown_item)
-        spinnerUserStatus?.adapter = adapterUserStatus
-        spinnerUserStatus?.onItemSelectedListener = this
-
 
         viewModel = ViewModelsProviderUtils.AddNewUser(this)
-
+            //location
             val listLocation = context?.let {
                 ArrayAdapter<Any>(it, R.layout.spinner_item)
             }
@@ -56,20 +54,74 @@ class AddUserFragment : Fragment(), AdapterView.OnItemSelectedListener  {
                     listLocation?.add(it.city+ ", " + it.zipCOde)
                 }
             })
-        listLocation?.setDropDownViewResource(R.layout.spinner_dropdown_item)
-        spinnerUserLocation?.adapter = listLocation
-        spinnerUserLocation?.onItemSelectedListener = this
+            listLocation?.setDropDownViewResource(R.layout.spinner_dropdown_item)
+            spinnerUserLocation?.adapter = listLocation
+            spinnerUserLocation?.onItemSelectedListener = this
+            //role
+            val listRole =context?.let {
+                ArrayAdapter<Any>(it, R.layout.spinner_item)
+            }
+            viewModel.getListUserRole()?.observe(viewLifecycleOwner,{role->
+                role?.forEach {
+                    listRole?.add(it.RoleId)
+                }
+            })
+            listRole?.setDropDownViewResource(R.layout.spinner_dropdown_item)
+            spinnerUserStatus?.adapter = listRole
+            spinnerUserStatus?.onItemSelectedListener = this
+
+
+        val sharedPreferences = requireActivity().getSharedPreferences("UserDate", Context.MODE_PRIVATE)
+        var token =sharedPreferences.getString("token", "null")
+
 
         btnAddNewUser?.setOnClickListener {
+            viewModel.createNewUser(token!!, null, editTextEmailUser?.text.toString(), null, locationUser.toInt(), true, editTextUserName?.text.toString(),
+            editTextSurnameUser?.text.toString(), editTextPhone?.text.toString(), "null",statusUserServer, editTextCompanyUser?.text.toString(), editTextPassword?.text.toString())
+            //viewModel.addNewUser(UUID.randomUUID().toString(),editTextUserName?.text.toString(), editTextSurnameUser?.text.toString(),editTextEmailUser?.text.toString(),editTextPassword?.text.toString(),statusUser, locationUser.toString(),editTextPhone?.text.toString(),editTextCompanyUser?.text.toString())
 
-            viewModel.addNewUser(UUID.randomUUID().toString(),editTextUserName?.text.toString(), editTextSurnameUser?.text.toString(),editTextEmailUser?.text.toString(),editTextPassword?.text.toString(),statusUser, locationUser.toString(),editTextPhone?.text.toString(),editTextCompanyUser?.text.toString())
+            viewModel.requestState.observe(requireActivity()) {
+                if(it.pending)
+                    Log.e("Loading", "retrofit request is in progress, show loading spinner")
+                if(it.successful){
+                    viewModel.createNewUserAPI.observe(requireActivity()){
+                        var userRoleNo = 1
+                        if(it != null){
+                            when(it.RoleName){
+                                "admin"->userRoleNo = 2
+                                "user" ->userRoleNo = 0
+                            }
+                            viewModel.addNewUser(it.ID!!, it.FirstName!!, it.LastName!!, it.Email!!, "", userRoleNo, it.LocationId.toString(), "it.PhoneNumber!!", it.DealerName!!)
+                            editTextCompanyUser?.text?.clear()
+                            editTextEmailUser?.text?.clear()
+                            editTextPassword?.text?.clear()
+                            editTextSurnameUser?.text?.clear()
+                            editTextUserName?.text?.clear()
+                            Toast.makeText(requireContext(),"user add", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+
+
+                    Log.e("Success", "retrofit request is successful")
+
+
+                }
+                else {
+                    Log.e("error", "retrofit request is ${it.errorMessage}")
+                }
+            }
         }
     }
 
     override fun onItemSelected(parent: AdapterView<*>, view: View?, pos: Int, id: Long) {
         when(parent.id){
-            R.id.spinnerUserStatus ->  statusUser = pos
-            R.id.spinnerUserLocation -> {getLocationID(pos)}
+            R.id.spinnerUserStatus ->  {
+                statusUser = pos
+                getRoleID(pos)
+            }
+            R.id.spinnerUserLocation -> {
+                getLocationID(pos)
+            }
         }
     }
 
@@ -78,6 +130,16 @@ class AddUserFragment : Fragment(), AdapterView.OnItemSelectedListener  {
             location?.forEach {
                 locationUser = location[pos].idServer.toString()
             }
+        })
+    }
+
+    fun getRoleID(pos: Int){
+        viewModel.getListUserRole()?.observe(viewLifecycleOwner, {role->
+            role?.forEach {
+                statusUserServer = role[pos].ServerId
+
+            }
+
         })
     }
 

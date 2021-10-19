@@ -1,12 +1,7 @@
 package com.mladenjovicic.vehicletender.adapter
 
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import androidx.recyclerview.widget.RecyclerView
 import com.mladenjovicic.vehicletender.R
-import com.mladenjovicic.vehicletender.data.model.db.stockCarList
-import com.mladenjovicic.vehicletender.ui.tender.TenderUseViewModel
+
 var ListItemBookReturnBinding = R.layout.row_car_stock_list
 /*
 class CarsForSellingNewAdapter(private val viewModel: TenderUseViewModel):RecyclerView.Adapter<CarsForSellingNewAdapter.CarsForSellingNewViewHolder>() {

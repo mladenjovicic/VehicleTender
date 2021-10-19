@@ -1,5 +1,8 @@
 package com.mladenjovicic.vehicletender
 
+import android.content.Context
+import android.content.Intent
+import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
@@ -33,6 +36,13 @@ class AdminPanelActivity : AppCompatActivity() {
         val listTender = ListTenderFragment()
         val addCarStock = AddCarStockFragment()
         val listCarStock = ListCarStockFragment()
+
+        val sharedPreferences: SharedPreferences = this.getSharedPreferences("UserDate", Context.MODE_PRIVATE)
+        if(sharedPreferences.getString("uuidUser", "null").toString()==""){
+            val intent = Intent(this, LoginActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK.or(Intent.FLAG_ACTIVITY_NEW_TASK)
+            startActivity(intent)
+        }
 
 
         toggle = ActionBarDrawerToggle(this, drawerLayout,R.string.open, R.string.close)

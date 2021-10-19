@@ -7,6 +7,8 @@ import com.mladenjovicic.vehicletender.data.repository.MainRepository
 
 class UserHomeViewModel(private val mainRepositror: MainRepository)  : ViewModel() {
     var tenderModel: LiveData<List<TenderModelDB>>?= null
+
+
     fun getActivesTenderList(statusId:Int): LiveData<List<TenderModelDB>>?{
         tenderModel = mainRepositror.getTenderList(statusId)
         return tenderModel

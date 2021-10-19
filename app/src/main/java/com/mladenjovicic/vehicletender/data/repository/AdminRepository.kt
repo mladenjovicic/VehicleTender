@@ -24,11 +24,22 @@ class AdminRepository(private val retrofitService: RetrofitService,
      return localRepository.getDataManafactura()
   }
 
+    fun insertTenderUser(
+            token: String,
+            id: Int?,
+            tenderId:Int,
+            userId:String,
+            liveData: MutableLiveData<TenderUserModelAPI?>,
+            requestState: MutableLiveData<RequestState>
+    ){
+        return retrofitService.addTenderUserJSON(token, id, tenderId,userId,liveData,requestState)
+    }
+
  fun addCarStock(
      serverId: Int,
      year:Int,
                     modedLineId:Int,
-                    mileage:Double,
+                    mileage:Int,
                     price:Double,
                     comments:String,
                     locationId:Int,
@@ -140,7 +151,7 @@ class AdminRepository(private val retrofitService: RetrofitService,
         id: Int?,
         year:Int,
         modelLineId:Int,
-        mileage:Double,
+        mileage:Int,
         price:Double,
         comments:String,
         locationId:Int,
@@ -148,7 +159,35 @@ class AdminRepository(private val retrofitService: RetrofitService,
         isSold:Boolean,
         liveData: MutableLiveData<StockInfoModelAPI?>,
         requestState: MutableLiveData<RequestState>)= retrofitService.addCarStockJSON(token, id, year, modelLineId, mileage, price, comments, locationId, regNo, isSold, liveData, requestState)
+    fun createNewUserJSON(
+        token:String,
+        Id:String?,
+        Email:String,
+        UserName : String?,
+        LocationId:Int,
+        isActive : Boolean,
+        FirstName:String,
+        LastName : String,
+        PhoneNumber:String,
+        RoleName : String,
+        RoleId:String,
+        CompanyName : String,
+        password: String,
+        liveData: MutableLiveData<CreateNewUserAPI?>,
+        requestState: MutableLiveData<RequestState>
+    )=retrofitService.createNewUser(token, Id, Email, UserName, LocationId, isActive, FirstName, LastName, PhoneNumber, RoleName, RoleId, CompanyName,password, liveData, requestState)
+
+    fun readUserRole():LiveData<List<RoleDB>>?{
+        return  localRepository.readRole()
     }
+
+    fun addTenderUser(
+            serverId:Int,
+            tenderId: Int,
+            userId: String){
+        localRepository.insertTenderUser(serverId, tenderId, userId)
+    }
+}
 
 
 

@@ -10,7 +10,7 @@ class stockCarUpdate(
     @ColumnInfo(name ="year")
     var year:Int,
     @ColumnInfo(name ="mileage")
-    var mileage:Double,
+    var mileage:Int,
     @ColumnInfo(name ="price")
     var price:Double,
     @ColumnInfo(name ="comments")
@@ -28,5 +28,10 @@ class stockCarUpdate(
     @ColumnInfo(name ="manufacturer_name")
     var manufacturer_name:String,
     @ColumnInfo(name ="tenderId")
-    var tenderId:String?) {
+    var tenderId:String?,
+    @ColumnInfo(name = "isDeleted")
+    var  isDeleted:Boolean,
+    @ColumnInfo(name = "tenderStockServerId")
+    var tenderStockServerId:Int?)
+    {
 }

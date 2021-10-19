@@ -6,6 +6,7 @@ import com.mladenjovicic.vehicletender.data.API.RetrofitService
 import com.mladenjovicic.vehicletender.data.db.DatabaseService
 import com.mladenjovicic.vehicletender.data.repository.*
 import com.mladenjovicic.vehicletender.data.repository.db.LocalRepository
+import com.mladenjovicic.vehicletender.ui.ShowWinUsre.ShowWinUserViewModel
 import com.mladenjovicic.vehicletender.ui.admAct.ListCarStock.ListCarStockViewModel
 import com.mladenjovicic.vehicletender.ui.admAct.ListUser.ListUserViewModel
 import com.mladenjovicic.vehicletender.ui.admAct.addCarStock.AddCarStockViewModel
@@ -18,8 +19,11 @@ import com.mladenjovicic.vehicletender.ui.userBid.UserBidTenderViewModel
 import com.mladenjovicic.vehicletender.ui.login.LoginViewModel
 import com.mladenjovicic.vehicletender.ui.mainAct.history.SecViewModel
 import com.mladenjovicic.vehicletender.ui.mainAct.main.UserHomeViewModel
+import com.mladenjovicic.vehicletender.ui.mainAct.mainAct.MainActivityViewModel
 import com.mladenjovicic.vehicletender.ui.mainAct.reports.ReportsViewModel
-import com.mladenjovicic.vehicletender.ui.tender.TenderUseViewModel
+import com.mladenjovicic.vehicletender.ui.tender.AddTenderUser.AddTenderUserViewModel
+import com.mladenjovicic.vehicletender.ui.tender.addTenderStock.AddTenderStockViewModel
+import com.mladenjovicic.vehicletender.ui.tender.addTenderStock.TenderUseViewModel
 import com.mladenjovicic.vehicletender.ui.updateUser.UserUpdateViewModel
 import com.mladenjovicic.vehicletender.ui.winBid.WinBidViewModel
 
@@ -45,6 +49,10 @@ object  InjectorUtils {
 
     fun getTenderUseViewModel() = TenderUseViewModel(tenderUseRepository)
 
+    fun getAddTenderStockViewModel() = AddTenderStockViewModel(tenderUseRepository)
+
+    fun getAddTenderUserViewModel() = AddTenderUserViewModel(tenderUseRepository)
+
     private val userUpdate by lazy { UserUpdateRespository(retrofitService, localRepository) }
 
     fun getUserUpdateViewModel() = UserUpdateViewModel(userUpdate)
@@ -69,6 +77,8 @@ object  InjectorUtils {
 
     private val mainRepository by lazy { MainRepository(retrofitService, localRepository)}
 
+    fun getMainActivityViewModel() = MainActivityViewModel(mainRepository)
+
     fun getHistoryViewModel() = SecViewModel(mainRepository)
 
     fun getMainViewModel() =  UserHomeViewModel(mainRepository)
@@ -78,4 +88,9 @@ object  InjectorUtils {
     private val winBidRepository by lazy { WinBidReposiory(retrofitService, localRepository)}
 
     fun getWinBidViewModel() = WinBidViewModel(winBidRepository)
+
+    private val showWinBidReposiory by lazy {  ShowWinUserRepository(retrofitService, localRepository)}
+
+    fun showWinUserViewModel() = ShowWinUserViewModel(showWinBidReposiory)
+
 }

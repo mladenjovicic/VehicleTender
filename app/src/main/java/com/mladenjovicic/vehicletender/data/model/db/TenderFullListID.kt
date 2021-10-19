@@ -3,14 +3,15 @@ package com.mladenjovicic.vehicletender.data.model.db
 import androidx.room.ColumnInfo
 import androidx.room.PrimaryKey
 
-data class TenderFullListID(@ColumnInfo(name ="id")
+data class TenderFullListID(
+                            @ColumnInfo(name ="id")
                             var id:Int,
                             @ColumnInfo(name ="stockId")
                             var stockId:Int,
                             @ColumnInfo(name ="tenderId")
                             var tenderId:String,
                             @ColumnInfo(name ="saleDate")
-                            var saleDate:String,
+                            var saleDate:String?,
                             @ColumnInfo(name ="stockInfoId")
                             var stockInfoId:Int,
                             @ColumnInfo(name ="year")
@@ -34,5 +35,7 @@ data class TenderFullListID(@ColumnInfo(name ="id")
                             @ColumnInfo(name ="model_no")
                             var model_no:String,
                             @ColumnInfo(name ="manufacturer_name")
-                            var manufacturer_name:String) {
+                            var manufacturer_name:String,
+                            @ColumnInfo(name = "serverId")
+                            var serverId:Int?) {
 }

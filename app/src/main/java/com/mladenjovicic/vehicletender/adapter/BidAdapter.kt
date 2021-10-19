@@ -15,11 +15,13 @@ import com.mladenjovicic.vehicletender.WinBidActivity
 import com.mladenjovicic.vehicletender.data.model.db.TenderFullListID
 import com.mladenjovicic.vehicletender.ui.userBid.UserBidTenderViewModel
 
-class BidAdapter(val activity: Fragment, userStatus:Int, tenderStatus:Int, val viewModel:UserBidTenderViewModel, uuidUser:String, context: LifecycleOwner): RecyclerView.Adapter<BidAdapter.MyViewHolder>() {
+class BidAdapter(val activity: Fragment, userStatus:Int, tenderStatus:Int, val viewModel:UserBidTenderViewModel, uuidUser:String, context: LifecycleOwner, token:String): RecyclerView.Adapter<BidAdapter.MyViewHolder>() {
     var userStatus = userStatus
     var tenderStatus = tenderStatus
     var uuidUser = uuidUser
     var context = context
+    var token  = token
+    var tenderId = 0
 
     private var TenderStockList:List<TenderFullListID>?=null
 
@@ -33,30 +35,35 @@ class BidAdapter(val activity: Fragment, userStatus:Int, tenderStatus:Int, val v
 
     override fun onBindViewHolder(holder: BidAdapter.MyViewHolder, position: Int) {
         holder.bind(TenderStockList?.get(position)!!, activity, userStatus,tenderStatus)
+        var tenderUserId = 0
         holder.btnAddBid.setOnClickListener {
             if(userStatus == 0){
             if(holder.editTextPriceBid.text.isNotEmpty()) {
-                val rnds = (0..9999).random()
-                viewModel.inserBidJSON(
-                    "",
-                    null,
-                    uuidUser,
-                    TenderStockList!![position].stockId,
-                    holder.editTextPriceBid.text.toString().toDouble(),
-                    false
-                )
-
+                viewModel.readTenderUser(uuidUser, TenderStockList!![position].tenderId.toInt())
+                    viewModel.tenderUser?.observe(context){
+                    if(it!=null){
+                    tenderUserId = it.serverId
+                        viewModel.inserBidJSON(
+                            token,
+                            null,
+                            tenderUserId,
+                            TenderStockList!![position].serverId!!,
+                            holder.editTextPriceBid.text.toString().toDouble(),
+                            null,
+                            null
+                        )
+                    }else println("dev005 error")
+                }
 
                 viewModel.requestState.observe(context) {
                     if(it.pending)
                         Log.e("Loading", "retrofit request is in progress, show loading spinner")
-
                     if(it.successful){
                         Log.e("Success", "retrofit request is successful")
                         viewModel.getNewBidObserver().observe(context, Observer {
-                            println("devvv " + it.toString())
                             if(it!=null){
-                                viewModel.insertBid(it?.ID!!, it?.TUserId!!, it.TStockId, it.Price, it?.IsWinningPrice!!)
+                                viewModel.deleteBid(it?.TUserId!!,it.TStockId, false )
+                                viewModel.insertBid(it?.ID!!, it?.TUserId!!.toString(), it.TStockId, it.Price, it?.IsWinningPrice!!, it?.isActive!!)
                                 Toast.makeText(holder.rowCarBid.context, "Add new bid", Toast.LENGTH_SHORT).show()
                             }
                         })
@@ -65,7 +72,6 @@ class BidAdapter(val activity: Fragment, userStatus:Int, tenderStatus:Int, val v
                         Toast.makeText(holder.rowCarBid.context, it.errorMessage.toString(), Toast.LENGTH_SHORT).show()
                     }
 
-
                 }
             }else{
                 Toast.makeText(holder.rowCarBid.context, "Sva polja moraju biti popunjena", Toast.LENGTH_SHORT).show()
@@ -73,11 +79,13 @@ class BidAdapter(val activity: Fragment, userStatus:Int, tenderStatus:Int, val v
             if(userStatus == 2){
                 if(holder.rowCarBid != null){
                     val intent = Intent(holder.rowCarBid.context, WinBidActivity::class.java)
-                    intent.putExtra("stockId", TenderStockList!![position].stockId)
+                    intent.putExtra("stockId", TenderStockList!![position].serverId)
+                    intent.putExtra("carId", TenderStockList!![position].stockId)
                     holder.rowCarBid.context.startActivity(intent)
                 }else{
                     val intent = Intent(holder.btnAddBid?.context, WinBidActivity::class.java)
-                    intent.putExtra("stockId", TenderStockList!![position].stockId)
+                    intent.putExtra("stockId", TenderStockList!![position].serverId)
+                    intent.putExtra("carId", TenderStockList!![position].stockId)
                     holder.btnAddBid?.context!!.startActivity(intent)
                 }
             }
@@ -134,6 +142,7 @@ class BidAdapter(val activity: Fragment, userStatus:Int, tenderStatus:Int, val v
             if(userStatus == 2){
                 textViewUserID.visibility = View.GONE
                 editTextPriceBid.visibility = View.GONE
+                btnAddBid.setText("open bid list")
             }
 
         }
